@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--Color option-->
+    <item
+        android:icon="@drawable/color_icon"
+        android:title="Color"
+        app:showAsAction="always">
+    </item>
+
+
+    <!--Shape-->
+    <item
+        android:icon="@drawable/shape_icon"
+        app:showAsAction="always"
+        android:title="Shape">
+
+        <menu>
+            <item
+                android:id="@+id/square_item"
+                android:title="Square"/>
+            <item
+                android:id="@+id/cirle_item"
+                android:title="Circle"/>
+            <item
+                android:id="@+id/triangle_item"
+                android:title="Triangle"/>
+            <item
+                android:id="@+id/rectangle_item"
+                android:title="Rectangle"/>
+            <item
+                android:id="@+id/diamond_item"
+                android:title="Diamond"/>
+            <item
+                android:id="@+id/oval_item"
+                android:title="Oval"/>
+        </menu>
+
+    </item>
+
+
+    <!--Lines-->
+    <item
+        android:icon="@drawable/line_icon"
+        app:showAsAction="always"
+        android:title="Lines">
+
+    </item>
+
+
+    <!--Text-->
+    <item
+        android:icon="@drawable/text_icon"
+        app:showAsAction="always"
+        android:title="Text">
+
+    </item>
+
+
+    <!--Image-->
+    <item
+        android:icon="@drawable/image_icon"
+        app:showAsAction="always"
+        android:title="Image">
+
+    </item>
+
+
+    <!--Delete Canvas-->
+    <item
+        android:icon="@drawable/trash_icon"
+        app:showAsAction="always"
+        android:title="Delete">
+
+    </item>
+
+    <!--New Canvas-->
+    <item
+        android:id="@+id/new_canvas_action"
+        app:showAsAction="never"
+        android:title="New"/>
+
+
+    <!--Save Canvas-->
+    <item
+        android:id="@+id/save_canvas_action"
+        app:showAsAction="never"
+        android:title="Save"/>
+
+
+    <!--Load-->
+    <item
+        android:id="@+id/load_canvas_action"
+        app:showAsAction="never"
+        android:title="Load"/>
+
+
+</menu>
