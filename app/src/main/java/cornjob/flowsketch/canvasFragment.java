@@ -19,7 +19,11 @@ import android.widget.Toast;
  */
 public class canvasFragment extends Fragment {
 
-//test
+    public boolean log_in_status = true; // Boolean whether user is logged in or not
+                                          // Options menu changes depending on this variable
+                                          // NOTE: Change this variable to 'true' when user
+                                          // logs in
+
     public canvasFragment() {
         // Required empty public constructor
     }
@@ -28,23 +32,44 @@ public class canvasFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
         setHasOptionsMenu(true);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_main, menu);
+
+        /** Change 'options' based on whether user is logged in or out **/
+        if(log_in_status == false)
+            inflater.inflate(R.menu.menu_main_logged_out, menu); //
+        else
+            inflater.inflate(R.menu.menu_main_logged_in, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+
+
         int id = item.getItemId();
+
+        if(id == R.id.fill_action)
+            MainActivity.instance.ColorPickerDialog();
+        if(id == R.id.stroke_action)
+            MainActivity.instance.ColorPickerDialog();
+
+        /** Go to login activity **/
+        if(id == R.id.login_action)
+        {
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            startActivity(intent);
+        }
 
         if(id == R.id.square_item){
             Toast.makeText(getActivity(), "Square Clicked", Toast.LENGTH_SHORT).show();
-        }else if(id == R.id.cirle_item){
+        }else if(id == R.id.circle_item){
             Toast.makeText(getActivity(), "Circle Clicked", Toast.LENGTH_SHORT).show();
         }else if(id == R.id.triangle_item){
             Toast.makeText(getActivity(), "Triangle Clicked", Toast.LENGTH_SHORT).show();
@@ -55,20 +80,7 @@ public class canvasFragment extends Fragment {
         }else if(id == R.id.oval_item){
             Toast.makeText(getActivity(), "Oval Clicked", Toast.LENGTH_SHORT).show();
         }
-        //line options. Insert line int canvas should be here
-        else if(id == R.id.line_item){
-            Toast.makeText(getActivity(), "Insert Line", Toast.LENGTH_SHORT).show();
-        }
-        else if(id == R.id.line_dashed_item){
-            Toast.makeText(getActivity(), "Insert Line Dashed", Toast.LENGTH_SHORT).show();
-        }
-        else if(id == R.id.line_more_dashed_item){
-            Toast.makeText(getActivity(), "Insert Line more dashed", Toast.LENGTH_SHORT).show();
-        }
-        /*
-        New, Login, Save, and Load options
-        Intent to start activities should be here
-         */
+        //overflow options
         else if(id == R.id.load_canvas_action){
             Intent intent = new Intent(getActivity(), LoadActivity.class);
             startActivity(intent);
@@ -82,5 +94,4 @@ public class canvasFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_main, container, false);
     }
-
 }
