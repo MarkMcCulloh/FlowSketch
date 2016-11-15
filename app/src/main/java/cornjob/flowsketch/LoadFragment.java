@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 
@@ -32,7 +33,10 @@ public class LoadFragment extends Fragment {
         stringArrayList.add("Sat Time Created");
 
         ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_canvas,R.id.list_item_canvas_textview, stringArrayList);
+
         //get listview
+        ListView listView = (ListView) rootview.findViewById(R.id.listview_load);
+        listView.setAdapter(stringArrayAdapter);
         return rootview;
     }
 

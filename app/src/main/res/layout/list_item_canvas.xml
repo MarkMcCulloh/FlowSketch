@@ -3,6 +3,7 @@
 <!--Textview for LoadFragment
 The view will be used(with array adapter) to display a list of canvases in LoadFragment-->
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minHeight="?android:attr/listPreferredItemHeight"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
