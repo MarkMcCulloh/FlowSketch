@@ -33,6 +33,17 @@
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_login"></activity>
 
+        <activity
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:name=".LoadActivity"
+            android:label="@string/title_activity_load"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cornjob.flowsketch.MainActivity" />
+        </activity>
+
     </application>
 
 </manifest>

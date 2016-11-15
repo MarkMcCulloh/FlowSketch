@@ -40,7 +40,7 @@
                 android:id="@+id/square_item"
                 android:title="Square"/>
             <item
-                android:id="@+id/cirle_item"
+                android:id="@+id/circle_item"
                 android:title="Circle"/>
             <item
                 android:id="@+id/triangle_item"

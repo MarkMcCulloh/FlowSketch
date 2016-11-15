@@ -19,7 +19,7 @@ import android.widget.Toast;
  */
 public class canvasFragment extends Fragment {
 
-    public boolean log_in_status = false; // Boolean whether user is logged in or not
+    public boolean log_in_status = true; // Boolean whether user is logged in or not
                                           // Options menu changes depending on this variable
                                           // NOTE: Change this variable to 'true' when user
                                           // logs in
@@ -40,7 +40,12 @@ public class canvasFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_main_logged_out, menu);
+
+        /** Change 'options' based on whether user is logged in or out **/
+        if(log_in_status == false)
+            inflater.inflate(R.menu.menu_main_logged_out, menu); //
+        else
+            inflater.inflate(R.menu.menu_main_logged_in, menu);
     }
 
     @Override
@@ -64,7 +69,7 @@ public class canvasFragment extends Fragment {
 
         if(id == R.id.square_item){
             Toast.makeText(getActivity(), "Square Clicked", Toast.LENGTH_SHORT).show();
-        }else if(id == R.id.cirle_item){
+        }else if(id == R.id.circle_item){
             Toast.makeText(getActivity(), "Circle Clicked", Toast.LENGTH_SHORT).show();
         }else if(id == R.id.triangle_item){
             Toast.makeText(getActivity(), "Triangle Clicked", Toast.LENGTH_SHORT).show();
