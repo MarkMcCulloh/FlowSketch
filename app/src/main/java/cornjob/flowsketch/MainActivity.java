@@ -21,6 +21,7 @@ import static android.R.attr.id;
 
 public class MainActivity extends AppCompatActivity {
 
+    private MyCanvas canvas;
     public static MainActivity instance; // for "fill" and "stroke"
 
     /* For "fill" and "stroke" */
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         //setting toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        canvas = (MyCanvas) findViewById(R.id.drawablecanvas);
     }
 
 
@@ -69,4 +71,10 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
         }**/
     }
+    public void deleteObject(MenuItem v){canvas.delete();}
+    public void clearCanvas(MenuItem v){canvas.reset();}
+    public void insertRect(MenuItem v){canvas.setAddRect();}
+    public void insertCircle(MenuItem v){canvas.setAddCircle();}
+    public void insertLine(MenuItem v){canvas.setAddLine();}
+
 }

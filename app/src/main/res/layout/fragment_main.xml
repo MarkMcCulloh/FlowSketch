@@ -6,6 +6,12 @@
 
     <!-- TODO: Update blank fragment layout
      This should be where the layout of Canvas Class should be-->
+    <cornjob.flowsketch.MyCanvas
+        android:id ="@+id/drawablecanvas"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor ="#FFFF"
+        />
 
     <TextView
         android:layout_width="match_parent"

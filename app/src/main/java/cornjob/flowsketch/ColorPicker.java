@@ -49,6 +49,7 @@ public class ColorPicker extends View {
     private final int paramValueSliderWidth = 10; // width of the value slider
     private final int paramArrowPointerSize = 4; // size of the arrow pointer; set to 0 to hide the pointer
 
+    //test
     private Paint colorWheelPaint;
     private Paint valueSliderPaint;
 
