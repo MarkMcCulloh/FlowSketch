@@ -4,9 +4,12 @@ import android.content.ClipData;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -17,13 +20,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import static android.R.attr.id;
+
 public class MainActivity extends AppCompatActivity {
 
+    private MyCanvas canvas;
     public static MainActivity instance; // for "fill" and "stroke"
     public static String api_key="";
     public static String username="";
 
-    /** For "fill" and "stroke" **/
+    /* For "fill" and "stroke" */
     public static void setInstance(MainActivity instance) {
         MainActivity.instance = instance;
     }
@@ -38,8 +44,11 @@ public class MainActivity extends AppCompatActivity {
         //setting toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        canvas = (MyCanvas) findViewById(R.id.drawablecanvas);
     }
 
+
+    /* Color Picker Wheel */
     public void ColorPickerDialog()
     {
         int initialColor = Color.WHITE;
@@ -54,9 +63,26 @@ public class MainActivity extends AppCompatActivity {
         colorPickerDialog.show();
     }
 
-
-    // Check screen orientation or screen rotate event here
+    /* Grab image from phone gallery */
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            cursor.close();
+
+            // String picturePath contains the path of selected Image
+        }
+    }
+
+    /* Check screen orientation or screen rotate event here */
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         /**
@@ -67,4 +93,13 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
         }**/
     }
+    public void deleteObject(MenuItem v){canvas.delete();}
+    public void clearCanvas(MenuItem v){canvas.reset();}
+    public void insertRect(MenuItem v){canvas.setAddRect();}
+    public void insertCircle(MenuItem v){canvas.setAddCircle();}
+    public void insertLine(MenuItem v){canvas.setAddLine();}
+    public void insertSquare(MenuItem v){canvas.setSquare();}
+    public void insertTriangle(MenuItem v){canvas.setTriangle();}
+    public void insertOval(MenuItem v){canvas.setOval();}
+
 }

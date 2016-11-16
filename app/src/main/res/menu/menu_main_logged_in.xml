@@ -33,27 +33,45 @@
     <item
         android:icon="@drawable/shape_icon"
         app:showAsAction="always"
+        android:titleCondensed=""
         android:title="Shape">
 
         <menu>
             <item
                 android:id="@+id/square_item"
-                android:title="Square"/>
+                android:title="Square"
+                android:titleCondensed=""
+                android:icon="@mipmap/shapes_square_icon"
+                android:onClick="insertSquare"/>
             <item
                 android:id="@+id/circle_item"
-                android:title="Circle"/>
+                android:title="Circle"
+                android:titleCondensed=""
+                android:icon="@mipmap/shapes_circle_icon"
+                android:onClick="insertCircle"/>
             <item
                 android:id="@+id/triangle_item"
-                android:title="Triangle"/>
+                android:title="Triangle"
+                android:titleCondensed=""
+                android:icon="@mipmap/shapes_triangle_icon"
+                android:onClick="insertTriangle"/>
             <item
                 android:id="@+id/rectangle_item"
-                android:title="Rectangle"/>
-            <item
-                android:id="@+id/diamond_item"
-                android:title="Diamond"/>
+                android:title="Rectangle"
+                android:titleCondensed=""
+                android:icon="@mipmap/shapes_rectangle_icon"
+                android:onClick="insertRect"/>
             <item
                 android:id="@+id/oval_item"
-                android:title="Oval"/>
+                android:title="Oval"
+                android:titleCondensed=""
+                android:icon="@mipmap/shapes_oval_icon"
+                android:onClick="insertOval"/>
+            <item
+                android:id="@+id/diamond_item"
+                android:title="Diamond"
+                android:titleCondensed=""
+                android:icon="@mipmap/shapes_diamond_icon" />
         </menu>
 
     </item>
@@ -62,8 +80,10 @@
     <!--Lines-->
     <item
         android:icon="@drawable/line_icon"
+        android:id="@+id/lines_item"
         app:showAsAction="always"
-        android:title="Lines">
+        android:title="Lines"
+        android:onClick="insertLine">
 
     </item>
 
@@ -71,6 +91,7 @@
     <!--Text-->
     <item
         android:icon="@drawable/text_icon"
+        android:id="@+id/text_item"
         app:showAsAction="always"
         android:title="Text">
 
@@ -80,17 +101,19 @@
     <!--Image-->
     <item
         android:icon="@drawable/image_icon"
+        android:id="@+id/image_icon"
         app:showAsAction="always"
         android:title="Image">
 
     </item>
 
 
-    <!--Delete Canvas-->
+    <!--Delete Object-->
     <item
         android:icon="@drawable/trash_icon"
         app:showAsAction="always"
-        android:title="Delete">
+        android:title="Delete"
+        android:onClick="deleteObject">
 
     </item>
 
@@ -98,7 +121,8 @@
     <item
         android:id="@+id/new_canvas_action"
         app:showAsAction="never"
-        android:title="New"/>
+        android:title="New"
+        android:onClick="clearCanvas"/>
 
 
     <!--Save Canvas-->
