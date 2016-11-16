@@ -17,11 +17,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import static android.R.attr.id;
+
 public class MainActivity extends AppCompatActivity {
 
     public static MainActivity instance; // for "fill" and "stroke"
 
-    /** For "fill" and "stroke" **/
+    /* For "fill" and "stroke" */
     public static void setInstance(MainActivity instance) {
         MainActivity.instance = instance;
     }
@@ -38,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
     }
 
+
+    /* Color Picker Wheel */
     public void ColorPickerDialog()
     {
         int initialColor = Color.WHITE;

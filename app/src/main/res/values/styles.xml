@@ -1,6 +1,5 @@
 <resources>
 
-
     <!--This is a custom style with no padding-->
     <style name="ActionButtonStyle">
         <item name="android:minWidth">0dp</item>
@@ -15,7 +14,6 @@
 
         <!--Removes padding from action bar icons-->
         <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
-
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>

@@ -62,6 +62,7 @@
     <!--Lines-->
     <item
         android:icon="@drawable/line_icon"
+        android:id="@+id/lines_item"
         app:showAsAction="always"
         android:title="Lines">
 

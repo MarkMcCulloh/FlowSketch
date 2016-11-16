@@ -31,9 +31,6 @@ public class canvasFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
         setHasOptionsMenu(true);
     }
 
@@ -51,9 +48,8 @@ public class canvasFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-
-
         int id = item.getItemId();
+
 
         if(id == R.id.fill_action)
             MainActivity.instance.ColorPickerDialog();
