@@ -163,7 +163,7 @@ public class MyCanvas extends View {
 
 
             }
-            
+
 
             //Traverse through the list of Shapes and draw on canvas if any are in list
             for(Rect rect : rects)
