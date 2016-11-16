@@ -72,5 +72,8 @@ public class MainActivity extends AppCompatActivity {
     public void insertRect(MenuItem v){canvas.setAddRect();}
     public void insertCircle(MenuItem v){canvas.setAddCircle();}
     public void insertLine(MenuItem v){canvas.setAddLine();}
+    public void insertSquare(MenuItem v){canvas.setSquare();}
+    public void insertTriangle(MenuItem v){canvas.setTriangle();}
+    public void insertOval(MenuItem v){canvas.setOval();}
 
 }

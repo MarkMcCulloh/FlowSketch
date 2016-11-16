@@ -39,14 +39,15 @@
             <item
                 android:id="@+id/square_item"
                 android:title="Square"
-                android:onClick="insertRect"/>
+                android:onClick="insertSquare"/>
             <item
                 android:id="@+id/circle_item"
                 android:title="Circle"
                 android:onClick="insertCircle"/>
             <item
                 android:id="@+id/triangle_item"
-                android:title="Triangle"/>
+                android:title="Triangle"
+                android:onClick="insertTriangle"/>
             <item
                 android:id="@+id/rectangle_item"
                 android:title="Rectangle"
@@ -56,7 +57,8 @@
                 android:title="Diamond"/>
             <item
                 android:id="@+id/oval_item"
-                android:title="Oval"/>
+                android:title="Oval"
+                android:onClick="insertOval"/>
         </menu>
 
     </item>
