@@ -11,6 +11,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.drawable.shapes.OvalShape;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,12 +31,14 @@ public class MyCanvas extends View {
     private float rectCordx , rectCordy, mark,x_mark,y_mark,x,y,x_move,y_move;
     private boolean is_Marked, already_marked,remove_Object,inputText,object_Move,verify_Text =false;
 
+    private EditText editxt;
     private ArrayList<Rect> rects = new ArrayList<>();
+    private ArrayList<RectF> Oval = new ArrayList<>();
     private ArrayList<ShapeCircle> Circles = new ArrayList<>();
     private ArrayList<ShapeLine>Lines = new ArrayList<>();
-    private ArrayList<ShapeSquare>squares = new ArrayList<>();
     private ArrayList<object_Text>Text = new ArrayList<>();
-
+    private ArrayList<Rect>squares = new ArrayList<>();
+    private ArrayList<ShapeTriangle>tri = new ArrayList<>();
 
     private Point point1;
     private Point point2;
@@ -117,9 +121,23 @@ public class MyCanvas extends View {
                 Circles.add(new ShapeCircle(rectCordx,rectCordy));
                 addShape = false;
             }
-            else if(shape == "square")
+            else if(shape == "Triangle")
             {
-                squares.add(new ShapeSquare(rectCordx,rectCordy));
+
+                tri.add(new ShapeTriangle(new Point(rectCordx,rectCordy)));
+                addShape = false;
+            }
+            else if(shape == "Square")
+            {
+                squares.add(new Rect((int)rectCordx,(int)rectCordy,(int)rectCordx+400,(int)rectCordy+400));
+                addShape = false;
+
+            }
+            else if(shape=="Oval")
+            {
+                Oval.add(new RectF((int)rectCordx,(int)rectCordy,(int)rectCordx+300,(int)rectCordy+400));
+                addShape = false;
+
             }
 
             // Add New Line
@@ -138,11 +156,14 @@ public class MyCanvas extends View {
                         lineCount++;
                         i = 0;
                         addShape = false;
+
                     }
+
                 }
 
 
             }
+            
 
             //Traverse through the list of Shapes and draw on canvas if any are in list
             for(Rect rect : rects)
@@ -158,6 +179,20 @@ public class MyCanvas extends View {
             {
                 canvas.drawCircle(circ.getX(),circ.getY(),circ.getRadius(),circ.getPaint());
 
+            }
+
+            for(Rect square: squares)
+            {
+                canvas.drawRect(square,rectPaint);
+            }
+            for(RectF ovals: Oval)
+            {
+                canvas.drawOval(ovals,rectPaint);
+            }
+
+            for(ShapeTriangle triangle : tri)
+            {
+             canvas.drawPath(triangle.getTri_Path(),rectPaint);
             }
 
             for(ShapeLine line : Lines)
@@ -192,6 +227,38 @@ public class MyCanvas extends View {
                 }
             }
 
+            for (Rect square : squares) {
+                if (square.contains((int) x_mark, (int) y_mark) && !already_marked) {
+                    square.left = (int)x_move;
+                    square.top = (int)y_move;
+                    square.bottom = (int)y_move+400;
+                    square.right = (int)x_move+400;
+                    x_mark  = x_move;
+                    y_mark = y_move;
+                    canvas.drawRect(square, Marked);
+
+                    already_marked = true;
+                } else {
+                    canvas.drawRect(square, rectPaint);
+                }
+            }
+            for(RectF ovals:Oval)
+            {
+                if(ovals.contains((int) x_mark, (int) y_mark) && !already_marked)
+                {
+                    ovals.left = (int)x_move;
+                    ovals.top = (int)y_move;
+                    ovals.bottom = (int)y_move +400;
+                    ovals.right = (int)x_move+300;
+                    x_mark = x_move;
+                    x_mark = y_move;
+                    canvas.drawOval(ovals,Marked);
+                    already_marked =true;
+                }
+                else{
+                    canvas.drawOval(ovals,rectPaint);
+                }
+            }
             //Change Circle location
             for (ShapeCircle circ : Circles) {
                 if ((x_mark - circ.getX()*circ.getX() + y_mark - circ.getY()*circ.getY())<(circ.getRadius()*circ.getRadius()) && !already_marked) {
@@ -225,6 +292,25 @@ public class MyCanvas extends View {
                     canvas.drawRect(rect, rectPaint);
                 }
             }
+            for (Rect square : squares) {
+                if (square.contains((int) x_mark, (int) y_mark) && !already_marked) {
+
+                    canvas.drawRect(square, Marked);
+                }
+                else {
+                    canvas.drawRect(square, rectPaint);
+                }
+            }
+            for(RectF ovals: Oval)
+            {
+                if (ovals.contains((int) x_mark, (int) y_mark) && !already_marked) {
+
+                    canvas.drawOval(ovals, Marked);
+                }
+                else {
+                    canvas.drawOval(ovals, rectPaint);
+                }
+            }
             for (ShapeCircle circ : Circles) {
                 if ((x_mark - circ.getX()*circ.getX() + y_mark - circ.getY()*circ.getY())<(circ.getRadius()*circ.getRadius()) && !already_marked) {
                     already_marked = true;
@@ -250,8 +336,20 @@ public class MyCanvas extends View {
                 canvas.drawRect(rect, rectPaint);
 
             }
+            for(Rect square : squares)
+            {
+                canvas.drawRect(square,rectPaint);
+            }
             for (ShapeCircle circ : Circles) {
                 canvas.drawCircle(circ.getX(), circ.getY(), circ.getRadius(),circ.getPaint());
+            }
+            for(ShapeTriangle triangle: tri)
+            {
+                canvas.drawPath(triangle.getTri_Path(),rectPaint);
+            }
+            for(RectF ovals:Oval)
+            {
+                canvas.drawOval(ovals,rectPaint);
             }
 
             for(ShapeLine line : Lines)
@@ -299,9 +397,12 @@ public class MyCanvas extends View {
     }
     public void reset()
     {
+        squares.clear();
         rects.clear();
         Circles.clear();
         Lines.clear();
+        tri.clear();
+        Oval.clear();
         shape = "";
         addShape = false;
         i = 0;
@@ -312,6 +413,11 @@ public class MyCanvas extends View {
         addShape = true;
         shape ="Rect";
     }
+    public void setSquare()
+    {
+        addShape =true;
+        shape ="Square";
+    }
     public void setAddCircle()
     {
         addShape = true;
@@ -321,6 +427,16 @@ public class MyCanvas extends View {
     {
         addShape = true;
         shape = "Line";
+    }
+    public void setTriangle()
+    {
+        addShape =true;
+        shape = "Triangle";
+    }
+    public void setOval()
+    {
+        addShape = true;
+        shape = "Oval";
     }
 
     public void setAddText()
@@ -334,6 +450,11 @@ public class MyCanvas extends View {
         remove_Object = true;
         delete_Object();
     }
+
+
+
+
+
 
 
 
@@ -384,11 +505,12 @@ public class MyCanvas extends View {
             }
             break;
 
-
         }
         invalidate();
         return true;
 
     }
+
+
 }
 
