@@ -38,16 +38,19 @@
         <menu>
             <item
                 android:id="@+id/square_item"
-                android:title="Square"/>
+                android:title="Square"
+                android:onClick="insertRect"/>
             <item
                 android:id="@+id/circle_item"
-                android:title="Circle"/>
+                android:title="Circle"
+                android:onClick="insertCircle"/>
             <item
                 android:id="@+id/triangle_item"
                 android:title="Triangle"/>
             <item
                 android:id="@+id/rectangle_item"
-                android:title="Rectangle"/>
+                android:title="Rectangle"
+                android:onClick="insertRect"/>
             <item
                 android:id="@+id/diamond_item"
                 android:title="Diamond"/>
@@ -63,7 +66,8 @@
     <item
         android:icon="@drawable/line_icon"
         app:showAsAction="always"
-        android:title="Lines">
+        android:title="Lines"
+        android:onClick="insertLine">
 
     </item>
 
@@ -90,7 +94,8 @@
     <item
         android:icon="@drawable/trash_icon"
         app:showAsAction="always"
-        android:title="Delete">
+        android:title="Delete"
+        android:onClick="deleteObject">
 
     </item>
 
@@ -98,7 +103,8 @@
     <item
         android:id="@+id/new_canvas_action"
         app:showAsAction="never"
-        android:title="New"/>
+        android:title="New"
+        android:onClick="clearCanvas"/>
 
 
     <!--Save Canvas-->
