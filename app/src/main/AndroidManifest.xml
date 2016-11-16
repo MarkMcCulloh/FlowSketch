@@ -34,6 +34,13 @@
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_login"/>
 
+
+        <activity
+            android:name=".RegisterActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/title_activity_register"/>
+
+
         <activity
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:name=".LoadActivity"

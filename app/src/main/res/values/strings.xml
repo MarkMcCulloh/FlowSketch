@@ -2,6 +2,7 @@
     <string name="app_name">FlowSketch</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_register">Register</string>
     <string name="title_activity_load">Load Canvas</string>
 
     <!-- Strings related to login -->
