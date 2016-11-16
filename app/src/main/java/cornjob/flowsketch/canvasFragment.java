@@ -56,11 +56,20 @@ public class canvasFragment extends Fragment {
         if(id == R.id.stroke_action)
             MainActivity.instance.ColorPickerDialog();
 
-        /** Go to login activity **/
+        /* Go to login activity */
         if(id == R.id.login_action)
         {
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             startActivity(intent);
+        }
+
+        /* Import image from gallery */
+        if(id == R.id.image_icon)
+        {
+            Intent i = new Intent(
+                    Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+            startActivityForResult(i, 0);
         }
 
         if(id == R.id.square_item){
