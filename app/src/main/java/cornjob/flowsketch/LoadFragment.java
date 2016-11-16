@@ -23,7 +23,8 @@ public class LoadFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootview = inflater.inflate(R.layout.fragment_load, container, false);
-
+        //User user= new User();
+        //String name=user.setName();
         ArrayList<String> stringArrayList = new ArrayList<>();
         stringArrayList.add("Today Time Created");
         stringArrayList.add("Tomorrow Time Created");

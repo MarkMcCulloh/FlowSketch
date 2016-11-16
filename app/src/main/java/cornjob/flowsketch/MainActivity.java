@@ -20,6 +20,8 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     public static MainActivity instance; // for "fill" and "stroke"
+    public static String api_key="";
+    public static String username="";
 
     /** For "fill" and "stroke" **/
     public static void setInstance(MainActivity instance) {

@@ -66,11 +66,16 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void submitForm() {
 
+        if(signupInputName.getText().toString().equals(signupInputRePassword.getText().toString())) {
+            registerUser(signupInputName.getText().toString(),
+                    signupInputEmail.getText().toString(),
+                    signupInputPassword.getText().toString()
+            );
+        }
+        else{
+            Toast.makeText(getApplicationContext(),"Passwords do not match", Toast.LENGTH_LONG).show();
 
-        registerUser(signupInputName.getText().toString(),
-                signupInputEmail.getText().toString(),
-                signupInputPassword.getText().toString()
-                );
+        }
     }
 
     private void registerUser(final String name,  final String email, final String password) {
@@ -93,18 +98,19 @@ public class RegisterActivity extends AppCompatActivity {
                     boolean error = jObj.getBoolean("error");
 
                     if (!error) {
-                        String user = jObj.getJSONObject("user").getString("name");
-                        Toast.makeText(getApplicationContext(), "Hi " + user +", You are successfully Added!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Hi You are successfully Added!", Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(getApplicationContext(),LoginActivity.class);
+                        startActivity(i);
 
                         // Launch login activity
-                        Intent intent = new Intent(
+                        /*Intent intent = new Intent(
                                 RegisterActivity.this,
                                 LoginActivity.class);
                         startActivity(intent);
-                        finish();
+                        finish();*/
                     } else {
 
-                        String errorMsg = jObj.getString("error_msg");
+                        String errorMsg = jObj.getString("message");
                         Toast.makeText(getApplicationContext(),
                                 errorMsg, Toast.LENGTH_LONG).show();
                     }

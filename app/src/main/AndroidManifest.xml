@@ -40,6 +40,12 @@
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_register"/>
 
+        <activity
+            android:name=".UserActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/user_screen"/>
+
+
 
         <activity
             android:configChanges="orientation|screenSize|keyboardHidden"

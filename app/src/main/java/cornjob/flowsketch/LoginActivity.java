@@ -108,17 +108,30 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     boolean error = jObj.getBoolean("error");
 
                     if (!error) {
-                        String user = jObj.getJSONObject("user").getString("name");
+                        String name = jObj.getString("name");
+                        String api_key=jObj.getString("apiKey");
+                        String email= jObj.getString("email");
                         // Launch User activity
-                        Intent intent = new Intent(
+                        Toast.makeText(getApplicationContext(),
+                                name + " "+ email +" "+ api_key, Toast.LENGTH_LONG).show();
+
+                        User user= new User(name,email,api_key);
+
+                        MainActivity.api_key=api_key;
+                        MainActivity.username=name;
+                        canvasFragment.log_in_status=true;
+
+                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(i);
+                       /* Intent intent = new Intent(
                                 LoginActivity.this,
                                 UserActivity.class);
-                        intent.putExtra("username", user);
+                        intent.putExtra("name", user);
                         startActivity(intent);
-                        finish();
+                        finish();*/
                     } else {
 
-                        String errorMsg = jObj.getString("error_msg");
+                        String errorMsg = jObj.getString("message");
                         Toast.makeText(getApplicationContext(),
                                 errorMsg, Toast.LENGTH_LONG).show();
                     }
