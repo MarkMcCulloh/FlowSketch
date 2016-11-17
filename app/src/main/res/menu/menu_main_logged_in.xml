@@ -101,7 +101,7 @@
     <!--Image-->
     <item
         android:icon="@drawable/image_icon"
-        android:id="@+id/image_icon"
+        android:id="@+id/image_item"
         app:showAsAction="always"
         android:title="Image">
 
@@ -111,6 +111,7 @@
     <!--Delete Object-->
     <item
         android:icon="@drawable/trash_icon"
+        android:id="@+id/delete_item"
         app:showAsAction="always"
         android:title="Delete"
         android:onClick="deleteObject">

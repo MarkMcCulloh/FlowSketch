@@ -13,10 +13,12 @@ import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.shapes.OvalShape;
+import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -28,17 +30,21 @@ public class MyCanvas extends View {
     Context context;
 
     private int i, lineCount = 0;
-    private float rectCordx , rectCordy, mark,x_mark,y_mark,x,y,x_move,y_move;
-    private boolean is_Marked, already_marked,remove_Object,inputText,object_Move,verify_Text =false;
+    private static float rectCordx , rectCordy, mark,x_mark,y_mark,x,y,x_move,y_move;
+    public static boolean is_Marked, already_marked,remove_Object,inputText,object_Move,verify_Text =false;
+
+
+    public static Bundle mMyAppsBundle = new Bundle();
+
 
     private EditText editxt;
-    private ArrayList<Rect> rects = new ArrayList<>();
-    private ArrayList<RectF> Oval = new ArrayList<>();
-    private ArrayList<ShapeCircle> Circles = new ArrayList<>();
-    private ArrayList<ShapeLine>Lines = new ArrayList<>();
-    private ArrayList<object_Text>Text = new ArrayList<>();
-    private ArrayList<Rect>squares = new ArrayList<>();
-    private ArrayList<ShapeTriangle>tri = new ArrayList<>();
+    private static ArrayList<Rect> Rects = new ArrayList<>();
+    private static ArrayList<RectF> Oval = new ArrayList<>();
+    private static ArrayList<ShapeCircle> Circles = new ArrayList<>();
+    private static ArrayList<ShapeLine>Lines = new ArrayList<>();
+    private static ArrayList<object_Text>Text = new ArrayList<>();
+    private static ArrayList<Rect>squares = new ArrayList<>();
+    private static ArrayList<ShapeTriangle>tri = new ArrayList<>();
 
     private Point point1;
     private Point point2;
@@ -64,11 +70,14 @@ public class MyCanvas extends View {
         super(c,attributeSet);
         context =c;
 
+        MyCanvas.mMyAppsBundle.putString("is_marked","value");
+
         //Circle
         Circle_Paint = new Paint();
         Circle_Paint.setColor(Color.BLACK);
         Circle_Paint.setStyle(Paint.Style.STROKE);
         Circle_Paint.setStrokeWidth(10f);
+
         //Rect
         rectPaint = new Paint();
         rectPaint .setColor(Color.BLACK);
@@ -113,7 +122,7 @@ public class MyCanvas extends View {
 
             //Add New Rectangle
             if (shape == "Rect") {
-                rects.add(new Rect((int)rectCordx,(int)rectCordy,(int)rectCordx+300,(int)rectCordy+400));
+                Rects.add(new Rect((int)rectCordx,(int)rectCordy,(int)rectCordx+300,(int)rectCordy+400));
                 addShape = false;
 
                 //Add New Circle
@@ -123,7 +132,6 @@ public class MyCanvas extends View {
             }
             else if(shape == "Triangle")
             {
-
                 tri.add(new ShapeTriangle(new Point(rectCordx,rectCordy)));
                 addShape = false;
             }
@@ -137,7 +145,6 @@ public class MyCanvas extends View {
             {
                 Oval.add(new RectF((int)rectCordx,(int)rectCordy,(int)rectCordx+300,(int)rectCordy+400));
                 addShape = false;
-
             }
 
             // Add New Line
@@ -166,40 +173,26 @@ public class MyCanvas extends View {
 
 
             //Traverse through the list of Shapes and draw on canvas if any are in list
-            for(Rect rect : rects)
-            {
+            for(Rect rect : Rects)
+                canvas.drawRect(rect,rectPaint);
 
-                {
-                    canvas.drawRect(rect,rectPaint);
-                }
-            }
 
             //Traverse through the list of circles and draw on canvas if any are in list
             for(ShapeCircle circ : Circles )
-            {
                 canvas.drawCircle(circ.getX(),circ.getY(),circ.getRadius(),circ.getPaint());
 
-            }
-
             for(Rect square: squares)
-            {
                 canvas.drawRect(square,rectPaint);
-            }
+
             for(RectF ovals: Oval)
-            {
                 canvas.drawOval(ovals,rectPaint);
-            }
 
             for(ShapeTriangle triangle : tri)
-            {
-             canvas.drawPath(triangle.getTri_Path(),rectPaint);
-            }
+                canvas.drawPath(triangle.getTri_Path(),rectPaint);
 
             for(ShapeLine line : Lines)
-            {
-
                 canvas.drawLine(line.getPoint(0).getX(),line.getPoint(0).getY(),line.getPoint(1).getX(),line.getPoint(1).getY(),linePaint);
-            }
+
 
             // When only one point is created in order to create a line show user where the line will begin
 
@@ -211,7 +204,7 @@ public class MyCanvas extends View {
         else if(is_Marked && object_Move)
         {
             //Change Rect location
-            for (Rect rect : rects) {
+            for (Rect rect : Rects) {
                 if (rect.contains((int) x_mark, (int) y_mark) && !already_marked) {
                     rect.left = (int)x_move;
                     rect.top = (int)y_move;
@@ -227,12 +220,13 @@ public class MyCanvas extends View {
                 }
             }
 
-            for (Rect square : squares) {
+            for(Rect square : squares)
+            {
                 if (square.contains((int) x_mark, (int) y_mark) && !already_marked) {
                     square.left = (int)x_move;
                     square.top = (int)y_move;
-                    square.bottom = (int)y_move+400;
-                    square.right = (int)x_move+400;
+                    square.bottom = (int)y_move + 400;
+                    square.right = (int)x_move + 400;
                     x_mark  = x_move;
                     y_mark = y_move;
                     canvas.drawRect(square, Marked);
@@ -248,8 +242,8 @@ public class MyCanvas extends View {
                 {
                     ovals.left = (int)x_move;
                     ovals.top = (int)y_move;
-                    ovals.bottom = (int)y_move +400;
-                    ovals.right = (int)x_move+300;
+                    ovals.bottom = (int)y_move + 400;
+                    ovals.right = (int)x_move + 300;
                     x_mark = x_move;
                     x_mark = y_move;
                     canvas.drawOval(ovals,Marked);
@@ -259,7 +253,13 @@ public class MyCanvas extends View {
                     canvas.drawOval(ovals,rectPaint);
                 }
             }
-            //Change Circle location
+
+            /** FIX NEEDED HERE!!!
+             * - I think something might be wrong here, since we have a bug when you place a circle
+             * and then from here on out, if you ever press the screen, it immediately moves the
+             * circle to where you pressed **/
+            // Change Circle location
+            /**
             for (ShapeCircle circ : Circles) {
                 if ((x_mark - circ.getX()*circ.getX() + y_mark - circ.getY()*circ.getY())<(circ.getRadius()*circ.getRadius()) && !already_marked) {
                     already_marked = true;
@@ -272,7 +272,7 @@ public class MyCanvas extends View {
                 else
                 {
                     canvas.drawCircle(circ.getX(), circ.getY(), circ.getRadius(),circ.getPaint());}
-            }
+            } **/
             object_Move = false;
             already_marked = false;
             for(ShapeLine line : Lines)
@@ -283,7 +283,7 @@ public class MyCanvas extends View {
 
         // If user point on object it will be declared as mark.
         else if(is_Marked) {
-            for (Rect rect : rects) {
+            for (Rect rect : Rects) {
                 if (rect.contains((int) x_mark, (int) y_mark) && !already_marked) {
 
                     canvas.drawRect(rect, Marked);
@@ -331,74 +331,93 @@ public class MyCanvas extends View {
         }
         else
         {
-            for (Rect rect : rects) {
-
+            for(Rect rect : Rects)
                 canvas.drawRect(rect, rectPaint);
 
-            }
             for(Rect square : squares)
-            {
                 canvas.drawRect(square,rectPaint);
-            }
-            for (ShapeCircle circ : Circles) {
+
+            for(ShapeCircle circ : Circles)
                 canvas.drawCircle(circ.getX(), circ.getY(), circ.getRadius(),circ.getPaint());
-            }
+
             for(ShapeTriangle triangle: tri)
-            {
                 canvas.drawPath(triangle.getTri_Path(),rectPaint);
-            }
+
             for(RectF ovals:Oval)
-            {
                 canvas.drawOval(ovals,rectPaint);
-            }
 
             for(ShapeLine line : Lines)
-            {
-
                 canvas.drawLine(line.getPoint(0).getX(),line.getPoint(0).getY(),line.getPoint(1).getX(),line.getPoint(1).getY(),rectPaint);
+        }
+    }
+
+    /** Delete objects on canvas
+     * - This is called from "canvasFragment.onOptionsItemSelected()" **/
+    public static void DeleteObject()
+    {
+        // Check all squares for the "marked" one
+        for(Rect square : squares)
+            if(square.contains((int) x_mark, (int) y_mark) ) {
+                square.setEmpty(); // Delete the highlighted square
+                return;
             }
 
-        }
+        // Check all rectangles for the "marked" one
+        for(Rect rect : Rects)
+            if(rect.contains((int) x_mark, (int) y_mark) ) {
+                rect.setEmpty(); // Delete the highlighted rectangle
+                return;
+            }
+
+        // Check all circles for the "marked" one
+        for(ShapeCircle circ : Circles)
+            if((x_mark - circ.getX()*circ.getX() + y_mark - circ.getY()*circ.getY())<(circ.getRadius()*circ.getRadius())) {
+                circ.setColor(0x00000000); // Delete the highlighted circle
+                return;
+            }
 
 
+        /** FIX NEEDED HERE!!!
+         * - Dimensions of oval: oval.getX(), oval.getY(), don't know what to use **/
+        // Check all ovals for the "marked" one
+        /**
+        for(RectF oval : Oval) {
+            if((x_mark - oval.getX()*oval.getX() + y_mark - oval.getY()*oval.getY())<(oval.getRadius()*oval.getRadius())) {
+                oval.setColor(0x00000000);
+            }
+        } **/
+
+        /** FIX NEEDED HERE!!!
+         * - Dimensions of triangle **/
+        // Check all triangles for the "marked" one
+        /**
+        for(ShapeTriangle triangle : Triangles) {
+            if((x_mark - circ.getX()*circ.getX() + y_mark - circ.getY()*circ.getY())<(circ.getRadius()*circ.getRadius())) {
+                circ.setColor(0x00000000);
+            }
+        } **/
+
+        /** FIX NEEDED HERE!!!
+         * - Dimensions of diamond **/
+        // Check all diamonds for the "marked" one
+        /**
+         for(Diamonds diamond : Diamonds) {
+            if((x_mark - circ.getX()*circ.getX() + y_mark - circ.getY()*circ.getY())<(circ.getRadius()*circ.getRadius())) {
+                circ.setColor(0x00000000);
+            }
+         } **/
     }
-
-    private void delete_Object()
-    {
-       if(is_Marked)
-       {
-           for (Rect rect : rects) {
-               int i = 0;
-           if (rect.contains((int) x_mark, (int) y_mark) ) {
-               rects.remove(i);
-               return;
-           }
-               i++;
-
-       }
-           for (ShapeCircle circ : Circles) {
-               int i =0;
-               if((x_mark - circ.getX()*circ.getX() + y_mark - circ.getY()*circ.getY())<(circ.getRadius()*circ.getRadius())) {
-                   Circles.remove(i);
-               }
-               i++;
-           }
-       }
-        invalidate();
-    }
-
 
 
     //add different Objects, text and remove
     public void setText()
     {
         inputText = true;
-
     }
     public void reset()
     {
         squares.clear();
-        rects.clear();
+        Rects.clear();
         Circles.clear();
         Lines.clear();
         tri.clear();
@@ -444,11 +463,10 @@ public class MyCanvas extends View {
         verify_Text = true;
     }
 
-
     public void delete()
     {
         remove_Object = true;
-        delete_Object();
+        DeleteObject();
     }
 
 

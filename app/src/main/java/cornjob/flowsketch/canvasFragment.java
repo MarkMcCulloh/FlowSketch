@@ -48,8 +48,12 @@ public class canvasFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+
         int id = item.getItemId();
 
+
+        if(MyCanvas.is_Marked == true && id == R.id.delete_item)
+            MyCanvas.DeleteObject();
 
         if(id == R.id.fill_action)
             MainActivity.instance.ColorPickerDialog();
@@ -64,7 +68,7 @@ public class canvasFragment extends Fragment {
         }
 
         /* Import image from gallery */
-        if(id == R.id.image_icon)
+        if(id == R.id.image_item)
         {
             Intent i = new Intent(
                     Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);

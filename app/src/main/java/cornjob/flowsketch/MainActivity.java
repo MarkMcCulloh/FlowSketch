@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
         }**/
     }
+
     public void deleteObject(MenuItem v){canvas.delete();}
     public void clearCanvas(MenuItem v){canvas.reset();}
     public void insertRect(MenuItem v){canvas.setAddRect();}
