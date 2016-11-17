@@ -96,11 +96,33 @@ public class MainActivity extends AppCompatActivity {
 
     public void deleteObject(MenuItem v){canvas.delete();}
     public void clearCanvas(MenuItem v){canvas.reset();}
-    public void insertRect(MenuItem v){canvas.setAddRect();}
-    public void insertCircle(MenuItem v){canvas.setAddCircle();}
-    public void insertLine(MenuItem v){canvas.setAddLine();}
-    public void insertSquare(MenuItem v){canvas.setSquare();}
-    public void insertTriangle(MenuItem v){canvas.setTriangle();}
-    public void insertOval(MenuItem v){canvas.setOval();}
+
+    public void insertSquare(MenuItem v) {
+        canvas.addObject(Object.OBJTYPE.SQUARE);
+    }
+
+    public void insertRect(MenuItem v) {
+        canvas.addObject(Object.OBJTYPE.RECTANGLE);
+    }
+
+    public void insertCircle(MenuItem v) {
+        canvas.addObject(Object.OBJTYPE.CIRCLE);
+    }
+
+    public void insertLine(MenuItem v) {
+        canvas.addObject(Object.OBJTYPE.LINE);
+    }
+
+    public void insertTriangle(MenuItem v) {
+        canvas.addObject(Object.OBJTYPE.TRIANGLE);
+    }
+
+    public void insertText(MenuItem v) {
+        canvas.addObject(Object.OBJTYPE.TEXT);
+    }
+
+    public void insertImage(MenuItem v) {
+        canvas.addObject(Object.OBJTYPE.IMAGE);
+    }
 
 }

@@ -39,7 +39,7 @@ public class canvasFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
 
         /** Change 'options' based on whether user is logged in or out **/
-        if(log_in_status == false)
+        if (!log_in_status)
             inflater.inflate(R.menu.menu_main_logged_out, menu); //
         else
             inflater.inflate(R.menu.menu_main_logged_in, menu);
@@ -84,10 +84,6 @@ public class canvasFragment extends Fragment {
             Toast.makeText(getActivity(), "Triangle Clicked", Toast.LENGTH_SHORT).show();
         }else if(id == R.id.rectangle_item){
             Toast.makeText(getActivity(), "Rectangle Clicked", Toast.LENGTH_SHORT).show();
-        }else if(id == R.id.diamond_item){
-            Toast.makeText(getActivity(), "Diamond Clicked", Toast.LENGTH_SHORT).show();
-        }else if(id == R.id.oval_item){
-            Toast.makeText(getActivity(), "Oval Clicked", Toast.LENGTH_SHORT).show();
         }
         //overflow options
         else if(id == R.id.load_canvas_action){

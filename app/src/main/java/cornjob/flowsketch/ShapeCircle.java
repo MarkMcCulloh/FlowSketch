@@ -1,51 +1,62 @@
 package cornjob.flowsketch;
 
+import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Color;
-/**
- * Created by john on 11/14/2016.
- */
 
-public class ShapeCircle {
+public class ShapeCircle extends Object {
 
-    private Paint Circle_Paint;
-    private float radius = 230.0f;
-    private float x;
-    private float y;
-    ShapeCircle(float x, float y){
+    private float circleRadius;
 
-        this.x = x;
-        this.y =y;
+    ShapeCircle(float x, float y, float r) {
+        objOrigin = new Point(x, y);
+        circleRadius = r;
 
-        Circle_Paint = new Paint();
-        Circle_Paint.setColor(Color.BLACK);
-        Circle_Paint.setStyle(Paint.Style.STROKE);
-        Circle_Paint.setStrokeWidth(10f);
+        objPaint = new Paint();
+
+        objPaint = new Paint();
+        objPaint.setColor(Color.BLACK);
+        objPaint.setStyle(Paint.Style.STROKE);
+        objPaint.setStrokeWidth(10f);
     }
-    public float getRadius()
-    {
-        return radius;
+
+    @Override
+    public boolean drawThis(Canvas objCanvas) {
+        objCanvas.drawCircle(objOrigin.getX(), objOrigin.getY(), circleRadius, objPaint);
+        return true;
     }
-    public float getX()
-    {
-        return x;
+
+    @Override
+    public boolean contains(Point test) {
+        if (Point.distance(objOrigin, test) <= circleRadius * MyCanvas.mScaleFactor) {
+            return true;
+        } else {
+            return false;
+        }
     }
-    public float getY()
-    {
-        return y;
+
+    @Override
+    public void translate(float xdis, float ydis) {
+        objOrigin.move(xdis, ydis);
     }
-    public void setX(float x){
-        this.x = x;
+
+    @Override
+    public void rotate(float angle) {
+        //circle lol
     }
-    public void setY(float y){this.y = y;}
-    public Paint getPaint(){return Circle_Paint ;}
-    public float getArea(){
-        return  (float)Math.PI * (radius * radius);
+
+    @Override
+    public void scale(float factor) {
+        circleRadius *= factor;
     }
-    public void setColor(int color){this.Circle_Paint.setColor(color);}
-    public void setRadius(float rad)
-    {
-        this.radius = rad;
+
+
+    public float getCircleRadius() {
+        return circleRadius;
+    }
+
+    public void setCircleRadius(float circleRadius) {
+        this.circleRadius = circleRadius;
     }
 }
 

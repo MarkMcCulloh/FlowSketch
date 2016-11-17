@@ -58,16 +58,6 @@
                 android:titleCondensed=""
                 android:icon="@mipmap/shapes_rectangle_icon"
                 android:onClick="insertRect"/>
-            <item
-                android:id="@+id/oval_item"
-                android:title="Oval"
-                android:titleCondensed=""
-                android:icon="@mipmap/shapes_oval_icon" />
-            <item
-                android:id="@+id/diamond_item"
-                android:title="Diamond"
-                android:titleCondensed=""
-                android:icon="@mipmap/shapes_diamond_icon" />
         </menu>
 
     </item>
