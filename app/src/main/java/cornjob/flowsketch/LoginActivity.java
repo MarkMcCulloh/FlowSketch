@@ -60,6 +60,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText loginInputEmail, loginInputPassword;
     private Button btnlogin;
     private Button btnLinkSignup;
+    SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +71,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         btnlogin = (Button) findViewById(R.id.btn_login);
         btnLinkSignup = (Button) findViewById(R.id.btn_link_signup);
         // Progress dialog
+
+        session = new SessionManager(getApplicationContext());
+
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
 
@@ -91,6 +95,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
     }
 
+    //create log in request
     private void loginUser( final String email, final String password) {
         // Tag used to cancel the request
         String cancel_req_tag = "login";
@@ -113,12 +118,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         String email= jObj.getString("email");
                         // Launch User activity
                         Toast.makeText(getApplicationContext(),
-                                name + " "+ email +" "+ api_key, Toast.LENGTH_LONG).show();
+                               "Welcome " + name + ", you have logged in!", Toast.LENGTH_LONG).show();
 
-                        User user= new User(name,email,api_key);
-
-                        MainActivity.api_key=api_key;
-                        MainActivity.username=name;
+                        session.createLoginSession(name,email,api_key);
                         canvasFragment.log_in_status=true;
 
                         Intent i = new Intent(getApplicationContext(), MainActivity.class);

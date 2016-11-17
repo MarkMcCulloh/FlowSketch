@@ -20,15 +20,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import static android.R.attr.id;
 
 public class MainActivity extends AppCompatActivity {
 
     private MyCanvas canvas;
     public static MainActivity instance; // for "fill" and "stroke"
-    public static String api_key="";
-    public static String username="";
 
+    SessionManager session;
     /* For "fill" and "stroke" */
     public static void setInstance(MainActivity instance) {
         MainActivity.instance = instance;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setInstance(this); // for "fill" and "stroke"
+        session= new SessionManager(getApplicationContext());
 
         //setting toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

@@ -20,6 +20,7 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,12 +29,13 @@ public class LoadActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private static final String TAG = "LoginActivity";
     private static final String URL= "http://flowsketchpi.duckdns.org:8080/sketch_flow/v1/canvas";
-
+    SessionManager session;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_load);
 
+        session= new SessionManager(getApplicationContext());
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
 
@@ -41,7 +43,10 @@ public class LoadActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        loadCanvas(MainActivity.api_key);
+        HashMap<String, String> user = session.getUserDetails();
+
+        String api=user.get(SessionManager.API_KEY);
+        getCanvases(api);
     }
 
     // Check screen orientation or screen rotate event here
@@ -57,7 +62,7 @@ public class LoadActivity extends AppCompatActivity {
          }**/
     }
 
-    private void loadCanvas(final String api_key) {
+    private void getCanvases(final String api_key) {
         // Tag used to cancel the request
         String cancel_req_tag = "load";
         progressDialog.setMessage("Loading...");
@@ -71,9 +76,36 @@ public class LoadActivity extends AppCompatActivity {
                 hideDialog();
                 try {
                     JSONObject jObj = new JSONObject(response);
+
+                    /* Example response
+                    {
+                    "Getting all canvas from user": 2,
+                    "error": false,
+                    "canvas": [
+                      {
+                            "cid": 5,
+                            "name": "231",
+                            "data": "object, circle, color, red, outer, blue, xpos, 213, ypos, 31223, rotate, 0",
+                            "background": "hahahha",
+                            "thumbnail": "hehe",
+                            "createdAt": "2016-10-26 14:03:26"
+                       },
+                       {
+                            "cid": 6,
+                            "name": "312",
+                            "data": "object, circle, color, red, outer, blue, xpos, 213, ypos, 31223, rotate, 0, object, triangle,color, greeb, outer, blue, xpos, 312, ypos, 12223, rotate, 0",
+                            "background": "0",
+                            "thumbnail": "123414512312",
+                            "createdAt": "2016-10-26 14:07:28"
+                       }
+                    ],
+                    }
+                      */
                     boolean error = jObj.getBoolean("error");
 
                     if (!error) {
+
+                        //MainActivity.canvasList= new ArrayList();
 
                         /*Intent intent = new Intent(
                                 LoginActivity.this,
