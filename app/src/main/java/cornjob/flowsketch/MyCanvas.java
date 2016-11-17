@@ -70,7 +70,6 @@ public class MyCanvas extends View {
         super(c,attributeSet);
         context =c;
 
-        MyCanvas.mMyAppsBundle.putString("is_marked","value");
 
         //Circle
         Circle_Paint = new Paint();
@@ -139,7 +138,6 @@ public class MyCanvas extends View {
             {
                 squares.add(new Rect((int)rectCordx,(int)rectCordy,(int)rectCordx+400,(int)rectCordy+400));
                 addShape = false;
-
             }
             else if(shape=="Oval")
             {

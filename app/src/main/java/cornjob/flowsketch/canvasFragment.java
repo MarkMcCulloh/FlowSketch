@@ -19,7 +19,7 @@ import android.widget.Toast;
  */
 public class canvasFragment extends Fragment {
 
-    public static boolean log_in_status = false; // Boolean whether user is logged in or not
+    public static boolean log_in_status = true; // Boolean whether user is logged in or not
                                           // Options menu changes depending on this variable
                                           // NOTE: Change this variable to 'true' when user
                                           // logs in

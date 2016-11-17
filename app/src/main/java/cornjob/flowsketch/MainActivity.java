@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         }**/
     }
 
-    public void deleteObject(MenuItem v){canvas.delete();}
+    public void DeleteObject(MenuItem v){canvas.delete();}
     public void clearCanvas(MenuItem v){canvas.reset();}
     public void insertRect(MenuItem v){canvas.setAddRect();}
     public void insertCircle(MenuItem v){canvas.setAddCircle();}

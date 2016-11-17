@@ -114,7 +114,7 @@
         android:id="@+id/delete_item"
         app:showAsAction="always"
         android:title="Delete"
-        android:onClick="deleteObject">
+        android:onClick="DeleteObject">
 
     </item>
 
