@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import java.io.Console;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
 /**
@@ -46,12 +47,6 @@ public class MyCanvas extends View {
     private EditText editxt;
     private static ArrayList<Object> Objects = new ArrayList<>();
 
-    private Paint linePaint;
-    private Paint Circle_Paint;
-    private Paint rectPaint;
-    private Paint point_Paint;
-    private Paint Marked;
-
     private float mLastTouchX;
     private float mLastTouchY;
     private float mPosX;
@@ -65,8 +60,10 @@ public class MyCanvas extends View {
     public String text;
 
     private Path myPath;
-    private Canvas canvas;
+    public Canvas canvas;
     private Bitmap bitmap;
+    private static final int MAX_CLICK_DURATION = 200;
+    private long startClickTime;
 
     public MyCanvas(Context c, AttributeSet attributeSet )
     {
@@ -78,35 +75,6 @@ public class MyCanvas extends View {
         selectedobj = null;
 
         MyCanvas.mMyAppsBundle.putString("is_marked","value");
-
-        //Circle
-        Circle_Paint = new Paint();
-        Circle_Paint.setColor(Color.BLACK);
-        Circle_Paint.setStyle(Paint.Style.STROKE);
-        Circle_Paint.setStrokeWidth(10f);
-
-        //Rect
-        rectPaint = new Paint();
-        rectPaint .setColor(Color.BLACK);
-        rectPaint.setStyle(Paint.Style.STROKE);
-        rectPaint.setStrokeWidth(10f);
-
-        linePaint = new Paint();
-        linePaint .setColor(Color.BLACK);
-        linePaint.setStyle(Paint.Style.STROKE);
-        linePaint.setStrokeWidth(10f);
-
-        point_Paint =  new Paint();
-        point_Paint.setColor(Color.BLACK);
-        point_Paint.setStyle(Paint.Style.STROKE);
-        point_Paint.setStrokeWidth(30f);
-
-        //Marked
-        Marked = new Paint();
-        Marked.setColor(Color.GREEN);
-        Marked.setStyle(Paint.Style.STROKE);
-        Marked.setStrokeWidth(10f);
-
 
     }
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -122,7 +90,7 @@ public class MyCanvas extends View {
     {
         super.onDraw(canvas);
 
-        //canvas.getClipBounds(rect);
+        this.canvas = canvas;
 
         canvas.save();
         canvas.scale(mScaleFactor, mScaleFactor);
@@ -130,7 +98,7 @@ public class MyCanvas extends View {
 
 
         for (Object obj : Objects) {
-            obj.drawThis(canvas);
+            obj.drawThis();
         }
 
 
@@ -166,7 +134,7 @@ public class MyCanvas extends View {
         nextShape = newobj;
         switch (newobj) {
             case CIRCLE:
-                Objects.add(new ShapeCircle(this.getWidth() / 2, this.getHeight() / 2, 240));
+                Objects.add(new ShapeCircle(this, this.getWidth() / 2, this.getHeight() / 2, 240));
                 break;
             case LINE:
                 //Objects.add(new ShapeLine(this.getWidth() / 2, this.getHeight() / 2, 240));
@@ -175,10 +143,10 @@ public class MyCanvas extends View {
                 //Objects.add(new ShapeTriangle(this.getWidth() / 2, this.getHeight() / 2, 240));
                 break;
             case RECTANGLE:
-                Objects.add(new ShapeRect(this.getWidth() / 4, this.getHeight() / 4, this.getWidth() / 4, this.getHeight() / 4));
+                //Objects.add(new ShapeRect(this.getWidth() / 4, this.getHeight() / 4, this.getWidth() / 4, this.getHeight() / 4));
                 break;
             case SQUARE:
-                Objects.add(new ShapeRect(this.getWidth() / 2, this.getHeight() / 2, this.getWidth() / 4));
+                //Objects.add(new ShapeRect(this.getWidth() / 2, this.getHeight() / 2, this.getWidth() / 4));
                 break;
             case TEXT:
                 //Objects.add(new ObjectText(this.getWidth() / 2, this.getHeight() / 2, 240));
@@ -211,6 +179,7 @@ public class MyCanvas extends View {
 
         switch (action & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN: {
+                startClickTime = Calendar.getInstance().getTimeInMillis();
                 final float x = (ev.getX() - scalePointX) / mScaleFactor;
                 final float y = (ev.getY() - scalePointY) / mScaleFactor;
                 cX = x - mPosX + scalePointX; // canvas X
@@ -218,19 +187,6 @@ public class MyCanvas extends View {
                 mLastTouchX = x;
                 mLastTouchY = y;
 
-                boolean flag = false;
-                for (Object obj : Objects) {
-                    if (obj.contains(new Point(x, y))) {
-                        if (selectedobj != null) selectedobj.objPaint = Circle_Paint;
-                        selectedobj = obj;
-                        obj.objPaint = Marked;
-                        flag = true;
-                    }
-                }
-                if (!flag) {
-                    if (selectedobj != null) selectedobj.objPaint = Circle_Paint;
-                    selectedobj = null;
-                }
                 break;
             }
             case MotionEvent.ACTION_MOVE: {
@@ -259,6 +215,27 @@ public class MyCanvas extends View {
 
             }
             case MotionEvent.ACTION_UP: {
+                long clickDuration = Calendar.getInstance().getTimeInMillis() - startClickTime;
+                if (clickDuration < MAX_CLICK_DURATION) {
+                    //selects object if tapped
+                    //deselected all objects if nothing was tapped
+
+                    boolean flag = false;
+                    for (Object obj : Objects) {
+                        if (obj.contains(new Point(cX, cY))) {
+                            if (selectedobj != null) selectedobj.setSelect(false);
+                            obj.setSelect(true);
+                            selectedobj = obj;
+                            flag = true;
+                        }
+                    }
+                    if (!flag) {
+                        if (selectedobj != null) selectedobj.setSelect(false);
+                        selectedobj = null;
+                    }
+
+                }
+
                 final float x = (ev.getX() - scalePointX) / mScaleFactor;
                 final float y = (ev.getY() - scalePointY) / mScaleFactor;
                 cX = x - mPosX + scalePointX; // canvas X
@@ -275,13 +252,13 @@ public class MyCanvas extends View {
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
             if (selectedobj != null) {
-
+                //scale selected
             } else {
+                //scale canvas
                 mScaleFactor *= detector.getScaleFactor();
                 scalePointX = detector.getFocusX();
                 scalePointY = detector.getFocusY();
             }
-
 
             invalidate();
             return true;

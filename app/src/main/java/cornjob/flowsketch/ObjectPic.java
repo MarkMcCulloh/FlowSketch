@@ -7,8 +7,9 @@ import android.graphics.Canvas;
  */
 
 public class ObjectPic extends Object {
+
     @Override
-    public boolean drawThis(Canvas objCanvas) {
+    public boolean drawThis() {
         return false;
     }
 

@@ -13,29 +13,43 @@ public class ShapeRect extends Object {
         objOrigin = new Point(x, y);
         fullRect = new RectF(x, y, l, w);
 
-        objPaint = new Paint();
+        objPaintRegular = new Paint();
+        objPaintRegular.setColor(Color.BLACK);
+        objPaintRegular.setStyle(Paint.Style.STROKE);
+        objPaintRegular.setStrokeWidth(10f);
 
-        objPaint = new Paint();
-        objPaint.setColor(Color.BLACK);
-        objPaint.setStyle(Paint.Style.STROKE);
-        objPaint.setStrokeWidth(10f);
+        objPaintSelected = new Paint();
+        objPaintSelected.setColor(Color.YELLOW);
+        objPaintSelected.setStyle(Paint.Style.STROKE);
+        objPaintSelected.setStrokeWidth(10f);
+
+        objPaintCurrent = objPaintRegular;
+
+        //objCanvas = mainCanvas;
     }
 
     ShapeRect(float x, float y, float s) {
         objOrigin = new Point(x, y);
         fullRect = new RectF(x, y, x + s, y + s);
 
-        objPaint = new Paint();
+        objPaintRegular = new Paint();
+        objPaintRegular.setColor(Color.BLACK);
+        objPaintRegular.setStyle(Paint.Style.STROKE);
+        objPaintRegular.setStrokeWidth(10f);
 
-        objPaint = new Paint();
-        objPaint.setColor(Color.BLACK);
-        objPaint.setStyle(Paint.Style.STROKE);
-        objPaint.setStrokeWidth(10f);
+        objPaintSelected = new Paint();
+        objPaintSelected.setColor(Color.YELLOW);
+        objPaintSelected.setStyle(Paint.Style.STROKE);
+        objPaintSelected.setStrokeWidth(10f);
+
+        objPaintCurrent = objPaintRegular;
+
+        //objCanvas = mainCanvas;
     }
 
     @Override
-    public boolean drawThis(Canvas objCanvas) {
-        objCanvas.drawRect(fullRect, objPaint);
+    public boolean drawThis() {
+        objCanvas.canvas.drawRect(fullRect, objPaintCurrent);
         return true;
     }
 

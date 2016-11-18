@@ -8,21 +8,32 @@ public class ShapeCircle extends Object {
 
     private float circleRadius;
 
-    ShapeCircle(float x, float y, float r) {
+    ShapeCircle(MyCanvas mainCanvas, float x, float y, float r) {
         objOrigin = new Point(x, y);
         circleRadius = r;
 
-        objPaint = new Paint();
+        objType = OBJTYPE.CIRCLE;
 
-        objPaint = new Paint();
-        objPaint.setColor(Color.BLACK);
-        objPaint.setStyle(Paint.Style.STROKE);
-        objPaint.setStrokeWidth(10f);
+        objPaintRegular = new Paint();
+        objPaintRegular.setColor(Color.BLACK);
+        objPaintRegular.setStyle(Paint.Style.STROKE);
+        objPaintRegular.setStrokeWidth(10f);
+
+        objPaintCurrent = objPaintRegular;
+
+        objPaintSelected = new Paint();
+        objPaintSelected.setColor(Color.YELLOW);
+        objPaintSelected.setStyle(Paint.Style.STROKE);
+        objPaintSelected.setStrokeWidth(10f);
+
+        objCanvas = mainCanvas;
+
+
     }
 
     @Override
-    public boolean drawThis(Canvas objCanvas) {
-        objCanvas.drawCircle(objOrigin.getX(), objOrigin.getY(), circleRadius, objPaint);
+    public boolean drawThis() {
+        objCanvas.canvas.drawCircle(objOrigin.getX(), objOrigin.getY(), circleRadius, objPaintCurrent);
         return true;
     }
 

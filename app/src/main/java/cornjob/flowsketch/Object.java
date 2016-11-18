@@ -12,15 +12,30 @@ public abstract class Object {
         TEXT, IMAGE
     }
 
+    public MyCanvas objCanvas;
     public Point objOrigin;
-    public Paint objPaint;
+    public Paint objPaintCurrent, objPaintSelected, objPaintRegular;
     public float objScale, objRotate, objTranslate;
 
     public OBJTYPE objType;
     public boolean objSelect;
 
+
+    public boolean setSelect(boolean flag) {
+        boolean last = objSelect;
+        objSelect = flag;
+        if (flag) {
+            objPaintCurrent = objPaintSelected;
+        } else {
+            objPaintCurrent = objPaintRegular;
+        }
+        return last;
+    }
+
     //abstract methods
-    public abstract boolean drawThis(Canvas objCanvas);
+
+    //draws to canvas
+    public abstract boolean drawThis();
 
     public abstract boolean contains(Point test);
 
