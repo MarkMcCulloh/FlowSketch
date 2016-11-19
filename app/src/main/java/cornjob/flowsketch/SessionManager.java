@@ -4,18 +4,31 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
  * Created by Nguyen on 11/17/2016.
+ * This class uses SharedPreferences class to share the data within the app
+ * The data will still remain after the app restarts
+ * The class is called in AppSingleton to make sure there is only one instance at a time
+ * To call use:
+ *            AppSingleton.getInstance(getApplicationContext()).getmSession().[some method];
+ * In case it is called inside a fragment:
+ *  *         AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().[some method];
+
+
  */
 public class SessionManager {
     SharedPreferences pref;
+    private static SessionManager sInstance = null;
 
     SharedPreferences.Editor editor;
     Context _context;
-
     int PRIVATE_MODE = 0;
 
     private static final String PREF_NAME = "CornJobPref";
@@ -23,7 +36,10 @@ public class SessionManager {
     public static final String API_KEY="api";
     private static final String IS_LOGIN="login";
     public static final String USERNAME="user name";
-    public static final ArrayList<CanvasData> canvasList = new ArrayList();
+
+    private ArrayList<CanvasData> listwriter;
+    public static final String MY_LIST = "my_list";
+    private static final Type LIST_TYPE = new TypeToken<CanvasData>() {}.getType();
 
     public SessionManager(Context context){
         this._context = context;
@@ -50,6 +66,42 @@ public class SessionManager {
         editor.commit();
     }
 
+    /**
+     * Set canvasData array as shared ref.
+     * @param listwriter
+     */
+    public void setCanvasList(ArrayList<CanvasData> listwriter) {
+        this.listwriter = new ArrayList<>(listwriter);
+
+        Gson gson= new Gson();
+        editor.putString(MY_LIST, gson.toJson(listwriter));
+        editor.commit();
+    }
+
+    /**
+     * get the CanvasData array
+     * @return
+     */
+    public ArrayList<CanvasData> getCanvasList() {
+        if (listwriter == null) {
+            listwriter = new Gson().fromJson(pref.getString(MY_LIST, null), LIST_TYPE);
+            if(listwriter == null){
+                listwriter = new ArrayList<>();
+           }
+        }
+        return listwriter;
+    }
+
+    /**
+     * remove 1 element in the array
+     * @param data
+     */
+    public void removeCanvas(CanvasData data) {
+        if (listwriter != null) {
+            listwriter.remove(data);
+            setCanvasList(listwriter);
+        }
+    }
     /**
      * Check login method wil check user login status
      * If false it will redirect user to login page
@@ -94,6 +146,7 @@ public class SessionManager {
      * */
     public void createLogout(){
         // Clearing all data from Shared Preferences
+        listwriter=null;
         editor.clear();
         editor.commit();
 
@@ -115,5 +168,12 @@ public class SessionManager {
     // Get Login State
     public boolean isLoggedIn(){
         return pref.getBoolean(IS_LOGIN, false);
+    }
+
+    /*
+        Check if the data has already loaded
+     */
+    public boolean isLoaded(){
+        return listwriter!=null;
     }
 }

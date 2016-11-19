@@ -1,9 +1,12 @@
 package cornjob.flowsketch;
 
+import java.io.Serializable;
+
 /**
  * Created by Nguyen on 11/16/2016.
+ * Data to get out of a row in canvas table
  */
-public class CanvasData {
+public class CanvasData implements Serializable{
     private int cid;
     private String canvasName;
     private String data;
@@ -54,5 +57,10 @@ public class CanvasData {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+
+    public String toString(){
+        return  "Title: " + canvasName + "\nDate: " + date ;
     }
 }

@@ -23,7 +23,7 @@ public class canvasFragment extends Fragment {
                                           // Options menu changes depending on this variable
                                           // NOTE: Change this variable to 'true' when user
                                           // logs in
-    SessionManager session;
+   // SessionManager session;
     public canvasFragment() {
         // Required empty public constructor
     }
@@ -32,7 +32,7 @@ public class canvasFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        session= new SessionManager(getActivity().getApplicationContext());
+        //session= new SessionManager(getActivity().getApplicationContext());
     }
 
     @Override
@@ -42,7 +42,7 @@ public class canvasFragment extends Fragment {
         /** Change 'options' based on whether user is logged in or out **/
 
 
-        if(!session.isLoggedIn())
+        if(!AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().isLoggedIn())
             inflater.inflate(R.menu.menu_main_logged_out, menu); //
         else
             inflater.inflate(R.menu.menu_main_logged_in, menu);
@@ -68,7 +68,7 @@ public class canvasFragment extends Fragment {
 
         if(id ==R.id.log_out_action)
         {
-            session.createLogout();
+            AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().createLogout();
             Toast.makeText(getActivity(),"You have logged out!", Toast.LENGTH_SHORT).show();
         }
         /* Import image from gallery */
