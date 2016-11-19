@@ -33,7 +33,7 @@ public class MyCanvas extends View {
     public static boolean is_Marked, remove_Object, inputText, verify_Text = false;
     private Object selectedobj;
     private ScaleGestureDetector mScaleDetector;
-    public static float mScaleFactor = 1.f;
+    public static float mScaleFactor = 5.f;
     private int mActivePointerId;
 
     private EditText editxt;
@@ -59,11 +59,6 @@ public class MyCanvas extends View {
     {
         super(c,attributeSet);
         context = c;
-
-        cX = 0;
-        cY = 0;
-        mPosX = 0;
-        mPosY = 0;
 
         mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
 
@@ -101,7 +96,7 @@ public class MyCanvas extends View {
         canvas.drawLine(0, -1000, 0, 1000, basicPaint);
         canvas.drawLine(-1000, 0, 1000, 0, basicPaint);
 
-        canvas.drawCircle(cX, cY, 50, basicPaint);
+        canvas.drawCircle(cX, cY, 10, basicPaint);
 
         for (Object obj : Objects) {
             obj.drawThis();
@@ -136,7 +131,7 @@ public class MyCanvas extends View {
         nextShape = newobj;
         switch (newobj) {
             case CIRCLE:
-                Objects.add(new ShapeCircle(this, this.cX, this.cY, 200));
+                Objects.add(new ShapeCircle(this, this.cX, this.cY, 100));
                 break;
             case LINE:
                 //Objects.add(new ShapeLine(this.getWidth() / 2, this.getHeight() / 2, 240));
@@ -174,6 +169,7 @@ public class MyCanvas extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+        mScaleDetector.setQuickScaleEnabled(true);
         // Let the ScaleGestureDetector inspect all events.
         mScaleDetector.onTouchEvent(ev);
         final int action = ev.getAction();
