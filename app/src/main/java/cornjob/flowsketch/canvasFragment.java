@@ -1,6 +1,5 @@
 package cornjob.flowsketch;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,7 +17,7 @@ import android.widget.Toast;
  * A simple {@link Fragment} subclass.
  */
 public class canvasFragment extends Fragment {
-
+    public static String LOG_TAG = canvasFragment.class.getSimpleName();
     public static boolean log_in_status = false; // Boolean whether user is logged in or not
                                           // Options menu changes depending on this variable
                                           // NOTE: Change this variable to 'true' when user
@@ -86,6 +85,11 @@ public class canvasFragment extends Fragment {
             Toast.makeText(getActivity(), "Rectangle Clicked", Toast.LENGTH_SHORT).show();
         }
         //overflow options
+        else if(id == R.id.save_canvas_action){
+
+            //display popup dialog
+            new SaveDialogFragment().show(getFragmentManager(),LOG_TAG);
+        }
         else if(id == R.id.load_canvas_action){
             Intent intent = new Intent(getActivity(), LoadActivity.class);
             startActivity(intent);
