@@ -16,6 +16,11 @@
     <string name="action_sign_up_short">Sign up</string>
     <string name="register">Register</string>
 
+    <!--Dialog Strings-->
+    <string name="save_dialog">Save</string>
+    <string name="cancel_dialog">Cancel</string>
+    <string name="save_canvas_dialog">Save Canvas</string>
+    <string name="enter_canvas_name">Canvas Name</string>
 
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
@@ -24,5 +29,6 @@
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">Contacts permissions are needed for providing email completions</string>
     <string name="resources">This field is required</string>
+
 
 </resources>

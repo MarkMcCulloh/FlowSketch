@@ -1,50 +1,76 @@
 package cornjob.flowsketch;
 
-import android.graphics.Color;
+import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Color;
+import android.graphics.RectF;
 
-/**
- * Created by john on 11/14/2016.
- */
-public class ShapeRect {
-    private float x = 300;
-    private float y = 400;
-    private int Height;
-    private int Width;
-    private boolean marked;
-    private Paint rectPaint;
-    public ShapeRect(float x, float y)
-    {
-        this.x = x;
-        this.y =y;
-        rectPaint = new Paint();
-        rectPaint .setColor(Color.BLACK);
-        rectPaint.setStyle(Paint.Style.STROKE);
-        rectPaint.setStrokeWidth(10f);
-    }
-    public Paint getPaint(){return this.rectPaint;}
-    public void setPaintcolor(int color){this.rectPaint.setColor(color);}
-    public void setTopx(float x)
-    {
-        this.x = x;
-    }
-    public int getTopx()
-    {
-        return (int)x;
-    }
-    public void setTopy(float y) {this.y =y;}
-    public int getTopy()
-    {
-        return (int)y;
-    }
-    public int getRight() {return (int)x+Width;}
-    public int getBottom() {return (int)y+Width;}
-    public void setHeight(int height) {this.Height = height;}
-    public void setWidth(int Width)
-    {
-        this.Width = Width;
-    }
-    public void setMarked(boolean marked){this.marked = marked;}
-    public boolean getMarked(){return marked;}
+public class ShapeRect extends Object {
 
+    private RectF fullRect;
+
+    ShapeRect(MyCanvas mainCanvas, float x, float y, float l, float w) {
+        super(mainCanvas, x, y, OBJTYPE.RECTANGLE);
+
+        fullRect = new RectF(x, y, l, w);
+
+        objPaintRegular = new Paint();
+        objPaintRegular.setColor(Color.BLACK);
+        objPaintRegular.setStyle(Paint.Style.STROKE);
+        objPaintRegular.setStrokeWidth(10f);
+
+        objPaintSelected = new Paint();
+        objPaintSelected.setColor(Color.YELLOW);
+        objPaintSelected.setStyle(Paint.Style.STROKE);
+        objPaintSelected.setStrokeWidth(10f);
+
+        objPaintCurrent = objPaintRegular;
+    }
+
+    ShapeRect(MyCanvas mainCanvas, float x, float y, float s) {
+        super(mainCanvas, x, y, OBJTYPE.SQUARE);
+
+        fullRect = new RectF(x, y, x + s, y + s);
+
+        objPaintRegular = new Paint();
+        objPaintRegular.setColor(Color.BLACK);
+        objPaintRegular.setStyle(Paint.Style.STROKE);
+        objPaintRegular.setStrokeWidth(10f);
+
+        objPaintSelected = new Paint();
+        objPaintSelected.setColor(Color.YELLOW);
+        objPaintSelected.setStyle(Paint.Style.STROKE);
+        objPaintSelected.setStrokeWidth(10f);
+
+        objPaintCurrent = objPaintRegular;
+    }
+
+    @Override
+    public boolean drawThis() {
+        objCanvas.canvas.drawRect(fullRect, objPaintCurrent);
+        return true;
+    }
+
+    @Override
+    public boolean contains(Point test) {
+        return fullRect.contains(test.getX(), test.getY());
+
+    }
+
+    @Override
+    public void translate(float xdis, float ydis) {
+        objOrigin.move(xdis, ydis);
+        fullRect.offset(xdis, ydis);
+    }
+
+    @Override
+    public void rotate(float angle) {
+
+    }
+
+    @Override
+    public void scale(float factor) {
+
+    }
 }
+

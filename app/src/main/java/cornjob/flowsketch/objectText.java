@@ -3,12 +3,12 @@ package cornjob.flowsketch;
 /**
  * Created by john on 11/15/2016.
  */
-public class object_Text {
+public class ObjectText {
     private String text;
     private float startx;
     private float starty;
 
-    public object_Text(float x, float y)
+    public ObjectText(float x, float y)
     {
         startx = x;
         starty =y;

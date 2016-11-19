@@ -10,37 +10,41 @@ package cornjob.flowsketch;
 public class Point{
     private float x ;
     private float y ;
-    private  int i = 0;
+    private int i = 0;
 
     Point(float x,float y)
     {
         this.x = x;
-        this.y =y;
-
+        this.y = y;
     }
-    public float getX()
+
+    float getX()
     {
         return this.x;
     }
-    public void setindex(int i)
-    {
-        this.i = i;
-    }
-    public int get_Index()
-    {
-        return this.i;
-    }
-    public void setX(float x)
+
+    void setX(float x)
     {
         this.x = x;
     }
-    public float getY()
+
+    float getY()
     {
         return this.y;
     }
-    public void setY(float y)
+
+    void setY(float y)
     {
         this.y = y;
+    }
+
+    void move(float xdis, float ydis) {
+        this.x += xdis;
+        this.y += ydis;
+    }
+
+    static float distance(Point p1, Point p2) {
+        return (float) Math.sqrt(Math.pow((p2.getX() - p1.getX()), 2) + Math.pow((p2.getY() - p1.getY()), 2));
     }
 }
 

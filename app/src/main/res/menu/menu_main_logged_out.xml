@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
+<menu xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -39,8 +39,8 @@
             <item
                 android:id="@+id/square_item"
                 android:title="Square"
-                android:titleCondensed=""
-                android:icon="@mipmap/shapes_square_icon" />
+                android:icon="@mipmap/shapes_square_icon"
+                android:onClick="insertSquare" />
             <item
                 android:id="@+id/circle_item"
                 android:title="Circle"
@@ -58,16 +58,6 @@
                 android:titleCondensed=""
                 android:icon="@mipmap/shapes_rectangle_icon"
                 android:onClick="insertRect"/>
-            <item
-                android:id="@+id/oval_item"
-                android:title="Oval"
-                android:titleCondensed=""
-                android:icon="@mipmap/shapes_oval_icon" />
-            <item
-                android:id="@+id/diamond_item"
-                android:title="Diamond"
-                android:titleCondensed=""
-                android:icon="@mipmap/shapes_diamond_icon" />
         </menu>
 
     </item>
