@@ -1,6 +1,5 @@
 package cornjob.flowsketch;
 
-import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Color;
 
@@ -9,26 +8,21 @@ public class ShapeCircle extends Object {
     private float circleRadius;
 
     ShapeCircle(MyCanvas mainCanvas, float x, float y, float r) {
+        super(mainCanvas, x, y, OBJTYPE.CIRCLE);
         objOrigin = new Point(x, y);
         circleRadius = r;
-
-        objType = OBJTYPE.CIRCLE;
 
         objPaintRegular = new Paint();
         objPaintRegular.setColor(Color.BLACK);
         objPaintRegular.setStyle(Paint.Style.STROKE);
         objPaintRegular.setStrokeWidth(10f);
 
-        objPaintCurrent = objPaintRegular;
-
         objPaintSelected = new Paint();
         objPaintSelected.setColor(Color.YELLOW);
         objPaintSelected.setStyle(Paint.Style.STROKE);
         objPaintSelected.setStrokeWidth(10f);
 
-        objCanvas = mainCanvas;
-
-
+        objPaintCurrent = objPaintRegular;
     }
 
     @Override
@@ -39,11 +33,7 @@ public class ShapeCircle extends Object {
 
     @Override
     public boolean contains(Point test) {
-        if (Point.distance(objOrigin, test) <= circleRadius * MyCanvas.mScaleFactor) {
-            return true;
-        } else {
-            return false;
-        }
+        return Point.distance(objOrigin, test) <= circleRadius;
     }
 
     @Override
