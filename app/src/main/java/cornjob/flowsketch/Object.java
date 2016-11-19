@@ -7,6 +7,7 @@ import android.graphics.*;
  */
 
 public abstract class Object {
+
     public enum OBJTYPE {
         CIRCLE, LINE, TRIANGLE, RECTANGLE, SQUARE,
         TEXT, IMAGE
@@ -19,6 +20,12 @@ public abstract class Object {
 
     public OBJTYPE objType;
     public boolean objSelect;
+
+    Object(MyCanvas mainCanvas, float x, float y, OBJTYPE type) {
+        objCanvas = mainCanvas;
+        objOrigin = new Point(x, y);
+        objType = type;
+    }
 
 
     public boolean setSelect(boolean flag) {

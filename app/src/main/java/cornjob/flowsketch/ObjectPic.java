@@ -8,6 +8,10 @@ import android.graphics.Canvas;
 
 public class ObjectPic extends Object {
 
+    ObjectPic(MyCanvas mainCanvas, float x, float y, OBJTYPE type) {
+        super(mainCanvas, x, y, type);
+    }
+
     @Override
     public boolean drawThis() {
         return false;

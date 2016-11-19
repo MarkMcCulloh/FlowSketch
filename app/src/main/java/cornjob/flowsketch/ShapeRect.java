@@ -9,8 +9,9 @@ public class ShapeRect extends Object {
 
     private RectF fullRect;
 
-    ShapeRect(float x, float y, float l, float w) {
-        objOrigin = new Point(x, y);
+    ShapeRect(MyCanvas mainCanvas, float x, float y, float l, float w) {
+        super(mainCanvas, x, y, OBJTYPE.RECTANGLE);
+
         fullRect = new RectF(x, y, l, w);
 
         objPaintRegular = new Paint();
@@ -24,12 +25,11 @@ public class ShapeRect extends Object {
         objPaintSelected.setStrokeWidth(10f);
 
         objPaintCurrent = objPaintRegular;
-
-        //objCanvas = mainCanvas;
     }
 
-    ShapeRect(float x, float y, float s) {
-        objOrigin = new Point(x, y);
+    ShapeRect(MyCanvas mainCanvas, float x, float y, float s) {
+        super(mainCanvas, x, y, OBJTYPE.SQUARE);
+
         fullRect = new RectF(x, y, x + s, y + s);
 
         objPaintRegular = new Paint();
@@ -43,8 +43,6 @@ public class ShapeRect extends Object {
         objPaintSelected.setStrokeWidth(10f);
 
         objPaintCurrent = objPaintRegular;
-
-        //objCanvas = mainCanvas;
     }
 
     @Override
@@ -55,12 +53,14 @@ public class ShapeRect extends Object {
 
     @Override
     public boolean contains(Point test) {
-        return false;
+        return fullRect.contains(test.getX(), test.getY());
+
     }
 
     @Override
     public void translate(float xdis, float ydis) {
         objOrigin.move(xdis, ydis);
+        fullRect.offset(xdis, ydis);
     }
 
     @Override
