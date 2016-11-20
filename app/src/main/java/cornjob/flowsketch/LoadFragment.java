@@ -4,6 +4,9 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +37,9 @@ import java.util.Map;
  */
 public class LoadFragment extends Fragment {
 
+    private RecyclerView recyclerView;
+    private CanvasDataAdapter adapter;
+    private ArrayList<CanvasData> canvaslist;
     private ProgressDialog progressDialog;
     private static final String TAG = "LoadingActivity";
     private static final String URL= "http://flowsketchpi.duckdns.org:8080/sketch_flow/v1/canvas";
@@ -49,7 +55,11 @@ public class LoadFragment extends Fragment {
 
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCancelable(false);
+        recyclerView=  (RecyclerView) rootview.findViewById(R.id.recycler_view);
 
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
         session= new SessionManager(getActivity().getApplicationContext());
@@ -59,8 +69,6 @@ public class LoadFragment extends Fragment {
         String api=user.get(SessionManager.API_KEY);
         getCanvases(api,rootview);
         //}
-
-
 
 
         return rootview;
@@ -108,26 +116,18 @@ public class LoadFragment extends Fragment {
                         canvaslis=AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().getCanvasList();
                         Log.i("ArrayTest", Arrays.toString(canvaslis.toArray()));
 
+                        canvaslist=AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().getCanvasList();
+                        adapter = new CanvasDataAdapter(getActivity(), canvaslist);
+
+                        recyclerView.setAdapter(adapter);
 
 
                         /*
                         Populate listview
                          */
-                        ArrayAdapter<CanvasData> canvasDataArrayAdapter = new ArrayAdapter<CanvasData>(getActivity(), R.layout.list_item_canvas,R.id.list_item_canvas_textview, canvaslis);
+                        //ArrayAdapter<CanvasData> canvasDataArrayAdapter = new ArrayAdapter<CanvasData>(getActivity(), R.layout.list_item_canvas,R.id.list_item_canvas_textview, canvaslis);
 
-                        ListView listView = (ListView) rootview.findViewById(R.id.listview_load);
-                        listView.setAdapter(canvasDataArrayAdapter);
 
-                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-                        {
-                            // argument position gives the index of item which is clicked
-                            public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3)
-                            {
-
-                                int id=canvaslis.get(position).getCid();
-                                Toast.makeText(getActivity().getApplicationContext(), "ID is : "+id,   Toast.LENGTH_LONG).show();
-                            }
-                        });
                     } else {
 
                         String errorMsg = jObj.getString("message");
