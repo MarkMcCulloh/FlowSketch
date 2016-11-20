@@ -201,8 +201,10 @@ public class MyCanvas extends View {
         //mClickCoords[0] is the canvas x coordinate and
         //mClickCoords[1] is the y coordinate.
 
-        final float x = (ev.getX() - scalePointX) / mScaleFactor;
-        final float y = (ev.getY() - scalePointY) / mScaleFactor;
+        //final float x = (ev.getX() - scalePointX) / mScaleFactor;
+        //final float y = (ev.getY() - scalePointY) / mScaleFactor;
+        final float x = (ev.getX()) / mScaleFactor;
+        final float y = (ev.getY()) / mScaleFactor;
         cX = mClickCoords[0];
         cY = mClickCoords[1];
 
