@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
+<menu xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -38,22 +38,26 @@
         <menu>
             <item
                 android:id="@+id/square_item"
-                android:title="Square"/>
+                android:title="Square"
+                android:icon="@mipmap/shapes_square_icon"
+                android:onClick="insertSquare" />
             <item
                 android:id="@+id/circle_item"
-                android:title="Circle"/>
+                android:title="Circle"
+                android:titleCondensed=""
+                android:icon="@mipmap/shapes_circle_icon"
+                android:onClick="insertCircle"/>
             <item
                 android:id="@+id/triangle_item"
-                android:title="Triangle"/>
+                android:title="Triangle"
+                android:titleCondensed=""
+                android:icon="@mipmap/shapes_triangle_icon" />
             <item
                 android:id="@+id/rectangle_item"
-                android:title="Rectangle"/>
-            <item
-                android:id="@+id/diamond_item"
-                android:title="Diamond"/>
-            <item
-                android:id="@+id/oval_item"
-                android:title="Oval"/>
+                android:title="Rectangle"
+                android:titleCondensed=""
+                android:icon="@mipmap/shapes_rectangle_icon"
+                android:onClick="insertRect"/>
         </menu>
 
     </item>
@@ -62,6 +66,7 @@
     <!--Lines-->
     <item
         android:icon="@drawable/line_icon"
+        android:id="@+id/lines_item"
         app:showAsAction="always"
         android:title="Lines">
 
@@ -72,7 +77,8 @@
     <item
         android:icon="@drawable/text_icon"
         app:showAsAction="always"
-        android:title="Text">
+        android:title="Text"
+        android:onClick="insertText">
 
     </item>
 
@@ -81,7 +87,8 @@
     <item
         android:icon="@drawable/image_icon"
         app:showAsAction="always"
-        android:title="Image">
+        android:title="Image"
+        android:onClick="loadImagefromGallery">
 
     </item>
 
@@ -98,7 +105,8 @@
     <item
         android:id="@+id/new_canvas_action"
         app:showAsAction="never"
-        android:title="New"/>
+        android:title="New"
+        android:onClick="clearCanvas"/>
 
 
     <!--Login-->

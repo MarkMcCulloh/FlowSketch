@@ -1,6 +1,5 @@
 package cornjob.flowsketch;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,8 +17,8 @@ import android.widget.Toast;
  * A simple {@link Fragment} subclass.
  */
 public class canvasFragment extends Fragment {
-
-    public boolean log_in_status = true; // Boolean whether user is logged in or not
+    public static String LOG_TAG = canvasFragment.class.getSimpleName();
+    public static boolean log_in_status = false; // Boolean whether user is logged in or not
                                           // Options menu changes depending on this variable
                                           // NOTE: Change this variable to 'true' when user
                                           // logs in
@@ -31,9 +30,6 @@ public class canvasFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
         setHasOptionsMenu(true);
     }
 
@@ -42,7 +38,7 @@ public class canvasFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
 
         /** Change 'options' based on whether user is logged in or out **/
-        if(log_in_status == false)
+        if (!log_in_status)
             inflater.inflate(R.menu.menu_main_logged_out, menu); //
         else
             inflater.inflate(R.menu.menu_main_logged_in, menu);
@@ -52,19 +48,31 @@ public class canvasFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
 
 
-
         int id = item.getItemId();
+
+
+        if(MyCanvas.is_Marked == true && id == R.id.delete_item)
+            MyCanvas.DeleteObject();
 
         if(id == R.id.fill_action)
             MainActivity.instance.ColorPickerDialog();
         if(id == R.id.stroke_action)
             MainActivity.instance.ColorPickerDialog();
 
-        /** Go to login activity **/
+        /* Go to login activity */
         if(id == R.id.login_action)
         {
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             startActivity(intent);
+        }
+
+        /* Import image from gallery */
+        if(id == R.id.image_item)
+        {
+            Intent i = new Intent(
+                    Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+            startActivityForResult(i, 0);
         }
 
         if(id == R.id.square_item){
@@ -75,12 +83,13 @@ public class canvasFragment extends Fragment {
             Toast.makeText(getActivity(), "Triangle Clicked", Toast.LENGTH_SHORT).show();
         }else if(id == R.id.rectangle_item){
             Toast.makeText(getActivity(), "Rectangle Clicked", Toast.LENGTH_SHORT).show();
-        }else if(id == R.id.diamond_item){
-            Toast.makeText(getActivity(), "Diamond Clicked", Toast.LENGTH_SHORT).show();
-        }else if(id == R.id.oval_item){
-            Toast.makeText(getActivity(), "Oval Clicked", Toast.LENGTH_SHORT).show();
         }
         //overflow options
+        else if(id == R.id.save_canvas_action){
+
+            //display popup dialog
+            new SaveDialogFragment().show(getFragmentManager(),LOG_TAG);
+        }
         else if(id == R.id.load_canvas_action){
             Intent intent = new Intent(getActivity(), LoadActivity.class);
             startActivity(intent);
