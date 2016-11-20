@@ -77,7 +77,8 @@
     <item
         android:icon="@drawable/text_icon"
         app:showAsAction="always"
-        android:title="Text">
+        android:title="Text"
+        android:onClick="insertText">
 
     </item>
 
@@ -86,7 +87,8 @@
     <item
         android:icon="@drawable/image_icon"
         app:showAsAction="always"
-        android:title="Image">
+        android:title="Image"
+        android:onClick="loadImagefromGallery">
 
     </item>
 
@@ -103,7 +105,8 @@
     <item
         android:id="@+id/new_canvas_action"
         app:showAsAction="never"
-        android:title="New"/>
+        android:title="New"
+        android:onClick="clearCanvas"/>
 
 
     <!--Login-->

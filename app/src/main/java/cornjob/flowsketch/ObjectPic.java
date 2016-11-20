@@ -14,6 +14,11 @@ public class ObjectPic extends Object {
 
     @Override
     public boolean drawThis() {
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 1bdbfbe0fc1673853ff00e62eb300e6928b7376a
         return false;
     }
 
@@ -36,4 +41,12 @@ public class ObjectPic extends Object {
     public void scale(float factor) {
 
     }
+<<<<<<< HEAD
+=======
+
+    @Override
+    public void setColor(int color) {
+
+    }
+>>>>>>> 1bdbfbe0fc1673853ff00e62eb300e6928b7376a
 }

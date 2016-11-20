@@ -13,6 +13,7 @@ public class ShapeRect extends Object {
         super(mainCanvas, x, y, OBJTYPE.RECTANGLE);
 
         fullRect = new RectF(x, y, l, w);
+<<<<<<< HEAD
 
         objPaintRegular = new Paint();
         objPaintRegular.setColor(Color.BLACK);
@@ -24,6 +25,19 @@ public class ShapeRect extends Object {
         objPaintSelected.setStyle(Paint.Style.STROKE);
         objPaintSelected.setStrokeWidth(10f);
 
+=======
+
+        objPaintRegular = new Paint();
+        objPaintRegular.setColor(Color.BLACK);
+        objPaintRegular.setStyle(Paint.Style.STROKE);
+        objPaintRegular.setStrokeWidth(10f);
+
+        objPaintSelected = new Paint();
+        objPaintSelected.setColor(Color.YELLOW);
+        objPaintSelected.setStyle(Paint.Style.STROKE);
+        objPaintSelected.setStrokeWidth(10f);
+
+>>>>>>> 1bdbfbe0fc1673853ff00e62eb300e6928b7376a
         objPaintCurrent = objPaintRegular;
     }
 
@@ -44,6 +58,7 @@ public class ShapeRect extends Object {
 
         objPaintCurrent = objPaintRegular;
     }
+<<<<<<< HEAD
 
     @Override
     public boolean drawThis() {
@@ -64,6 +79,28 @@ public class ShapeRect extends Object {
     }
 
     @Override
+=======
+
+    @Override
+    public boolean drawThis() {
+        objCanvas.canvas.drawRect(fullRect, objPaintCurrent);
+        return true;
+    }
+
+    @Override
+    public boolean contains(Point test) {
+        return fullRect.contains(test.getX(), test.getY());
+
+    }
+
+    @Override
+    public void translate(float xdis, float ydis) {
+        objOrigin.move(xdis, ydis);
+        fullRect.offset(xdis, ydis);
+    }
+
+    @Override
+>>>>>>> 1bdbfbe0fc1673853ff00e62eb300e6928b7376a
     public void rotate(float angle) {
 
     }
@@ -72,5 +109,11 @@ public class ShapeRect extends Object {
     public void scale(float factor) {
 
     }
+<<<<<<< HEAD
+=======
+    public void setColor(int color){
+        objPaintRegular.setColor(color);
+    }
+>>>>>>> 1bdbfbe0fc1673853ff00e62eb300e6928b7376a
 }
 

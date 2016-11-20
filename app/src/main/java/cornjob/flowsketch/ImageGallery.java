@@ -24,6 +24,10 @@ public class ImageGallery extends Activity {
     }
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1bdbfbe0fc1673853ff00e62eb300e6928b7376a
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

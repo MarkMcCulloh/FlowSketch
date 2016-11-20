@@ -23,4 +23,12 @@ public class ObjectText {
     {
         return this.text;
     }
+    public float getX()
+    {
+        return  this.startx;
+    }
+    public float getY()
+    {
+        return this.starty;
+    }
 }

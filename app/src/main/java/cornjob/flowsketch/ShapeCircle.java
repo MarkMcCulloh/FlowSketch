@@ -58,6 +58,12 @@ public class ShapeCircle extends Object {
 
     public void setCircleRadius(float circleRadius) {
         this.circleRadius = circleRadius;
+<<<<<<< HEAD
+=======
+    }
+    public void setColor(int color){
+        objPaintRegular.setColor(color);
+>>>>>>> 1bdbfbe0fc1673853ff00e62eb300e6928b7376a
     }
 }
 

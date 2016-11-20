@@ -1,23 +1,44 @@
 package cornjob.flowsketch;
 
+<<<<<<< HEAD
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
+=======
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
+>>>>>>> 1bdbfbe0fc1673853ff00e62eb300e6928b7376a
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.MenuItem;
+<<<<<<< HEAD
+=======
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
+>>>>>>> 1bdbfbe0fc1673853ff00e62eb300e6928b7376a
 
 public class MainActivity extends AppCompatActivity {
 
     private MyCanvas canvas;
+    private static String text ="";
+    private Point pt;
+    private static boolean addText;
     public static MainActivity instance; // for "fill" and "stroke"
     public static String api_key="";
     public static String username="";
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1bdbfbe0fc1673853ff00e62eb300e6928b7376a
     /* For "fill" and "stroke" */
     public static void setInstance(MainActivity instance) {
         MainActivity.instance = instance;
@@ -46,12 +67,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onColorSelected(int color)
             {
-                //colorAction.setBackgroundTintList(ColorStateList.valueOf(color));
+                canvas.setColor(color);//colorAction.setBackgroundTintList(ColorStateList.valueOf(color));
             }
         });
         colorPickerDialog.show();
     }
 
+<<<<<<< HEAD
+=======
+    public void loadImagefromGallery(MenuItem view) {
+        // Create intent to Open Image applications like Gallery, Google Photos
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        // Start the Intent
+        startActivityForResult(galleryIntent, RESULT_OK);
+    }
+>>>>>>> 1bdbfbe0fc1673853ff00e62eb300e6928b7376a
     /* Grab image from phone gallery */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -64,7 +95,18 @@ public class MainActivity extends AppCompatActivity {
             Cursor cursor = getContentResolver().query(selectedImage,
                     filePathColumn, null, null, null);
             cursor.moveToFirst();
+<<<<<<< HEAD
 
+=======
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            ImageView imageView = (ImageView) findViewById(R.id.imgView);
+            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+>>>>>>> 1bdbfbe0fc1673853ff00e62eb300e6928b7376a
             cursor.close();
 
             // String picturePath contains the path of selected Image
@@ -83,6 +125,28 @@ public class MainActivity extends AppCompatActivity {
         }**/
     }
 
+<<<<<<< HEAD
+=======
+
+    public void insertText(MenuItem v){
+        text="";
+        addText = true;
+        ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        pt = new Point(0,0);
+
+    }
+    public boolean onKeyDown(int keycode,KeyEvent e)
+    {
+        text += (char)e.getUnicodeChar();
+        if(text != null) {
+            canvas.setText(text,pt);
+            canvas.addObject(Object.OBJTYPE.TEXT);
+        }
+        return super.onKeyDown(keycode,e);
+    }
+
+
+>>>>>>> 1bdbfbe0fc1673853ff00e62eb300e6928b7376a
     public void deleteObject(MenuItem v){canvas.delete();}
     public void clearCanvas(MenuItem v){canvas.reset();}
 
@@ -106,10 +170,13 @@ public class MainActivity extends AppCompatActivity {
         canvas.addObject(Object.OBJTYPE.TRIANGLE);
     }
 
+<<<<<<< HEAD
     public void insertText(MenuItem v) {
         canvas.addObject(Object.OBJTYPE.TEXT);
     }
 
+=======
+>>>>>>> 1bdbfbe0fc1673853ff00e62eb300e6928b7376a
     public void insertImage(MenuItem v) {
         canvas.addObject(Object.OBJTYPE.IMAGE);
     }
