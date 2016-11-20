@@ -15,6 +15,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import static cornjob.flowsketch.SaveDialogFragment.LOG_TAG;
+
 /**
  * Created by Nguyen on 11/20/2016.
  */
@@ -23,6 +25,7 @@ public class CanvasDataAdapter extends RecyclerView.Adapter<CanvasDataAdapter.My
 
     private Context mContext;
     private List<CanvasData> canvasList;
+    private static int current_cid;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, date;
@@ -52,11 +55,12 @@ public class CanvasDataAdapter extends RecyclerView.Adapter<CanvasDataAdapter.My
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         CanvasData canvas = canvasList.get(position);
         holder.title.setText(canvas.getCanvasName());
         holder.date.setText(canvas.getDate());
 
+        //current_cid= canvas.getCid();
         // loading album cover using Glide library
        // Glide.with(mContext).load(album.getThumbnail()).into(holder.thumbnail);
 
@@ -92,12 +96,14 @@ public class CanvasDataAdapter extends RecyclerView.Adapter<CanvasDataAdapter.My
         public boolean onMenuItemClick(MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.edit_canvas:
-                    Toast.makeText(mContext, "Edit", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Edit of canvas" , Toast.LENGTH_SHORT).show();
                     return true;
                 case R.id.edit_name:
+                    onEditName();
                     Toast.makeText(mContext, "Edit Name", Toast.LENGTH_SHORT).show();
                     return true;
                 case R.id.delete_canvas:
+                    onDeleteCanvas();
                     Toast.makeText(mContext, "Delete", Toast.LENGTH_SHORT).show();
                     return true;
                 default:
@@ -109,5 +115,16 @@ public class CanvasDataAdapter extends RecyclerView.Adapter<CanvasDataAdapter.My
     @Override
     public int getItemCount() {
         return canvasList.size();
+    }
+
+    public void onEdit(){
+
+    }
+
+    public void onEditName(){
+    }
+
+    public void onDeleteCanvas(){
+
     }
 }

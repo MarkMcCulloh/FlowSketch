@@ -79,77 +79,82 @@ public class LoadFragment extends Fragment {
         String cancel_req_tag = "load";
         progressDialog.setMessage("Loading...");
         showDialog();
-        StringRequest strReq = new StringRequest(Request.Method.GET,
-                URL, new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Request.Method.GET, URL,
+                new Response.Listener<String>()
+                {
 
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, "Load Response: " + response);
-                hideDialog();
-                try {
-                    JSONObject jObj = new JSONObject(response);
-                    boolean error = jObj.getBoolean("error");
+                    @Override
+                    public void onResponse(String response)
+                    {
+                        Log.d(TAG, "Load Response: " + response);
+                        hideDialog();
+                        try
+                        {
+                            JSONObject jObj = new JSONObject(response);
+                            boolean error = jObj.getBoolean("error");
 
 
-                    if (!error) {
+                            if (!error)
+                            {
 
-                        ArrayList<CanvasData> canvaslist= new ArrayList<>();
+                                ArrayList<CanvasData> canvaslist= new ArrayList<>();
 
-                        JSONArray canvas = jObj.getJSONArray("canvas");
-                        CanvasData temp;
-                        String name, data,date;
-                        int cid;
-                        for (int i=0; i<canvas.length(); i++){
-                            JSONObject item=  canvas.getJSONObject(i);
-                            cid=item.getInt("cid");
-                            name=item.getString("name");
-                            data=item.getString("data");
-                            date=item.getString("createdAt");
-                            temp= new CanvasData(cid,name,data,date);
-                            canvaslist.add(temp);
+                                JSONArray canvas = jObj.getJSONArray("canvas");
+                                CanvasData temp;
+                                String name, data,date;
+                                int cid;
+                                for (int i=0; i<canvas.length(); i++)
+                                {
+                                    JSONObject item=  canvas.getJSONObject(i);
+                                    cid=item.getInt("cid");
+                                    name=item.getString("name");
+                                    data=item.getString("data");
+                                    date=item.getString("createdAt");
+                                    temp= new CanvasData(cid,name,data,date);
+                                    canvaslist.add(temp);
+                                }
+
+                                Log.i("Array", Arrays.toString(canvaslist.toArray()));
+                                AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().setCanvasList(canvaslist);
+
+                                final ArrayList<CanvasData> canvaslis;
+                                canvaslis=AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().getCanvasList();
+                                Log.i("ArrayTest", Arrays.toString(canvaslis.toArray()));
+
+                                canvaslist=AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().getCanvasList();
+                                adapter = new CanvasDataAdapter(getActivity(), canvaslist);
+
+                                recyclerView.setAdapter(adapter);
+
+                            }
+                            else
+                            {
+
+                                String errorMsg = jObj.getString("message");
+                                Toast.makeText(getActivity().getApplicationContext(),
+                                        errorMsg, Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
 
-                        Log.i("Array", Arrays.toString(canvaslist.toArray()));
-                        AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().setCanvasList(canvaslist);
-
-                        final ArrayList<CanvasData> canvaslis;
-                        canvaslis=AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().getCanvasList();
-                        Log.i("ArrayTest", Arrays.toString(canvaslis.toArray()));
-
-                        canvaslist=AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().getCanvasList();
-                        adapter = new CanvasDataAdapter(getActivity(), canvaslist);
-
-                        recyclerView.setAdapter(adapter);
-
-
-                        /*
-                        Populate listview
-                         */
-                        //ArrayAdapter<CanvasData> canvasDataArrayAdapter = new ArrayAdapter<CanvasData>(getActivity(), R.layout.list_item_canvas,R.id.list_item_canvas_textview, canvaslis);
-
-
-                    } else {
-
-                        String errorMsg = jObj.getString("message");
-                        Toast.makeText(getActivity().getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error)
+                    {
+                        Log.e(TAG, "Loading Error: " + error.getMessage());
+                        Toast.makeText(getActivity().getApplicationContext(),
+                                error.getMessage(), Toast.LENGTH_LONG).show();
+                        hideDialog();
+                    }
+                })
+        {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Loading Error: " + error.getMessage());
-                Toast.makeText(getActivity().getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
-                hideDialog();
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() throws AuthFailureError
+            {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("authorization",api_key);
                 return headers;

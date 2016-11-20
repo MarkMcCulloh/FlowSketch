@@ -32,6 +32,6 @@
 
     <string name="delete_canvas">Delete</string>
     <string name="edit_canvas">Edit</string>
-    <string name="edit_canvas_name">Change name</string>
+    <string name="edit_canvas_name">Edit title</string>
 
 </resources>
