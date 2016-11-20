@@ -1,35 +1,24 @@
+
 package cornjob.flowsketch;
 
-import android.content.ClipData;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-
-import static android.R.attr.id;
 
 public class MainActivity extends AppCompatActivity {
 
     private MyCanvas canvas;
     public static MainActivity instance; // for "fill" and "stroke"
+    public static String api_key="";
+    public static String username="";
 
-    SessionManager session;
     /* For "fill" and "stroke" */
     public static void setInstance(MainActivity instance) {
         MainActivity.instance = instance;
@@ -41,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setInstance(this); // for "fill" and "stroke"
-        session= new SessionManager(getApplicationContext());
 
         //setting toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -88,20 +76,43 @@ public class MainActivity extends AppCompatActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         /**
-        // Checks the orientation of the screen for landscape and portrait
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-            Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
-        }**/
+         // Checks the orientation of the screen for landscape and portrait
+         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+         Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+         Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+         }**/
     }
+
     public void deleteObject(MenuItem v){canvas.delete();}
     public void clearCanvas(MenuItem v){canvas.reset();}
-    public void insertRect(MenuItem v){canvas.setAddRect();}
-    public void insertCircle(MenuItem v){canvas.setAddCircle();}
-    public void insertLine(MenuItem v){canvas.setAddLine();}
-    public void insertSquare(MenuItem v){canvas.setSquare();}
-    public void insertTriangle(MenuItem v){canvas.setTriangle();}
-    public void insertOval(MenuItem v){canvas.setOval();}
+
+    public void insertSquare(MenuItem v) {
+        canvas.addObject(Object.OBJTYPE.SQUARE);
+    }
+
+    public void insertRect(MenuItem v) {
+        canvas.addObject(Object.OBJTYPE.RECTANGLE);
+    }
+
+    public void insertCircle(MenuItem v) {
+        canvas.addObject(Object.OBJTYPE.CIRCLE);
+    }
+
+    public void insertLine(MenuItem v) {
+        canvas.addObject(Object.OBJTYPE.LINE);
+    }
+
+    public void insertTriangle(MenuItem v) {
+        canvas.addObject(Object.OBJTYPE.TRIANGLE);
+    }
+
+    public void insertText(MenuItem v) {
+        canvas.addObject(Object.OBJTYPE.TEXT);
+    }
+
+    public void insertImage(MenuItem v) {
+        canvas.addObject(Object.OBJTYPE.IMAGE);
+    }
 
 }

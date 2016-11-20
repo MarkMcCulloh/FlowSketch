@@ -103,8 +103,7 @@
     <item
         android:id="@+id/new_canvas_action"
         app:showAsAction="never"
-        android:title="New"
-        android:onClick="clearCanvas"/>
+        android:title="New"/>
 
 
     <!--Login-->

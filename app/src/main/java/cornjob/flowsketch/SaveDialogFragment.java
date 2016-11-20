@@ -48,6 +48,8 @@ public class SaveDialogFragment extends DialogFragment {
         //get inflater from activity
         final LayoutInflater inflater = getActivity().getLayoutInflater();
 
+        HashMap<String,String> user=AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().getUserDetails();
+        final String apiKey=user.get(SessionManager.API_KEY);
         //inflate custom view to dialog
         builder.setView(inflater.inflate(R.layout.fragment_save_dialog, null))
                 .setTitle(R.string.save_canvas_dialog)
@@ -58,7 +60,7 @@ public class SaveDialogFragment extends DialogFragment {
                         //get text from EditText
                         EditText editText = (EditText) getDialog().findViewById(R.id.edit_canvas_name);
                         String canvasName = editText.getText().toString();
-                        postRequest(canvasName);
+                        postRequest(canvasName,apiKey);
                         Toast.makeText(getActivity(),canvasName, Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -86,7 +88,7 @@ public class SaveDialogFragment extends DialogFragment {
     }
 
 
-    public void postRequest(final String canvasName){
+    public void postRequest(final String canvasName, final String apiKey){
         Toast.makeText(getActivity(), "Save Canvas", Toast.LENGTH_SHORT).show();
 
 
@@ -122,7 +124,7 @@ public class SaveDialogFragment extends DialogFragment {
 
                 //insert headers here
                 //headers.put("authorization","06014f0c3c064fbe020009519300df31");
-                headers.put("authorization",LoginActivity.user.getApi_key());
+                headers.put("authorization",apiKey);
                 headers.put("Content-Type", "application/x-www-form-urlencoded");
                 return headers;
             }

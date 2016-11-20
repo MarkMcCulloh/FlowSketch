@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import static cornjob.flowsketch.SaveDialogFragment.LOG_TAG;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,7 +74,7 @@ public class canvasFragment extends Fragment {
             Toast.makeText(getActivity(),"You have logged out!", Toast.LENGTH_SHORT).show();
         }
         /* Import image from gallery */
-        if(id == R.id.image_icon)
+        if(id == R.id.image_item)
         {
             Intent i = new Intent(
                     Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -88,12 +90,13 @@ public class canvasFragment extends Fragment {
             Toast.makeText(getActivity(), "Triangle Clicked", Toast.LENGTH_SHORT).show();
         }else if(id == R.id.rectangle_item){
             Toast.makeText(getActivity(), "Rectangle Clicked", Toast.LENGTH_SHORT).show();
-        }else if(id == R.id.diamond_item){
-            Toast.makeText(getActivity(), "Diamond Clicked", Toast.LENGTH_SHORT).show();
-        }else if(id == R.id.oval_item){
-            Toast.makeText(getActivity(), "Oval Clicked", Toast.LENGTH_SHORT).show();
         }
         //overflow options
+        else if(id == R.id.save_canvas_action){
+
+            //display popup dialog
+            new SaveDialogFragment().show(getFragmentManager(),LOG_TAG);
+        }
         else if(id == R.id.load_canvas_action){
             Intent intent = new Intent(getActivity(), LoadActivity.class);
             startActivity(intent);

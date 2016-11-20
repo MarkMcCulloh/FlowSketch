@@ -131,7 +131,5 @@
     <item
         android:id="@+id/log_out_action"
         app:showAsAction="never"
-        android:title="Logout"/>
-
-
+        android:title="Load"/>
 </menu>
