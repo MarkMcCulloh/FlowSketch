@@ -137,7 +137,7 @@ public class MyCanvas extends View {
                 //Objects.add(new ShapeLine(this.getWidth() / 2, this.getHeight() / 2, 240));
                 break;
             case TRIANGLE:
-                //Objects.add(new ShapeTriangle(this.getWidth() / 2, this.getHeight() / 2, 240));
+                Objects.add(new ShapeTriangle(this, this.cX, this.cY, this.cX + 100, this.cY + 100));
                 break;
             case RECTANGLE:
                 Objects.add(new ShapeRect(this, this.cX, this.cY, this.cX + 100, this.cY + 100));
@@ -222,8 +222,8 @@ public class MyCanvas extends View {
                     if (selectedobj != null) {
                         selectedobj.translate(dx, dy);
                     } else {
-                        mPosX += dx * 0.9;
-                        mPosY += dy * 0.9;
+                        mPosX += dx;
+                        mPosY += dy;
                     }
                     invalidate();
                 }

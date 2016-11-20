@@ -51,7 +51,8 @@
                 android:id="@+id/triangle_item"
                 android:title="Triangle"
                 android:titleCondensed=""
-                android:icon="@mipmap/shapes_triangle_icon" />
+                android:icon="@mipmap/shapes_triangle_icon"
+                android:onClick="insertTriangle" />
             <item
                 android:id="@+id/rectangle_item"
                 android:title="Rectangle"
