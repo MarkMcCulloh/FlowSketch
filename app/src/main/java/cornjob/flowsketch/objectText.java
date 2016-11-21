@@ -3,12 +3,12 @@ package cornjob.flowsketch;
 /**
  * Created by john on 11/15/2016.
  */
-public class ObjectText extends Object {
+public class objectText extends Object {
     private String text = new String();
     private float startx;
     private float starty;
 
-    public ObjectText(MyCanvas maincanvas,float x, float y,OBJTYPE text)
+    public objectText(MyCanvas maincanvas,float x, float y,OBJTYPE text)
     {
         super(maincanvas,x,y,text);
         startx = x;
@@ -33,4 +33,35 @@ public class ObjectText extends Object {
     public  void rotate(float angle){}
 
     public  void scale(float factor){}
+
+    @Override
+    public int getColor() {
+        return objPaintRegular.getColor();
+    }
+
+    //please fix all these
+    @Override
+    public float getXPos() {
+        return 0;
+    }
+
+    @Override
+    public float getYPos() {
+        return 0;
+    }
+
+    @Override
+    public float getLength() {
+        return 0;
+    }
+
+    @Override
+    public float getWidth() {
+        return 0;
+    }
+
+    @Override
+    public float getRadius() {
+        return 0;
+    }
 }

@@ -1,8 +1,7 @@
 package cornjob.flowsketch;
 
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.RectF;
 
 public class ShapeRect extends Object {
@@ -71,6 +70,36 @@ public class ShapeRect extends Object {
     @Override
     public void scale(float factor) {
 
+    }
+
+    @Override
+    public int getColor() {
+        return  objPaintRegular.getColor();
+    }
+
+    @Override
+    public float getXPos() {
+        return fullRect.centerX();
+    }
+
+    @Override
+    public float getYPos() {
+        return fullRect.centerY();
+    }
+
+    @Override
+    public float getLength() {
+        return fullRect.height();
+    }
+
+    @Override
+    public float getWidth() {
+        return fullRect.width();
+    }
+
+    @Override
+    public float getRadius() {
+        return -1.0f;
     }
 }
 
