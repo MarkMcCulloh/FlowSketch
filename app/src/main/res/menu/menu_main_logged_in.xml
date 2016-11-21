@@ -119,7 +119,7 @@
     <item
         android:id="@+id/save_canvas_action"
         app:showAsAction="never"
-        android:title="Save"/>
+        android:title="Save" />
 
 
     <!--Load-->

@@ -1,7 +1,5 @@
 package cornjob.flowsketch;
 
-import android.graphics.Canvas;
-
 /**
  * Created by MarkM on 11/17/2016.
  */
@@ -35,5 +33,35 @@ public class ObjectPic extends Object {
     @Override
     public void scale(float factor) {
 
+    }
+
+    @Override
+    public int getColor() {
+        return -1;
+    }
+
+    @Override
+    public float getXPos() {
+        return 0;
+    }
+
+    @Override
+    public float getYPos() {
+        return 0;
+    }
+
+    @Override
+    public float getLength() {
+        return 0;
+    }
+
+    @Override
+    public float getWidth() {
+        return 0;
+    }
+
+    @Override
+    public float getRadius() {
+        return 0;
     }
 }

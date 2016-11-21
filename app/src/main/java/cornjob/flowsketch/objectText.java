@@ -33,4 +33,35 @@ public class objectText extends Object {
     public  void rotate(float angle){}
 
     public  void scale(float factor){}
+
+    @Override
+    public int getColor() {
+        return objPaintRegular.getColor();
+    }
+
+    //please fix all these
+    @Override
+    public float getXPos() {
+        return 0;
+    }
+
+    @Override
+    public float getYPos() {
+        return 0;
+    }
+
+    @Override
+    public float getLength() {
+        return 0;
+    }
+
+    @Override
+    public float getWidth() {
+        return 0;
+    }
+
+    @Override
+    public float getRadius() {
+        return 0;
+    }
 }

@@ -10,7 +10,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -74,6 +73,24 @@ public class MyCanvas extends View {
         basicPaint.setStrokeWidth(10f);
 
     }
+
+    public static void objectToString(){
+
+        for(Object obj: Objects)
+        {
+            if(obj instanceof ShapeRect){
+                CanvasData.data += "[" + obj.objType + ",";
+                CanvasData.data += obj.getXPos() + ",";
+                CanvasData.data += obj.getYPos() + ",";
+                CanvasData.data += obj.getLength() + ",";
+                CanvasData.data += obj.getWidth() + ",";
+                CanvasData.data += obj.getRadius() + ",";
+                CanvasData.data += obj.getColor() +"]";
+            }
+        }
+
+    }
+
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 
         super.onSizeChanged(w, h, oldw, oldh);

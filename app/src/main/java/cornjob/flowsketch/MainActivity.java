@@ -14,6 +14,7 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
+    public final String LOG_TAG = MainActivity.class.getSimpleName();
     private MyCanvas canvas;
     public static MainActivity instance; // for "fill" and "stroke"
     public static String api_key="";

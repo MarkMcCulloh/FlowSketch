@@ -77,4 +77,34 @@ public class ShapeTriangle extends Object {
         triHeight *= factor;
         triWidth *= factor;
     }
+
+    @Override
+    public int getColor() {
+        return objPaintRegular.getColor();
+    }
+
+    @Override
+    public float getXPos() {
+        return objOrigin.getX();
+    }
+
+    @Override
+    public float getYPos() {
+        return objOrigin.getY();
+    }
+
+    @Override
+    public float getLength() {
+        return triWidth;
+    }
+
+    @Override
+    public float getWidth() {
+        return triHeight;
+    }
+
+    @Override
+    public float getRadius() {
+        return -1.0f;
+    }
 }
