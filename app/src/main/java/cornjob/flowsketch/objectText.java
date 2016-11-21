@@ -3,12 +3,12 @@ package cornjob.flowsketch;
 /**
  * Created by john on 11/15/2016.
  */
-public class ObjectText extends Object {
+public class objectText extends Object {
     private String text = new String();
     private float startx;
     private float starty;
 
-    public ObjectText(MyCanvas maincanvas,float x, float y,OBJTYPE text)
+    public objectText(MyCanvas maincanvas,float x, float y,OBJTYPE text)
     {
         super(maincanvas,x,y,text);
         startx = x;
