@@ -22,7 +22,7 @@ public class ObjectPic extends Object {
     @Override
     public boolean drawThis() {
 
-objCanvas.canvas.drawBitmap(b,x,y,null);
+    objCanvas.canvas.drawBitmap(b,x,y,null);
 
         return true;
     }
