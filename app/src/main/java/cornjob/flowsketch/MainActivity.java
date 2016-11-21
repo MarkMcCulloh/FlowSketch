@@ -1,14 +1,19 @@
 package cornjob.flowsketch;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -19,12 +24,17 @@ import android.widget.ImageView;
 public class MainActivity extends AppCompatActivity {
 
     private MyCanvas canvas;
-    private static String text ="";
+    public static String text ="";
     private Point pt;
     private static boolean addText;
     public static MainActivity instance; // for "fill" and "stroke"
     public static String api_key="";
     public static String username="";
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
 
     /* For "fill" and "stroke" */
@@ -61,13 +71,6 @@ public class MainActivity extends AppCompatActivity {
         colorPickerDialog.show();
     }
 
-    public void loadImagefromGallery(MenuItem view) {
-        // Create intent to Open Image applications like Gallery, Google Photos
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        // Start the Intent
-        startActivityForResult(galleryIntent, RESULT_OK);
-    }
     /* Grab image from phone gallery */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -80,14 +83,16 @@ public class MainActivity extends AppCompatActivity {
             Cursor cursor = getContentResolver().query(selectedImage,
                     filePathColumn, null, null, null);
             cursor.moveToFirst();
-            cursor.moveToFirst();
 
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
-            ImageView imageView = (ImageView) findViewById(R.id.imgView);
-            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+            Bitmap b;
+            verifyStoragePermissions(this);
+            b = BitmapFactory.decodeFile(picturePath);
+            canvas.setBitmap(b);
+            canvas.addObject(Object.OBJTYPE.IMAGE);
             cursor.close();
 
             // String picturePath contains the path of selected Image
@@ -109,10 +114,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void insertText(MenuItem v){
         text="";
-        addText = true;
         ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
         pt = new Point(0,0);
-
     }
     public boolean onKeyDown(int keycode,KeyEvent e)
     {
@@ -121,7 +124,23 @@ public class MainActivity extends AppCompatActivity {
             canvas.setText(text,pt);
             canvas.addObject(Object.OBJTYPE.TEXT);
         }
+
         return super.onKeyDown(keycode,e);
+    }
+
+    public static void verifyStoragePermissions(Activity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int permission1 = ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED && permission1!= PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
     }
 
 
@@ -148,8 +167,7 @@ public class MainActivity extends AppCompatActivity {
         canvas.addObject(Object.OBJTYPE.TRIANGLE);
     }
 
-    public void insertImage(MenuItem v) {
-        canvas.addObject(Object.OBJTYPE.IMAGE);
+    public void insertImage(MenuItem v) {canvas.addObject(Object.OBJTYPE.IMAGE);
     }
 
 }

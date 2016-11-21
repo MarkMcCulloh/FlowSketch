@@ -21,18 +21,7 @@ public class objectText extends Object {
         objPaintRegular.setStyle(Paint.Style.FILL);
         objPaintRegular.setTextSize(20);
         this.text =text;
-
-
-    }
-    public void setText(String text)
-    {
-        this.text = text;
-
-    }
-    public String getText()
-    {
-        return this.text;
-    }
+            }
     public  boolean drawThis(){
         objCanvas.canvas.drawText(text,startx,starty,objPaintRegular);
         return true;
