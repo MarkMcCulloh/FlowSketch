@@ -30,5 +30,8 @@
     <string name="permission_rationale">Contacts permissions are needed for providing email completions</string>
     <string name="resources">This field is required</string>
 
+    <string name="delete_canvas">Delete</string>
+    <string name="edit_canvas">Edit</string>
+    <string name="edit_canvas_name">Edit title</string>
 
 </resources>

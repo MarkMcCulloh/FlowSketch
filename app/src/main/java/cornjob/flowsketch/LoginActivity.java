@@ -1,16 +1,37 @@
 package cornjob.flowsketch;
 
-import android.app.LoaderManager.LoaderCallbacks;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.app.LoaderManager.LoaderCallbacks;
+
+import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
+import android.os.AsyncTask;
+
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.provider.ContactsContract;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -21,8 +42,12 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
@@ -35,7 +60,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText loginInputEmail, loginInputPassword;
     private Button btnlogin;
     private Button btnLinkSignup;
-    public static User user;
+    //SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +71,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         btnlogin = (Button) findViewById(R.id.btn_login);
         btnLinkSignup = (Button) findViewById(R.id.btn_link_signup);
         // Progress dialog
+
+        //session = new SessionManager(getApplicationContext());
+
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
 
@@ -67,6 +95,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
     }
 
+    //create log in request
     private void loginUser( final String email, final String password) {
         // Tag used to cancel the request
         String cancel_req_tag = "login";
@@ -89,16 +118,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         String email= jObj.getString("email");
                         // Launch User activity
                         Toast.makeText(getApplicationContext(),
-                                name + " "+ email +" "+ api_key, Toast.LENGTH_LONG).show();
+                               "Welcome " + name + ", you have logged in!", Toast.LENGTH_LONG).show();
 
-                        user= new User(name,email,api_key);
-
-                        MainActivity.api_key=api_key;
-                        MainActivity.username=name;
+                        AppSingleton.getInstance(getApplicationContext()).getmSession().createLoginSession(name,email,api_key);
+                        //session.createLoginSession(name,email,api_key);
                         canvasFragment.log_in_status=true;
 
                         Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(i);
+                        finish();
                        /* Intent intent = new Intent(
                                 LoginActivity.this,
                                 UserActivity.class);

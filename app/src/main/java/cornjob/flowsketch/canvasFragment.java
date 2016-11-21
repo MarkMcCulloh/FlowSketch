@@ -1,5 +1,6 @@
 package cornjob.flowsketch;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,17 +13,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import static cornjob.flowsketch.SaveDialogFragment.LOG_TAG;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class canvasFragment extends Fragment {
-    public static String LOG_TAG = canvasFragment.class.getSimpleName();
+
     public static boolean log_in_status = false; // Boolean whether user is logged in or not
                                           // Options menu changes depending on this variable
                                           // NOTE: Change this variable to 'true' when user
                                           // logs in
-
+   // SessionManager session;
     public canvasFragment() {
         // Required empty public constructor
     }
@@ -31,6 +34,7 @@ public class canvasFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        //session= new SessionManager(getActivity().getApplicationContext());
     }
 
     @Override
@@ -38,7 +42,9 @@ public class canvasFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
 
         /** Change 'options' based on whether user is logged in or out **/
-        if (!log_in_status)
+
+
+        if(!AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().isLoggedIn())
             inflater.inflate(R.menu.menu_main_logged_out, menu); //
         else
             inflater.inflate(R.menu.menu_main_logged_in, menu);
@@ -47,12 +53,8 @@ public class canvasFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-
         int id = item.getItemId();
 
-
-        if(MyCanvas.is_Marked == true && id == R.id.delete_item)
-            MyCanvas.DeleteObject();
 
         if(id == R.id.fill_action)
             MainActivity.instance.ColorPickerDialog();
@@ -66,6 +68,11 @@ public class canvasFragment extends Fragment {
             startActivity(intent);
         }
 
+        if(id ==R.id.log_out_action)
+        {
+            AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().createLogout();
+            Toast.makeText(getActivity(),"You have logged out!", Toast.LENGTH_SHORT).show();
+        }
         /* Import image from gallery */
         if(id == R.id.image_item)
         {
