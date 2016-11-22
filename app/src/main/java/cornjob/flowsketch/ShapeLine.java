@@ -70,6 +70,11 @@ public class ShapeLine extends Object {
     }
 
     @Override
+    public String getFilePath() {
+        return null;
+    }
+
+    @Override
     public boolean drawThis() {
         float deltaX = endPoint.getX() - objOrigin.getX();
         float deltaY = endPoint.getY() - objOrigin.getY();
