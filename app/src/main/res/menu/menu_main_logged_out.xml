@@ -130,7 +130,8 @@
     <item
         android:icon="@drawable/trash_icon"
         app:showAsAction="always"
-        android:title="Delete">
+        android:title="Delete"
+        android:onClick="deleteObject">
 
     </item>
 

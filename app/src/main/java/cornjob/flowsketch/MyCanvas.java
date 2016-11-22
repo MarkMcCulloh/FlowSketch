@@ -133,13 +133,6 @@ public class MyCanvas extends View {
         canvas.restore();
     }
 
-    /** Delete objects on canvas
-     * - This is called from "canvasFragment.onOptionsItemSelected()" **/
-    public static void DeleteObject()
-    {
-        remove_Object = true;
-    }
-
     public void reset()
     {
         Objects.clear();
@@ -169,10 +162,12 @@ public class MyCanvas extends View {
 
         }
     }
+
     public void delete()
     {
-        remove_Object = true;
-        DeleteObject();
+        Objects.remove(selectedobj);
+        selectedobj = null;
+        invalidate();
     }
 
     public void addObject(Object.OBJTYPE newobj) {
