@@ -77,4 +77,9 @@ public class ShapeTriangle extends Object {
         triHeight *= factor;
         triWidth *= factor;
     }
+
+    @Override
+    public void setColor(int color) {
+        objPaintRegular.setColor(color);
+    }
 }
