@@ -26,6 +26,36 @@ public class ShapeCircle extends Object {
     }
 
     @Override
+    public int getColor() {
+        return 0;
+    }
+
+    @Override
+    public float getXPos() {
+        return 0;
+    }
+
+    @Override
+    public float getYPos() {
+        return 0;
+    }
+
+    @Override
+    public float getLength() {
+        return 0;
+    }
+
+    @Override
+    public float getWidth() {
+        return 0;
+    }
+
+    @Override
+    public float getRadius() {
+        return 0;
+    }
+
+    @Override
     public boolean drawThis() {
         objCanvas.canvas.drawCircle(objOrigin.getX(), objOrigin.getY(), circleRadius, objPaintCurrent);
         return true;

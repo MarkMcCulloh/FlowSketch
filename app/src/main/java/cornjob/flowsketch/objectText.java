@@ -22,6 +22,12 @@ public class objectText extends Object {
         objPaintRegular.setTextSize(20);
         this.text =text;
             }
+
+    @Override
+    public float getRadius() {
+        return 0;
+    }
+
     public  boolean drawThis(){
         objCanvas.canvas.drawText(text,startx,starty,objPaintRegular);
         return true;
@@ -39,4 +45,28 @@ public class objectText extends Object {
 
     public void setColor(int color){}
 
+    @Override
+    public int getColor() {
+        return 0;
+    }
+
+    @Override
+    public float getXPos() {
+        return 0;
+    }
+
+    @Override
+    public float getYPos() {
+        return 0;
+    }
+
+    @Override
+    public float getLength() {
+        return -1f;
+    }
+
+    @Override
+    public float getWidth() {
+        return -1f;
+    }
 }
