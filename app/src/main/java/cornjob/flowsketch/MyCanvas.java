@@ -36,6 +36,7 @@ public class MyCanvas extends View {
     private int mActivePointerId;
     int addLine;
     Point lp1, lp2;
+    Object.OBJTYPE currentLine;
 
     private EditText editxt;
 
@@ -193,6 +194,7 @@ public class MyCanvas extends View {
                 Objects.add(new ObjectPic(this, mLastTouchX,mLastTouchY,imageMap));
                 break;
             case LINER:
+                currentLine = Object.OBJTYPE.LINER;
                 addLine = 1;
                 break;
         }
@@ -237,8 +239,8 @@ public class MyCanvas extends View {
         //mClickCoords[0] is the canvas x coordinate and
         //mClickCoords[1] is the y coordinate.
 
-        final float x = (ev.getX() - scalePointX) / mScaleFactor;
-        final float y = (ev.getY() - scalePointY) / mScaleFactor;
+        final float x = ev.getX();
+        final float y = ev.getY();
         cX = mClickCoords[0];
         cY = mClickCoords[1];
 
@@ -258,10 +260,10 @@ public class MyCanvas extends View {
                     final float dy = y - mLastTouchY; // change in Y
 
                     if (selectedobj != null) {
-                        selectedobj.translate(dx, dy);
+                        selectedobj.translate(dx / mScaleFactor, dy / mScaleFactor);
                     } else {
-                        mPosX += dx * 0.9;
-                        mPosY += dy * 0.9;
+                        mPosX += dx;
+                        mPosY += dy;
                     }
                     invalidate();
                 }
@@ -294,7 +296,7 @@ public class MyCanvas extends View {
 
                     if (addLine == 2) {
                         lp2 = new Point(cX, cY);
-                        Objects.add(new ShapeLine(this, Object.OBJTYPE.LINER, lp1.getX(), lp1.getY(), lp2.getX(), lp2.getY()));
+                        Objects.add(new ShapeLine(this, currentLine, lp1.getX(), lp1.getY(), lp2.getX(), lp2.getY()));
                         addLine = 0;
                     } else if (addLine == 1) {
                         lp1 = new Point(cX, cY);
