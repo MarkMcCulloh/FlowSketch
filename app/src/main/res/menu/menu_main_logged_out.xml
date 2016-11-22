@@ -71,6 +71,11 @@
         app:showAsAction="always"
         android:title="Lines">
 
+        <menu>
+            <item
+                android:title="arrowRight"
+                android:onClick="insertLineR" />
+        </menu>
     </item>
 
 
