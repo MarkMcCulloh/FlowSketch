@@ -10,8 +10,9 @@ import android.graphics.Path;
 
 public class ShapeTriangle extends Object {
     private Point p1, p2, p3;
-    private Path triPath;
+
     private float triWidth, triHeight;
+
 
     ShapeTriangle(MyCanvas mainCanvas, float x, float y, float w, float h) {
         super(mainCanvas, x, y, OBJTYPE.TRIANGLE);
@@ -21,7 +22,7 @@ public class ShapeTriangle extends Object {
 
         objPaintRegular = new Paint();
         objPaintRegular.setColor(Color.BLACK);
-        objPaintSelected.setStyle(Paint.Style.STROKE);
+        objPaintRegular.setStyle(Paint.Style.STROKE);
         objPaintRegular.setStrokeWidth(10f);
 
         objPaintSelected = new Paint();

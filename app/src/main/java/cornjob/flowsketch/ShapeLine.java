@@ -123,7 +123,6 @@ public class ShapeLine extends Object {
         Point closest = closestpointonline(objOrigin.getX(), objOrigin.getY(), endPoint.getX(), endPoint.getY(), test.getX(), test.getY());
         float distance = Point.distance(closest, test);
         return distance < 30;
-
     }
 
     @Override

@@ -71,7 +71,7 @@ public class MyCanvas extends View {
         basicPaint = new Paint();
         basicPaint.setColor(Color.BLACK);
         basicPaint.setStyle(Paint.Style.STROKE);
-        basicPaint.setStrokeWidth(2f);
+        basicPaint.setStrokeWidth(3f);
 
         addLine = 0;
 
@@ -120,8 +120,6 @@ public class MyCanvas extends View {
 
         canvas.drawLine(0, -10000, 0, 10000, basicPaint);
         canvas.drawLine(-10000, 0, 10000, 0, basicPaint);
-
-        canvas.drawCircle(cX, cY, 5, basicPaint);
 
         for (Object obj : Objects) {
             obj.drawThis();
@@ -281,7 +279,7 @@ public class MyCanvas extends View {
                     final float dy = y - mLastTouchY; // change in Y
 
                     if (selectedobj != null) {
-                        selectedobj.translate(dx / mScaleFactor, dy / mScaleFactor);
+                        selectedobj.translate(dx, dy);
                     } else {
                         mPosX += dx;
                         mPosY += dy;

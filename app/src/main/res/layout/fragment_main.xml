@@ -18,9 +18,5 @@
         android:layout_height="match_parent"
         android:textColor ="#FFFF"
         />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Update: 1.3" />
 
 </FrameLayout>
