@@ -1,6 +1,8 @@
 
 package cornjob.flowsketch;
 
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -11,11 +13,13 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
     public final String LOG_TAG = MainActivity.class.getSimpleName();
     private MyCanvas canvas;
+    private FontPickerFragment font;
     public static MainActivity instance; // for "fill" and "stroke"
     public static String api_key="";
     public static String username="";
@@ -54,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         colorPickerDialog.show();
     }
 
+
     /* Grab image from phone gallery */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -85,7 +90,19 @@ public class MainActivity extends AppCompatActivity {
          }**/
     }
 
+
+    public void fontPicker() {
+        FragmentManager fm = getFragmentManager();
+        FontPickerFragment dialogFragment = new FontPickerFragment ();
+        dialogFragment.show(fm, "Sample Fragment");
+    }
+
+
+
+
+
     public void deleteObject(MenuItem v){canvas.delete();}
+
     public void clearCanvas(MenuItem v){canvas.reset();}
 
     public void insertSquare(MenuItem v) {

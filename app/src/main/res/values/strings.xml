@@ -36,4 +36,13 @@
     
     <string name="objects_list">Strings</string>
 
+    <!-- String array for font dialog -->
+    <string-array name="fonts_array">
+        <item>Calibri</item>
+        <item>Magenta</item>
+        <item>Times New Roman</item>
+        <item>Agency FB</item>
+        <item>Comic Sans MS</item>
+    </string-array>
+
 </resources>

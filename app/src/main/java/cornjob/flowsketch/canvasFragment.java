@@ -1,6 +1,9 @@
 package cornjob.flowsketch;
 
 
+import android.app.DialogFragment;
+import android.graphics.Typeface;
+import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import static cornjob.flowsketch.SaveDialogFragment.LOG_TAG;
@@ -20,6 +24,9 @@ import static cornjob.flowsketch.SaveDialogFragment.LOG_TAG;
  * A simple {@link Fragment} subclass.
  */
 public class canvasFragment extends Fragment {
+
+    // FontPicker
+    FontPickerFragment f;
 
     public static boolean log_in_status = false; // Boolean whether user is logged in or not
                                           // Options menu changes depending on this variable
@@ -45,7 +52,7 @@ public class canvasFragment extends Fragment {
 
 
         if(!AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().isLoggedIn())
-            inflater.inflate(R.menu.menu_main_logged_out, menu); //
+            inflater.inflate(R.menu.menu_main_logged_out, menu);
         else
             inflater.inflate(R.menu.menu_main_logged_in, menu);
     }
@@ -78,8 +85,14 @@ public class canvasFragment extends Fragment {
         {
             Intent i = new Intent(
                     Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
             startActivityForResult(i, 0);
+        }
+
+
+        // Call the text AlertDialog
+        if(id == R.id.text_item)
+        {
+           MainActivity.instance.fontPicker();
         }
 
         if(id == R.id.square_item){
