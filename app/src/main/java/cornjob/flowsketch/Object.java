@@ -16,7 +16,6 @@ public abstract class Object {
     public MyCanvas objCanvas;
     public Point objOrigin;
     public Paint objPaintCurrent, objPaintSelected, objPaintRegular;
-    public float objScale, objRotate, objTranslate;
 
     public OBJTYPE objType;
     public boolean objSelect;

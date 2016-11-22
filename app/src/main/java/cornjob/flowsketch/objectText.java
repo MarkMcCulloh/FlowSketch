@@ -11,7 +11,7 @@ import android.graphics.RectF;
 public class objectText extends Object {
     public String text = new String();
 
-    public objectText(MyCanvas mainCanvas, float x, float y, String text)
+    public objectText(MyCanvas mainCanvas, float x, float y, String text, int textsize)
     {
         super(mainCanvas, x, y, OBJTYPE.TEXT);
 
@@ -19,13 +19,13 @@ public class objectText extends Object {
         objPaintRegular.setColor(Color.BLACK);
         objPaintRegular.setStyle(Paint.Style.FILL);
         objPaintRegular.setTypeface(canvasFragment.face);
-        objPaintRegular.setTextSize(40);
+        objPaintRegular.setTextSize(textsize);
 
         objPaintSelected = new Paint();
         objPaintSelected.setColor(Color.YELLOW);
         objPaintSelected.setStyle(Paint.Style.FILL);
         objPaintSelected.setTypeface(canvasFragment.face);
-        objPaintSelected.setTextSize(40);
+        objPaintSelected.setTextSize(textsize);
 
         objPaintCurrent = objPaintRegular;
 
@@ -72,7 +72,14 @@ public class objectText extends Object {
         objPaintCurrent.setTextSize(objPaintRegular.getTextSize());
     }
 
-    public void setColor(int color,String action){}
+    public void setColor(int color, String action) {
+        objPaintRegular.setColor(color);
+        if (action == "Fill") {
+            objPaintRegular.setStyle(Paint.Style.FILL);
+        } else {
+            objPaintRegular.setStyle(Paint.Style.STROKE);
+        }
+    }
 
     @Override
     public int getColor() {

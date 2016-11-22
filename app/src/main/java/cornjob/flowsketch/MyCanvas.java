@@ -190,20 +190,17 @@ public class MyCanvas extends View {
             case CIRCLE:
                 Objects.add(new ShapeCircle(this, middlex, middley, 100));
                 break;
-            case LINE:
-                //Objects.add(new ShapeLine(this.getWidth() / 2, this.getHeight() / 2, 240));
-                break;
             case TRIANGLE:
                 Objects.add(new ShapeTriangle(this, middlex, middley, this.getWidth() / 3, this.getHeight() / 3));
                 break;
             case RECTANGLE:
-                Objects.add(new ShapeRect(this, middlex, middley, middlex + 100, middley + 100));
+                Objects.add(new ShapeRect(this, middlex, middley, middlex + this.getWidth() / 3, this.getHeight() / 3));
                 break;
             case SQUARE:
                 Objects.add(new ShapeRect(this, middlex, middley, 100));
                 break;
             case TEXT:
-                objectText newText = new objectText(this, middlex, middley, text);
+                objectText newText = new objectText(this, middlex, middley, text, this.getWidth() / 5);
                 select(newText);
                 Objects.add(newText);
                 break;

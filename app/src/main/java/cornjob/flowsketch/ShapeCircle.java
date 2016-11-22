@@ -14,7 +14,7 @@ public class ShapeCircle extends Object {
 
         objPaintRegular = new Paint();
         objPaintRegular.setColor(Color.BLACK);
-        objPaintRegular.setStyle(Paint.Style.STROKE);
+        objPaintSelected.setStyle(Paint.Style.STROKE);
         objPaintRegular.setStrokeWidth(10f);
 
         objPaintSelected = new Paint();

@@ -14,14 +14,14 @@
             <!--Fill menu-->
             <item
                 android:id="@+id/fill_action"
-                android:title="Fill">
+                android:title="Fill Color">
             </item>
 
 
             <!--Stroke menu-->
             <item
                 android:id="@+id/stroke_action"
-                android:title="Stroke" >
+                android:title="Stroke Color">
             </item>
 
 
