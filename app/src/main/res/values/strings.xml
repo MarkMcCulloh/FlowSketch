@@ -29,6 +29,8 @@
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">Contacts permissions are needed for providing email completions</string>
     <string name="resources">This field is required</string>
-
+    <string name="delete_canvas"></string>
+    <string name="edit_canvas_name"></string>
+    <string name="edit_canvas"></string>
 
 </resources>
