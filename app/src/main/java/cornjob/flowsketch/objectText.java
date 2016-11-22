@@ -43,7 +43,7 @@ public class objectText extends Object {
 
     public void scale(float factor){}
 
-    public void setColor(int color){}
+    public void setColor(int color,String action){}
 
     @Override
     public int getColor() {

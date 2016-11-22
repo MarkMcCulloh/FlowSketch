@@ -147,13 +147,13 @@ public class MyCanvas extends View {
         this.text = text;
     }
 
-    public void setColor(int color)
+    public void setColor(int color, String action)
     {
         for(Object obj: Objects)
         {
             if(obj.objSelect)
             {
-                obj.setColor(color);
+                obj.setColor(color,action);
             }
 
         }

@@ -66,7 +66,7 @@ public class ObjectPic extends Object {
     }
 
     @Override
-    public void setColor(int color) {
+    public void setColor(int color,String action) {
 
     }
 
