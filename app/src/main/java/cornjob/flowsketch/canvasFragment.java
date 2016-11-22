@@ -61,9 +61,11 @@ public class canvasFragment extends Fragment {
 
 
         if(id == R.id.fill_action)
-            MainActivity.instance.ColorPickerDialog();
+        {   MainActivity.fillOrStroke = "Fill";
+            MainActivity.instance.ColorPickerDialog();}
         if(id == R.id.stroke_action)
-            MainActivity.instance.ColorPickerDialog();
+        {   MainActivity.fillOrStroke="Stroke";
+            MainActivity.instance.ColorPickerDialog();}
 
         /* Go to login activity */
         if(id == R.id.login_action)

@@ -67,5 +67,5 @@ public abstract class Object {
 
     public abstract void scale(float factor);
 
-    public abstract void setColor(int color);
+    public abstract void setColor(int color, String action);
 }
