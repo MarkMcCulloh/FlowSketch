@@ -71,23 +71,57 @@
         app:showAsAction="always"
         android:title="Lines">
 
+        <menu>
+            <item
+                android:title="Arrow"
+                android:onClick="insertLineR" />
+        </menu>
     </item>
 
 
     <!--Text-->
+    <!--Text-->
     <item
         android:icon="@drawable/text_icon"
+        android:id="@+id/font_item"
         app:showAsAction="always"
-        android:title="Text">
+        android:titleCondensed=""
+        android:title="Font">
+
+        <menu>
+            <item
+                android:id="@+id/font_calibri"
+                android:title="Calibri"
+                android:titleCondensed="" />
+            <item
+                android:id="@+id/font_magenta"
+                android:title="Magenta"
+                android:titleCondensed="" />
+            <item
+                android:id="@+id/font_times_new_roman"
+                android:title="Times New Roman"
+                android:titleCondensed="" />
+            <item
+                android:id="@+id/font_agency_fb"
+                android:title="Agency FB"
+                android:titleCondensed="" />
+            <item
+                android:id="@+id/font_comic_sans_ms"
+                android:title="Comic Sans MS"
+                android:titleCondensed="" />
+        </menu>
 
     </item>
+
 
 
     <!--Image-->
     <item
         android:icon="@drawable/image_icon"
+        android:id="@+id/image_item"
         app:showAsAction="always"
-        android:title="Image">
+        android:title="Image"
+        >
 
     </item>
 
@@ -96,7 +130,8 @@
     <item
         android:icon="@drawable/trash_icon"
         app:showAsAction="always"
-        android:title="Delete">
+        android:title="Delete"
+        android:onClick="deleteObject">
 
     </item>
 
@@ -104,7 +139,8 @@
     <item
         android:id="@+id/new_canvas_action"
         app:showAsAction="never"
-        android:title="New"/>
+        android:title="New"
+        android:onClick="clearCanvas"/>
 
 
     <!--Login-->

@@ -33,6 +33,41 @@ public class ShapeTriangle extends Object {
     }
 
     @Override
+    public int getColor() {
+        return objPaintRegular.getColor();
+    }
+
+    @Override
+    public float getXPos() {
+        return objOrigin.getX();
+    }
+
+    @Override
+    public float getYPos() {
+        return objOrigin.getY();
+    }
+
+    @Override
+    public float getLength() {
+        return triWidth;
+    }
+
+    @Override
+    public float getWidth() {
+        return triWidth;
+    }
+
+    @Override
+    public float getRadius() {
+        return -1;
+    }
+
+    @Override
+    public String getFilePath() {
+        return "";
+    }
+
+    @Override
     public boolean drawThis() {
 
         p1 = objOrigin;
@@ -79,32 +114,15 @@ public class ShapeTriangle extends Object {
     }
 
     @Override
-    public int getColor() {
-        return objPaintRegular.getColor();
-    }
+    public void setColor(int color,String action) {
+        objPaintRegular.setColor(color);
+        if(action == "Fill") {
+            objPaintRegular.setStyle(Paint.Style.FILL);
 
-    @Override
-    public float getXPos() {
-        return objOrigin.getX();
-    }
-
-    @Override
-    public float getYPos() {
-        return objOrigin.getY();
-    }
-
-    @Override
-    public float getLength() {
-        return triWidth;
-    }
-
-    @Override
-    public float getWidth() {
-        return triHeight;
-    }
-
-    @Override
-    public float getRadius() {
-        return -1.0f;
+        }
+        else
+        {
+            objPaintRegular.setStyle(Paint.Style.STROKE);
+        }
     }
 }

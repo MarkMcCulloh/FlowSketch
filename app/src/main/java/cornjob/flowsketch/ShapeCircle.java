@@ -26,6 +26,41 @@ public class ShapeCircle extends Object {
     }
 
     @Override
+    public int getColor() {
+        return objPaintRegular.getColor();
+    }
+
+    @Override
+    public float getXPos() {
+        return -1;
+    }
+
+    @Override
+    public float getYPos() {
+        return -1;
+    }
+
+    @Override
+    public float getLength() {
+        return -1;
+    }
+
+    @Override
+    public float getWidth() {
+        return -1;
+    }
+
+    @Override
+    public float getRadius() {
+        return circleRadius;
+    }
+
+    @Override
+    public String getFilePath() {
+        return null;
+    }
+
+    @Override
     public boolean drawThis() {
         objCanvas.canvas.drawCircle(objOrigin.getX(), objOrigin.getY(), circleRadius, objPaintCurrent);
         return true;
@@ -59,35 +94,16 @@ public class ShapeCircle extends Object {
     public void setCircleRadius(float circleRadius) {
         this.circleRadius = circleRadius;
     }
+    public void setColor(int color,String action){
+        objPaintRegular.setColor(color);
+        if(action == "Fill") {
+            objPaintRegular.setStyle(Paint.Style.FILL);
 
-    @Override
-    public int getColor() {
-        return objPaintRegular.getColor();
-    }
-
-    @Override
-    public float getXPos() {
-        return -1;
-    }
-
-    @Override
-    public float getYPos() {
-        return -1;
-    }
-
-    @Override
-    public float getLength() {
-        return -1;
-    }
-
-    @Override
-    public float getWidth() {
-        return -1;
-    }
-
-    @Override
-    public float getRadius() {
-        return circleRadius;
+        }
+        else
+        {
+         objPaintRegular.setStyle(Paint.Style.STROKE);
+        }
     }
 }
 

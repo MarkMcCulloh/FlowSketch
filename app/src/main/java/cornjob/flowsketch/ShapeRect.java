@@ -45,36 +45,8 @@ public class ShapeRect extends Object {
     }
 
     @Override
-    public boolean drawThis() {
-        objCanvas.canvas.drawRect(fullRect, objPaintCurrent);
-        return true;
-    }
-
-    @Override
-    public boolean contains(Point test) {
-        return fullRect.contains(test.getX(), test.getY());
-
-    }
-
-    @Override
-    public void translate(float xdis, float ydis) {
-        objOrigin.move(xdis, ydis);
-        fullRect.offset(xdis, ydis);
-    }
-
-    @Override
-    public void rotate(float angle) {
-
-    }
-
-    @Override
-    public void scale(float factor) {
-
-    }
-
-    @Override
     public int getColor() {
-        return  objPaintRegular.getColor();
+        return objPaintRegular.getColor();
     }
 
     @Override
@@ -99,7 +71,53 @@ public class ShapeRect extends Object {
 
     @Override
     public float getRadius() {
-        return -1.0f;
+        return -1;
+    }
+
+    @Override
+    public String getFilePath() {
+        return "";
+    }
+
+    @Override
+    public boolean drawThis() {
+        objCanvas.canvas.drawRect(fullRect, objPaintCurrent);
+        return true;
+    }
+
+    @Override
+    public boolean contains(Point test) {
+        return fullRect.contains(test.getX(), test.getY());
+
+    }
+
+    @Override
+    public void translate(float xdis, float ydis) {
+        objOrigin.move(xdis, ydis);
+        fullRect.set(objOrigin.getX(),objOrigin.getY(),fullRect.width()+objOrigin.getX(),fullRect.height()+objOrigin.getY());
+        //fullRect.offset(xdis, ydis);
+    }
+
+    @Override
+    public void rotate(float angle) {
+
+    }
+
+    @Override
+    public void scale(float factor) {
+        fullRect.set((fullRect.left - 1) * factor, (fullRect.top - 1) * factor, (fullRect.right + 1) * factor, (fullRect.bottom + 1) * factor);
+
+    }
+    public void setColor(int color,String action){
+        objPaintRegular.setColor(color);
+        if(action == "Fill") {
+            objPaintRegular.setStyle(Paint.Style.FILL);
+
+        }
+        else
+        {
+            objPaintRegular.setStyle(Paint.Style.STROKE);
+        }
     }
 }
 

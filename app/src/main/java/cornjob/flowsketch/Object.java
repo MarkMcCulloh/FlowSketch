@@ -10,7 +10,7 @@ public abstract class Object {
 
     public enum OBJTYPE {
         CIRCLE, LINE, TRIANGLE, RECTANGLE, SQUARE,
-        TEXT, IMAGE
+        TEXT, IMAGE, LINER
     }
 
     public MyCanvas objCanvas;
@@ -51,7 +51,10 @@ public abstract class Object {
     public abstract float getLength();
 
     public abstract float getWidth();
+
     public abstract float getRadius();
+
+    public abstract String getFilePath();
 
     //draws to canvas
     public abstract boolean drawThis();
@@ -63,4 +66,6 @@ public abstract class Object {
     public abstract void rotate(float angle);
 
     public abstract void scale(float factor);
+
+    public abstract void setColor(int color, String action);
 }
