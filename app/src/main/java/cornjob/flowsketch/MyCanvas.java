@@ -274,6 +274,7 @@ public class MyCanvas extends View {
                         mPosY += dy;
                     }
                     invalidate();
+
                 }
 
                 mLastTouchX = x;
