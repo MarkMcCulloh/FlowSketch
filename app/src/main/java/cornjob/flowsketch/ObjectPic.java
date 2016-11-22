@@ -58,7 +58,7 @@ public class ObjectPic extends Object {
 
     @Override
     public int getColor() {
-        return 0;
+        return -1;
     }
 
     @Override

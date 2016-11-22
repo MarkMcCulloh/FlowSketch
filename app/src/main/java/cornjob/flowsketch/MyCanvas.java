@@ -78,7 +78,6 @@ public class MyCanvas extends View {
 
         for(Object obj: Objects)
         {
-            if(obj instanceof ShapeRect){
                 CanvasData.data += "[" + obj.objType + ",";
                 CanvasData.data += obj.getXPos() + ",";
                 CanvasData.data += obj.getYPos() + ",";
@@ -86,7 +85,6 @@ public class MyCanvas extends View {
                 CanvasData.data += obj.getWidth() + ",";
                 CanvasData.data += obj.getRadius() + ",";
                 CanvasData.data += obj.getColor() +"]";
-            }
         }
 
     }

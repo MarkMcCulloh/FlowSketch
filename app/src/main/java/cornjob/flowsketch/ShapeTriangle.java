@@ -34,27 +34,27 @@ public class ShapeTriangle extends Object {
 
     @Override
     public int getColor() {
-        return 0;
+        return objPaintRegular.getColor();
     }
 
     @Override
     public float getXPos() {
-        return 0;
+        return objOrigin.getX();
     }
 
     @Override
     public float getYPos() {
-        return 0;
+        return objOrigin.getY();
     }
 
     @Override
     public float getLength() {
-        return 0;
+        return triWidth;
     }
 
     @Override
     public float getWidth() {
-        return 0;
+        return triWidth;
     }
 
     @Override

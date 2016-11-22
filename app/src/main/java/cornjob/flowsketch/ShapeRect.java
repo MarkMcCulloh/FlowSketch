@@ -46,27 +46,27 @@ public class ShapeRect extends Object {
 
     @Override
     public int getColor() {
-        return 0;
+        return objPaintRegular.getColor();
     }
 
     @Override
     public float getXPos() {
-        return 0;
+        return fullRect.centerX();
     }
 
     @Override
     public float getYPos() {
-        return 0;
+        return fullRect.centerY();
     }
 
     @Override
     public float getLength() {
-        return 0;
+        return fullRect.height();
     }
 
     @Override
     public float getWidth() {
-        return 0;
+        return fullRect.width();
     }
 
     @Override

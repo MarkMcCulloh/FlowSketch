@@ -47,17 +47,17 @@ public class objectText extends Object {
 
     @Override
     public int getColor() {
-        return 0;
+        return objPaintRegular.getColor();
     }
 
     @Override
     public float getXPos() {
-        return 0;
+        return startx;
     }
 
     @Override
     public float getYPos() {
-        return 0;
+        return starty;
     }
 
     @Override
