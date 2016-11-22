@@ -1,6 +1,7 @@
 package cornjob.flowsketch;
 
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 
 /**
  * Created by MarkM on 11/17/2016.
@@ -14,13 +15,14 @@ public class ObjectPic extends Object {
     ObjectPic(MyCanvas mainCanvas, float x, float y, Bitmap b) {
         super(mainCanvas, x, y, OBJTYPE.IMAGE);
         this.b = b;
+        objOrigin = new Point(x,y);
 
     }
 
     @Override
     public boolean drawThis() {
 
-    objCanvas.canvas.drawBitmap(b,x,y,null);
+    objCanvas.canvas.drawBitmap(b,objOrigin.getX(),objOrigin.getY(),null);
 
         return true;
     }
@@ -28,11 +30,21 @@ public class ObjectPic extends Object {
 
     @Override
     public boolean contains(Point test) {
-        return false;
+        if(test.getX()>= x && test.getX()<(x+b.getWidth()) && test.getY() >= y && test.getY() < (y + b.getHeight()))
+        {
+            return true;
+
+        }
+        else
+        {
+            return false;
+        }
     }
 
     @Override
     public void translate(float xdis, float ydis) {
+
+       objOrigin.move(xdis,ydis);
 
     }
 
@@ -43,7 +55,14 @@ public class ObjectPic extends Object {
 
     @Override
     public void scale(float factor) {
-
+        float width = b.getWidth() *factor;
+        float height = b.getHeight() * factor;
+       /*float scalewidth = width/b.getWidth();
+        float scaleheight = height/b.getHeight();
+        Matrix m = new Matrix();
+        m.postScale(scalewidth,scaleheight);
+        b = Bitmap.createBitmap(b,(int)objOrigin.getX(),(int)objOrigin.getY(),(int)width,(int)height,m,true);*/
+        b = Bitmap.createScaledBitmap(b,(int)width,(int)height,true);
     }
 
     @Override

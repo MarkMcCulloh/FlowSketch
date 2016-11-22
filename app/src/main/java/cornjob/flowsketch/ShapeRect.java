@@ -89,7 +89,8 @@ public class ShapeRect extends Object {
     @Override
     public void translate(float xdis, float ydis) {
         objOrigin.move(xdis, ydis);
-        fullRect.offset(xdis, ydis);
+        fullRect.set(objOrigin.getX(),objOrigin.getY(),fullRect.width()+objOrigin.getX(),fullRect.height()+objOrigin.getY());
+        //fullRect.offset(xdis, ydis);
     }
 
     @Override

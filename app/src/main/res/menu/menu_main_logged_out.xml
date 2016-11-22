@@ -87,6 +87,7 @@
     <!--Image-->
     <item
         android:icon="@drawable/image_icon"
+        android:id="@+id/image_item"
         app:showAsAction="always"
         android:title="Image"
         >
