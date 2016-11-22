@@ -56,6 +56,11 @@ public class ShapeCircle extends Object {
     }
 
     @Override
+    public String getFilePath() {
+        return null;
+    }
+
+    @Override
     public boolean drawThis() {
         objCanvas.canvas.drawCircle(objOrigin.getX(), objOrigin.getY(), circleRadius, objPaintCurrent);
         return true;

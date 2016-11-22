@@ -75,6 +75,11 @@ public class ShapeRect extends Object {
     }
 
     @Override
+    public String getFilePath() {
+        return "";
+    }
+
+    @Override
     public boolean drawThis() {
         objCanvas.canvas.drawRect(fullRect, objPaintCurrent);
         return true;

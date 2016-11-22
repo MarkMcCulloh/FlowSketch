@@ -51,7 +51,10 @@ public abstract class Object {
     public abstract float getLength();
 
     public abstract float getWidth();
+
     public abstract float getRadius();
+
+    public abstract String getFilePath();
 
     //draws to canvas
     public abstract boolean drawThis();
