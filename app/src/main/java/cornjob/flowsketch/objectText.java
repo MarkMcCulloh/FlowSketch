@@ -19,6 +19,7 @@ public class objectText extends Object {
         objPaintRegular = new Paint();
         objPaintRegular.setColor(Color.BLACK);
         objPaintRegular.setStyle(Paint.Style.FILL);
+        objPaintRegular.setTypeface(canvasFragment.face);
         objPaintRegular.setTextSize(20);
         this.text =text;
             }
