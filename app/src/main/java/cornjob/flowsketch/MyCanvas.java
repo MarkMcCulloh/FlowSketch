@@ -32,7 +32,7 @@ public class MyCanvas extends View {
     public static boolean is_Marked, remove_Object, inputText, verify_Text = false;
     private Object selectedobj;
     private ScaleGestureDetector mScaleDetector;
-    public static float mScaleFactor = 5.f;
+    public static float mScaleFactor = 1.0f;
     private int mActivePointerId;
     int addLine;
     Point lp1, lp2;
@@ -74,10 +74,12 @@ public class MyCanvas extends View {
         basicPaint = new Paint();
         basicPaint.setColor(Color.BLACK);
         basicPaint.setStyle(Paint.Style.STROKE);
-        basicPaint.setStrokeWidth(10f);
+        basicPaint.setStrokeWidth(2f);
 
         addLine = 0;
 
+        mPosX = 600;
+        mPosY = 600;
     }
 
     public static void objectToString(){
@@ -118,10 +120,10 @@ public class MyCanvas extends View {
         canvas.translate(mPosX, mPosY);
         canvas.scale(mScaleFactor, mScaleFactor);
 
-        canvas.drawLine(0, -1000, 0, 1000, basicPaint);
-        canvas.drawLine(-1000, 0, 1000, 0, basicPaint);
+        canvas.drawLine(0, -10000, 0, 10000, basicPaint);
+        canvas.drawLine(-10000, 0, 10000, 0, basicPaint);
 
-        canvas.drawCircle(cX, cY, 10, basicPaint);
+        canvas.drawCircle(cX, cY, 5, basicPaint);
 
         for (Object obj : Objects) {
             obj.drawThis();

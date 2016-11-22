@@ -25,14 +25,14 @@ public class ShapeLine extends Object {
         objPaintRegular.setAntiAlias(true);
         objPaintRegular.setColor(Color.BLACK);
         objPaintRegular.setStyle(Paint.Style.STROKE);
-        objPaintRegular.setStrokeWidth(4f);
+        objPaintRegular.setStrokeWidth(3f);
         objPaintRegular.setStyle(Paint.Style.FILL);
 
         objPaintSelected = new Paint();
         objPaintSelected.setAntiAlias(true);
         objPaintSelected.setColor(Color.YELLOW);
         objPaintSelected.setStyle(Paint.Style.STROKE);
-        objPaintSelected.setStrokeWidth(4f);
+        objPaintSelected.setStrokeWidth(3f);
         objPaintSelected.setStyle(Paint.Style.FILL);
 
         objPaintCurrent = objPaintRegular;
@@ -179,12 +179,6 @@ public class ShapeLine extends Object {
                 break;
         }
         return currentltype;
-    }
-
-    @Override
-    public boolean setSelect(boolean flag) {
-        //TODO
-        return objSelect;
     }
 
 }
