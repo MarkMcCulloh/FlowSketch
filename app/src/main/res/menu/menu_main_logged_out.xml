@@ -73,7 +73,7 @@
 
         <menu>
             <item
-                android:title="arrowRight"
+                android:title="Arrow"
                 android:onClick="insertLineR" />
         </menu>
     </item>

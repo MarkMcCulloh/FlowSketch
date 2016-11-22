@@ -179,27 +179,43 @@ public class MyCanvas extends View {
         newObject = true;
         nextShape = newobj;
 
+        float middlex = this.getWidth() / 2;
+        float middley = this.getHeight() / 2 - 80;
+        float[] mClickCoords = new float[2];
+
+        //translate screen event into canvas coords
+        mClickCoords[0] = middlex;
+        mClickCoords[1] = middley;
+        Matrix matrix = new Matrix();
+        matrix.set(getMatrix());
+        matrix.preTranslate(mPosX, mPosY);
+        matrix.preScale(mScaleFactor, mScaleFactor);
+        matrix.invert(matrix);
+        matrix.mapPoints(mClickCoords);
+        middlex = mClickCoords[0];
+        middley = mClickCoords[1];
+
         switch (newobj) {
             case CIRCLE:
-                Objects.add(new ShapeCircle(this, this.cX, this.cY, 100));
+                Objects.add(new ShapeCircle(this, middlex, middley, 100));
                 break;
             case LINE:
                 //Objects.add(new ShapeLine(this.getWidth() / 2, this.getHeight() / 2, 240));
                 break;
             case TRIANGLE:
-                //Objects.add(new ShapeTriangle(this.getWidth() / 2, this.getHeight() / 2, 240));
+                Objects.add(new ShapeTriangle(this, middlex, middley, this.getWidth() / 3, this.getHeight() / 3));
                 break;
             case RECTANGLE:
-                Objects.add(new ShapeRect(this, this.cX, this.cY, this.cX + 100, this.cY + 100));
+                Objects.add(new ShapeRect(this, middlex, middley, middlex + 100, middley + 100));
                 break;
             case SQUARE:
-                Objects.add(new ShapeRect(this, this.cX, this.cY, 100));
+                Objects.add(new ShapeRect(this, middlex, middley, 100));
                 break;
             case TEXT:
-                Objects.add(new objectText(this,mLastTouchX,mLastTouchY,text));
+                Objects.add(new objectText(this, middlex, middley, text));
                 break;
             case IMAGE:
-                Objects.add(new ObjectPic(this, mLastTouchX,mLastTouchY,imageMap));
+                Objects.add(new ObjectPic(this, middlex, middley, imageMap));
                 break;
             case LINER:
                 currentLine = Object.OBJTYPE.LINER;
