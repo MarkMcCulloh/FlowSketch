@@ -6,6 +6,7 @@ package cornjob.flowsketch;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -48,10 +49,10 @@ public class MyCanvas extends View {
     private Object.OBJTYPE nextShape;
     private boolean newObject = false;
 
-    public String text;
+    public String text = new String();
 
     public Canvas canvas;
-    private Bitmap bitmap;
+    private Bitmap bitmap,imageMap;
     private static final int MAX_CLICK_DURATION = 150;
     private long startClickTime;
 
@@ -113,12 +114,6 @@ public class MyCanvas extends View {
         remove_Object = true;
     }
 
-
-    //add different Objects, text and remove
-    public void setText()
-    {
-        inputText = true;
-    }
     public void reset()
     {
         Objects.clear();
@@ -126,9 +121,37 @@ public class MyCanvas extends View {
         invalidate();
     }
 
+    public void setBitmap(Bitmap b)
+    {
+        this.imageMap = b;
+    }
+
+    public void setText(String text, Point orgin)
+    {
+        this.text = text;
+    }
+
+    public void setColor(int color)
+    {
+        for(Object obj: Objects)
+        {
+            if(obj.objSelect)
+            {
+                obj.setColor(color);
+            }
+
+        }
+    }
+    public void delete()
+    {
+        remove_Object = true;
+        DeleteObject();
+    }
+
     public void addObject(Object.OBJTYPE newobj) {
         newObject = true;
         nextShape = newobj;
+
         switch (newobj) {
             case CIRCLE:
                 Objects.add(new ShapeCircle(this, this.cX, this.cY, 100));
@@ -137,7 +160,7 @@ public class MyCanvas extends View {
                 //Objects.add(new ShapeLine(this.getWidth() / 2, this.getHeight() / 2, 240));
                 break;
             case TRIANGLE:
-                Objects.add(new ShapeTriangle(this, this.cX, this.cY, this.cX + 100, this.cY + 100));
+                //Objects.add(new ShapeTriangle(this.getWidth() / 2, this.getHeight() / 2, 240));
                 break;
             case RECTANGLE:
                 Objects.add(new ShapeRect(this, this.cX, this.cY, this.cX + 100, this.cY + 100));
@@ -146,26 +169,18 @@ public class MyCanvas extends View {
                 Objects.add(new ShapeRect(this, this.cX, this.cY, 100));
                 break;
             case TEXT:
-                //Objects.add(new ObjectText(this.getWidth() / 2, this.getHeight() / 2, 240));
+                Objects.add(new objectText(this,mLastTouchX,mLastTouchY,text));
                 break;
             case IMAGE:
-                //Objects.add(new ObjectPic();
+                Objects.add(new ObjectPic(this, mLastTouchX,mLastTouchY,imageMap));
                 break;
         }
+        text="";
         invalidate();
         newObject = false;
     }
 
-    public void setAddText()
-    {
-        verify_Text = true;
-    }
 
-    public void delete()
-    {
-        remove_Object = true;
-        DeleteObject();
-    }
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
@@ -201,18 +216,18 @@ public class MyCanvas extends View {
         //mClickCoords[0] is the canvas x coordinate and
         //mClickCoords[1] is the y coordinate.
 
-        //final float x = (ev.getX() - scalePointX) / mScaleFactor;
-        //final float y = (ev.getY() - scalePointY) / mScaleFactor;
-        final float x = (ev.getX()) / mScaleFactor;
-        final float y = (ev.getY()) / mScaleFactor;
+        final float x = (ev.getX() - scalePointX) / mScaleFactor;
+        final float y = (ev.getY() - scalePointY) / mScaleFactor;
         cX = mClickCoords[0];
         cY = mClickCoords[1];
 
         switch (action & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN: {
+                MainActivity.text ="";
                 startClickTime = Calendar.getInstance().getTimeInMillis();
                 mLastTouchX = x;
                 mLastTouchY = y;
+
                 break;
             }
             case MotionEvent.ACTION_MOVE: {
@@ -224,8 +239,8 @@ public class MyCanvas extends View {
                     if (selectedobj != null) {
                         selectedobj.translate(dx, dy);
                     } else {
-                        mPosX += dx;
-                        mPosY += dy;
+                        mPosX += dx * 0.9;
+                        mPosY += dy * 0.9;
                     }
                     invalidate();
                 }

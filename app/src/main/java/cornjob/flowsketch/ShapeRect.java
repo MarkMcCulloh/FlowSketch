@@ -72,5 +72,8 @@ public class ShapeRect extends Object {
     public void scale(float factor) {
 
     }
+    public void setColor(int color){
+        objPaintRegular.setColor(color);
+    }
 }
 

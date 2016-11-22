@@ -51,4 +51,6 @@ public abstract class Object {
     public abstract void rotate(float angle);
 
     public abstract void scale(float factor);
+
+    public abstract void setColor(int color);
 }

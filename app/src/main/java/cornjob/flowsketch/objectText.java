@@ -1,5 +1,8 @@
 package cornjob.flowsketch;
 
+import android.graphics.Color;
+import android.graphics.Paint;
+
 /**
  * Created by john on 11/15/2016.
  */
@@ -8,29 +11,32 @@ public class objectText extends Object {
     private float startx;
     private float starty;
 
-    public objectText(MyCanvas maincanvas,float x, float y,OBJTYPE text)
+     public objectText(MyCanvas mainCanvas,float x,float y,String text)
     {
-        super(maincanvas,x,y,text);
+        super(mainCanvas,x,y, OBJTYPE.CIRCLE);
         startx = x;
-        starty =y;
-
+        starty = y;
+        objPaintRegular = new Paint();
+        objPaintRegular.setColor(Color.BLACK);
+        objPaintRegular.setStyle(Paint.Style.FILL);
+        objPaintRegular.setTextSize(20);
+        this.text =text;
+            }
+    public  boolean drawThis(){
+        objCanvas.canvas.drawText(text,startx,starty,objPaintRegular);
+        return true;
     }
-    public void setText(String text)
-    {
-        this.text = text;
 
+    public  boolean contains(Point test){
+        return false;
     }
-    public String getText()
-    {
-        return this.text;
-    }
-    public  boolean drawThis(){return true;}
 
-    public  boolean contains(Point test){return false;}
+    public void translate(float xdis, float ydis){}
 
-    public  void translate(float xdis, float ydis){}
+    public void rotate(float angle){}
 
-    public  void rotate(float angle){}
+    public void scale(float factor){}
 
-    public  void scale(float factor){}
+    public void setColor(int color){}
+
 }
