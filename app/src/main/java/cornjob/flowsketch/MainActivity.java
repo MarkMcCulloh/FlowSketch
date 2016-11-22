@@ -118,16 +118,20 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void insertText(MenuItem v){
-        text="";
         ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-        pt = new Point(0,0);
+        canvas.addObject(Object.OBJTYPE.TEXT);
     }
     public boolean onKeyDown(int keycode,KeyEvent e)
     {
-        text += (char)e.getUnicodeChar();
-        if(text != null) {
-            canvas.setText(text,pt);
-            canvas.addObject(Object.OBJTYPE.TEXT);
+        if (canvas.selectedobj != null) {
+            if (canvas.selectedobj.objType == Object.OBJTYPE.TEXT) {
+                if (e.getKeyCode() == KeyEvent.KEYCODE_DEL) {
+                    ((objectText) (canvas.selectedobj)).text = ((objectText) (canvas.selectedobj)).text.substring(0, ((objectText) (canvas.selectedobj)).text.length() - 1);
+                } else {
+                    ((objectText) (canvas.selectedobj)).text += (char) e.getUnicodeChar();
+                }
+                canvas.invalidate();
+            }
         }
 
         return super.onKeyDown(keycode,e);
