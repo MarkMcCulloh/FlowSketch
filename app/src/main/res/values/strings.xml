@@ -36,4 +36,11 @@
     
     <string name="objects_list">Strings</string>
 
+
+
+
+    <string name="delete_ask_dialog">Do you really really want do delete this canvas?</string>
+    <string name="delete_finish_dialog">Canvas has been successfully deleted!</string>
+
+
 </resources>

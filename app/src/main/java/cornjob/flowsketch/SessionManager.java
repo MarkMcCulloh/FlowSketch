@@ -36,7 +36,7 @@ public class SessionManager {
     public static final String API_KEY="api";
     private static final String IS_LOGIN="login";
     public static final String USERNAME="user name";
-
+    public static int current_canvas_id=0;
     private ArrayList<CanvasData> listwriter;
     public static final String MY_LIST = "my_list";
     private static final Type LIST_TYPE = new TypeToken<CanvasData>() {}.getType();
@@ -176,4 +176,16 @@ public class SessionManager {
     public boolean isLoaded(){
         return listwriter!=null;
     }
+
+
+    public void setCurrentCanvasID(int id){
+        this.current_canvas_id=id;
+    }
+
+    public int getCurrentCanvasID(){
+        return this.current_canvas_id;
+    }
+
+
+
 }
