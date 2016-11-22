@@ -94,7 +94,8 @@ public class ShapeRect extends Object {
     @Override
     public void translate(float xdis, float ydis) {
         objOrigin.move(xdis, ydis);
-        fullRect.offset(xdis, ydis);
+        fullRect.set(objOrigin.getX(),objOrigin.getY(),fullRect.width()+objOrigin.getX(),fullRect.height()+objOrigin.getY());
+        //fullRect.offset(xdis, ydis);
     }
 
     @Override
@@ -107,8 +108,16 @@ public class ShapeRect extends Object {
         fullRect.set((fullRect.left - 1) * factor, (fullRect.top - 1) * factor, (fullRect.right + 1) * factor, (fullRect.bottom + 1) * factor);
 
     }
-    public void setColor(int color){
+    public void setColor(int color,String action){
         objPaintRegular.setColor(color);
+        if(action == "Fill") {
+            objPaintRegular.setStyle(Paint.Style.FILL);
+
+        }
+        else
+        {
+            objPaintRegular.setStyle(Paint.Style.STROKE);
+        }
     }
 }
 

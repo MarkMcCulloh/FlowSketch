@@ -114,7 +114,15 @@ public class ShapeTriangle extends Object {
     }
 
     @Override
-    public void setColor(int color) {
+    public void setColor(int color,String action) {
         objPaintRegular.setColor(color);
+        if(action == "Fill") {
+            objPaintRegular.setStyle(Paint.Style.FILL);
+
+        }
+        else
+        {
+            objPaintRegular.setStyle(Paint.Style.STROKE);
+        }
     }
 }

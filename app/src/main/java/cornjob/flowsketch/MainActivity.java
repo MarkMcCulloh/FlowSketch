@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     public final String LOG_TAG = MainActivity.class.getSimpleName();
     private MyCanvas canvas;
     public static String text ="";
+    public static String fillOrStroke="";
     private Point pt;
     private static boolean addText;
     public static MainActivity instance; // for "fill" and "stroke"
@@ -59,13 +60,14 @@ public class MainActivity extends AppCompatActivity {
     /* Color Picker Wheel */
     public void ColorPickerDialog()
     {
+
         int initialColor = Color.WHITE;
         ColorPickerDialog colorPickerDialog = new ColorPickerDialog(this, initialColor, new ColorPickerDialog.OnColorSelectedListener()
         {
             @Override
             public void onColorSelected(int color)
             {
-                canvas.setColor(color);//colorAction.setBackgroundTintList(ColorStateList.valueOf(color));
+                canvas.setColor(color,fillOrStroke);//colorAction.setBackgroundTintList(ColorStateList.valueOf(color));
             }
         });
         colorPickerDialog.show();
