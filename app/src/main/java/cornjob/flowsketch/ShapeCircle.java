@@ -27,32 +27,37 @@ public class ShapeCircle extends Object {
 
     @Override
     public int getColor() {
-        return 0;
+        return objPaintRegular.getColor();
     }
 
     @Override
     public float getXPos() {
-        return 0;
+        return -1;
     }
 
     @Override
     public float getYPos() {
-        return 0;
+        return -1;
     }
 
     @Override
     public float getLength() {
-        return 0;
+        return -1;
     }
 
     @Override
     public float getWidth() {
-        return 0;
+        return -1;
     }
 
     @Override
     public float getRadius() {
-        return 0;
+        return circleRadius;
+    }
+
+    @Override
+    public String getFilePath() {
+        return null;
     }
 
     @Override

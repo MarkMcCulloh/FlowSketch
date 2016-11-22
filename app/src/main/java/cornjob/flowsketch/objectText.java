@@ -19,6 +19,7 @@ public class objectText extends Object {
         objPaintRegular = new Paint();
         objPaintRegular.setColor(Color.BLACK);
         objPaintRegular.setStyle(Paint.Style.FILL);
+        objPaintRegular.setTypeface(canvasFragment.face);
         objPaintRegular.setTextSize(20);
         this.text =text;
             }
@@ -26,6 +27,11 @@ public class objectText extends Object {
     @Override
     public float getRadius() {
         return 0;
+    }
+
+    @Override
+    public String getFilePath() {
+        return "";
     }
 
     public  boolean drawThis(){
@@ -47,17 +53,17 @@ public class objectText extends Object {
 
     @Override
     public int getColor() {
-        return 0;
+        return objPaintRegular.getColor();
     }
 
     @Override
     public float getXPos() {
-        return 0;
+        return startx;
     }
 
     @Override
     public float getYPos() {
-        return 0;
+        return starty;
     }
 
     @Override

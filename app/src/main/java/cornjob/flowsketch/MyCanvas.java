@@ -32,8 +32,11 @@ public class MyCanvas extends View {
     public static boolean is_Marked, remove_Object, inputText, verify_Text = false;
     private Object selectedobj;
     private ScaleGestureDetector mScaleDetector;
-    public static float mScaleFactor = 5.f;
+    public static float mScaleFactor = 1.0f;
     private int mActivePointerId;
+    int addLine;
+    Point lp1, lp2;
+    Object.OBJTYPE currentLine;
 
     private EditText editxt;
 
@@ -51,6 +54,7 @@ public class MyCanvas extends View {
 
     public Canvas canvas;
     private Bitmap bitmap,imageMap;
+    public static String filePath;
     private static final int MAX_CLICK_DURATION = 150;
     private long startClickTime;
 
@@ -70,23 +74,29 @@ public class MyCanvas extends View {
         basicPaint = new Paint();
         basicPaint.setColor(Color.BLACK);
         basicPaint.setStyle(Paint.Style.STROKE);
-        basicPaint.setStrokeWidth(10f);
+        basicPaint.setStrokeWidth(2f);
 
+        addLine = 0;
+
+        mPosX = 600;
+        mPosY = 600;
     }
 
     public static void objectToString(){
 
         for(Object obj: Objects)
         {
-            if(obj instanceof ShapeRect){
                 CanvasData.data += "[" + obj.objType + ",";
                 CanvasData.data += obj.getXPos() + ",";
                 CanvasData.data += obj.getYPos() + ",";
                 CanvasData.data += obj.getLength() + ",";
                 CanvasData.data += obj.getWidth() + ",";
                 CanvasData.data += obj.getRadius() + ",";
-                CanvasData.data += obj.getColor() +"]";
-            }
+                CanvasData.data += obj.getColor() +",";
+
+                //made file path Global. i had to many issues
+                CanvasData.data += filePath + "]";
+
         }
 
     }
@@ -110,10 +120,10 @@ public class MyCanvas extends View {
         canvas.translate(mPosX, mPosY);
         canvas.scale(mScaleFactor, mScaleFactor);
 
-        canvas.drawLine(0, -1000, 0, 1000, basicPaint);
-        canvas.drawLine(-1000, 0, 1000, 0, basicPaint);
+        canvas.drawLine(0, -10000, 0, 10000, basicPaint);
+        canvas.drawLine(-10000, 0, 10000, 0, basicPaint);
 
-        canvas.drawCircle(cX, cY, 10, basicPaint);
+        canvas.drawCircle(cX, cY, 5, basicPaint);
 
         for (Object obj : Objects) {
             obj.drawThis();
@@ -133,6 +143,7 @@ public class MyCanvas extends View {
     public void reset()
     {
         Objects.clear();
+        CanvasData.data = "";
         newObject = false;
         invalidate();
     }
@@ -190,6 +201,10 @@ public class MyCanvas extends View {
             case IMAGE:
                 Objects.add(new ObjectPic(this, mLastTouchX,mLastTouchY,imageMap));
                 break;
+            case LINER:
+                currentLine = Object.OBJTYPE.LINER;
+                addLine = 1;
+                break;
         }
         text="";
         invalidate();
@@ -232,8 +247,8 @@ public class MyCanvas extends View {
         //mClickCoords[0] is the canvas x coordinate and
         //mClickCoords[1] is the y coordinate.
 
-        final float x = (ev.getX() - scalePointX) / mScaleFactor;
-        final float y = (ev.getY() - scalePointY) / mScaleFactor;
+        final float x = ev.getX();
+        final float y = ev.getY();
         cX = mClickCoords[0];
         cY = mClickCoords[1];
 
@@ -253,12 +268,13 @@ public class MyCanvas extends View {
                     final float dy = y - mLastTouchY; // change in Y
 
                     if (selectedobj != null) {
-                        selectedobj.translate(dx, dy);
+                        selectedobj.translate(dx / mScaleFactor, dy / mScaleFactor);
                     } else {
-                        mPosX += dx * 0.9;
-                        mPosY += dy * 0.9;
+                        mPosX += dx;
+                        mPosY += dy;
                     }
                     invalidate();
+
                 }
 
                 mLastTouchX = x;
@@ -285,6 +301,15 @@ public class MyCanvas extends View {
                     if (!flag) {
                         if (selectedobj != null) selectedobj.setSelect(false);
                         selectedobj = null;
+                    }
+
+                    if (addLine == 2) {
+                        lp2 = new Point(cX, cY);
+                        Objects.add(new ShapeLine(this, currentLine, lp1.getX(), lp1.getY(), lp2.getX(), lp2.getY()));
+                        addLine = 0;
+                    } else if (addLine == 1) {
+                        lp1 = new Point(cX, cY);
+                        addLine++;
                     }
 
                 }

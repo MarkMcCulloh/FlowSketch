@@ -71,17 +71,48 @@
         app:showAsAction="always"
         android:title="Lines">
 
+        <menu>
+            <item
+                android:title="arrowRight"
+                android:onClick="insertLineR" />
+        </menu>
     </item>
 
 
     <!--Text-->
+    <!--Text-->
     <item
         android:icon="@drawable/text_icon"
+        android:id="@+id/font_item"
         app:showAsAction="always"
-        android:title="Text"
-        android:onClick="insertText">
+        android:titleCondensed=""
+        android:title="Font">
+
+        <menu>
+            <item
+                android:id="@+id/font_calibri"
+                android:title="Calibri"
+                android:titleCondensed="" />
+            <item
+                android:id="@+id/font_magenta"
+                android:title="Magenta"
+                android:titleCondensed="" />
+            <item
+                android:id="@+id/font_times_new_roman"
+                android:title="Times New Roman"
+                android:titleCondensed="" />
+            <item
+                android:id="@+id/font_agency_fb"
+                android:title="Agency FB"
+                android:titleCondensed="" />
+            <item
+                android:id="@+id/font_comic_sans_ms"
+                android:title="Comic Sans MS"
+                android:titleCondensed="" />
+        </menu>
 
     </item>
+
 
 
     <!--Image-->

@@ -95,6 +95,9 @@ public class MainActivity extends AppCompatActivity {
             b = BitmapFactory.decodeFile(picturePath);
             canvas.setBitmap(b);
             canvas.addObject(Object.OBJTYPE.IMAGE);
+
+            //Sets the path of image
+            MyCanvas.filePath = picturePath;
             cursor.close();
 
             // String picturePath contains the path of selected Image
@@ -170,6 +173,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void insertImage(MenuItem v) {canvas.addObject(Object.OBJTYPE.IMAGE);
+    }
+
+    public void insertLineR(MenuItem v) {
+        canvas.addObject(Object.OBJTYPE.LINER);
     }
 
 }
