@@ -57,6 +57,10 @@ public class ObjectPic extends Object {
     }
 
     @Override
+    public String getFilePath() {
+        return "hi";
+    }
+    @Override
     public int getColor() {
         return -1;
     }

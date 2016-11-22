@@ -29,6 +29,11 @@ public class objectText extends Object {
         return 0;
     }
 
+    @Override
+    public String getFilePath() {
+        return "";
+    }
+
     public  boolean drawThis(){
         objCanvas.canvas.drawText(text,startx,starty,objPaintRegular);
         return true;

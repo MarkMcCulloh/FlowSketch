@@ -54,6 +54,7 @@ public class MyCanvas extends View {
 
     public Canvas canvas;
     private Bitmap bitmap,imageMap;
+    public static String filePath;
     private static final int MAX_CLICK_DURATION = 150;
     private long startClickTime;
 
@@ -91,7 +92,11 @@ public class MyCanvas extends View {
                 CanvasData.data += obj.getLength() + ",";
                 CanvasData.data += obj.getWidth() + ",";
                 CanvasData.data += obj.getRadius() + ",";
-                CanvasData.data += obj.getColor() +"]";
+                CanvasData.data += obj.getColor() +",";
+
+                //made file path Global. i had to many issues
+                CanvasData.data += filePath + "]";
+
         }
 
     }
@@ -138,6 +143,7 @@ public class MyCanvas extends View {
     public void reset()
     {
         Objects.clear();
+        CanvasData.data = "";
         newObject = false;
         invalidate();
     }

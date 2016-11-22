@@ -63,6 +63,11 @@ public class ShapeTriangle extends Object {
     }
 
     @Override
+    public String getFilePath() {
+        return "";
+    }
+
+    @Override
     public boolean drawThis() {
 
         p1 = objOrigin;
