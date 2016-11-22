@@ -26,19 +26,17 @@ import java.util.Calendar;
  */
 public class MyCanvas extends View {
     Context context;
-    private static ArrayList<Object> Objects = new ArrayList<>();
+    public static ArrayList<Object> Objects = new ArrayList<>();
     public static Bundle mMyAppsBundle = new Bundle();
 
     public static boolean is_Marked, remove_Object, inputText, verify_Text = false;
-    private Object selectedobj;
+    public Object selectedobj;
     private ScaleGestureDetector mScaleDetector;
     public static float mScaleFactor = 1.0f;
     private int mActivePointerId;
     int addLine;
     Point lp1, lp2;
     Object.OBJTYPE currentLine;
-
-    private EditText editxt;
 
     private float mLastTouchX, mLastTouchY;
     private float scalePointX, scalePointY;
@@ -48,7 +46,6 @@ public class MyCanvas extends View {
     private Paint basicPaint;
 
     private Object.OBJTYPE nextShape;
-    private boolean newObject = false;
 
     public String text = new String();
 
@@ -137,7 +134,6 @@ public class MyCanvas extends View {
     {
         Objects.clear();
         CanvasData.data = "";
-        newObject = false;
         invalidate();
     }
 
@@ -171,7 +167,6 @@ public class MyCanvas extends View {
     }
 
     public void addObject(Object.OBJTYPE newobj) {
-        newObject = true;
         nextShape = newobj;
 
         float middlex = this.getWidth() / 2;
@@ -207,7 +202,9 @@ public class MyCanvas extends View {
                 Objects.add(new ShapeRect(this, middlex, middley, 100));
                 break;
             case TEXT:
-                Objects.add(new objectText(this, middlex, middley, text));
+                objectText newText = new objectText(this, middlex, middley, text);
+                select(newText);
+                Objects.add(newText);
                 break;
             case IMAGE:
                 Objects.add(new ObjectPic(this, middlex, middley, imageMap));
@@ -219,10 +216,17 @@ public class MyCanvas extends View {
         }
         text="";
         invalidate();
-        newObject = false;
     }
 
 
+    public void select(Object newselect) {
+        if (selectedobj != null) {
+            selectedobj.setSelect(false);
+            selectedobj = null;
+        }
+        selectedobj = newselect;
+        selectedobj.setSelect(true);
+    }
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
@@ -303,9 +307,7 @@ public class MyCanvas extends View {
                     boolean flag = false;
                     for (Object obj : Objects) {
                         if (obj.contains(new Point(cX, cY))) {
-                            if (selectedobj != null) selectedobj.setSelect(false);
-                            obj.setSelect(true);
-                            selectedobj = obj;
+                            select(obj);
                             flag = true;
                         }
                     }
