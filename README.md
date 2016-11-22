@@ -11,8 +11,8 @@ Text:
 * Change Font
 * Change Color
 Line:
-* line types
-* add line (tap point 1 then point 2)
+* ~~line types~~
+* ~~add line (tap point 1 then point 2)~~
 * move line (tap line, tap again to toggle points, then move)
 * change color
 
@@ -20,11 +20,11 @@ All Shapes:
 * change fill
 
 Rectangle:
-* movement bug
+* ~~movement bug~~
 
 Image:
 * scaling
-* movement
+* ~~movement~~
 
 save/load:
 * finalize
