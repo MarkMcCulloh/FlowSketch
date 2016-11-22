@@ -22,6 +22,7 @@ import android.view.inputmethod.InputMethodManager;
 
 public class MainActivity extends AppCompatActivity {
 
+    public final String LOG_TAG = MainActivity.class.getSimpleName();
     private MyCanvas canvas;
     public static String text ="";
     private Point pt;

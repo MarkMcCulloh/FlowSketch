@@ -133,10 +133,11 @@ public class SaveDialogFragment extends DialogFragment {
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> params = new HashMap<>();
 
+                MyCanvas.objectToString();
                 //insert canvas arguments here
                 params.put("name", canvasName);
                 params.put("background", "gridview");
-                params.put("data", "obj1 obj2");
+                params.put("data", CanvasData.data);
                 params.put("thumbnail", "thumbnaillll");
                 return params;
             }
