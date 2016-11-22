@@ -34,6 +34,8 @@ public class MyCanvas extends View {
     private ScaleGestureDetector mScaleDetector;
     public static float mScaleFactor = 5.f;
     private int mActivePointerId;
+    int addLine;
+    Point lp1, lp2;
 
     private EditText editxt;
 
@@ -71,6 +73,8 @@ public class MyCanvas extends View {
         basicPaint.setColor(Color.BLACK);
         basicPaint.setStyle(Paint.Style.STROKE);
         basicPaint.setStrokeWidth(10f);
+
+        addLine = 0;
 
     }
 
@@ -188,6 +192,9 @@ public class MyCanvas extends View {
             case IMAGE:
                 Objects.add(new ObjectPic(this, mLastTouchX,mLastTouchY,imageMap));
                 break;
+            case LINER:
+                addLine = 1;
+                break;
         }
         text="";
         invalidate();
@@ -283,6 +290,15 @@ public class MyCanvas extends View {
                     if (!flag) {
                         if (selectedobj != null) selectedobj.setSelect(false);
                         selectedobj = null;
+                    }
+
+                    if (addLine == 2) {
+                        lp2 = new Point(cX, cY);
+                        Objects.add(new ShapeLine(this, Object.OBJTYPE.LINER, lp1.getX(), lp1.getY(), lp2.getX(), lp2.getY()));
+                        addLine = 0;
+                    } else if (addLine == 1) {
+                        lp1 = new Point(cX, cY);
+                        addLine++;
                     }
 
                 }

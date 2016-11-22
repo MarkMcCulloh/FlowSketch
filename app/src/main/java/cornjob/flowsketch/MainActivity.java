@@ -170,4 +170,8 @@ public class MainActivity extends AppCompatActivity {
     public void insertImage(MenuItem v) {canvas.addObject(Object.OBJTYPE.IMAGE);
     }
 
+    public void insertLineR(MenuItem v) {
+        canvas.addObject(Object.OBJTYPE.LINER);
+    }
+
 }
