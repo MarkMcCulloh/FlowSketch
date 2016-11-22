@@ -143,7 +143,7 @@ public class ShapeLine extends Object {
     }
 
     @Override
-    public void setColor(int color) {
+    public void setColor(int color, String action) {
 
     }
 
