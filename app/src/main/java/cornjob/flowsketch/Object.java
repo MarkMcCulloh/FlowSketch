@@ -10,7 +10,7 @@ public abstract class Object {
 
     public enum OBJTYPE {
         CIRCLE, LINE, TRIANGLE, RECTANGLE, SQUARE,
-        TEXT, IMAGE
+        TEXT, IMAGE, LINER
     }
 
     public MyCanvas objCanvas;
