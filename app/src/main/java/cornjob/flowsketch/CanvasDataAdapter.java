@@ -60,7 +60,7 @@ public class CanvasDataAdapter extends RecyclerView.Adapter<CanvasDataAdapter.My
         holder.title.setText(canvas.getCanvasName());
         holder.date.setText(canvas.getDate());
 
-        //current_cid= canvas.getCid();
+        current_cid= canvas.getCid();
         // loading album cover using Glide library
        // Glide.with(mContext).load(album.getThumbnail()).into(holder.thumbnail);
 
@@ -96,7 +96,7 @@ public class CanvasDataAdapter extends RecyclerView.Adapter<CanvasDataAdapter.My
         public boolean onMenuItemClick(MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.edit_canvas:
-                    Toast.makeText(mContext, "Edit of canvas" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Edit of canvas" + current_cid , Toast.LENGTH_SHORT).show();
                     return true;
                 case R.id.edit_name:
                     onEditName();
