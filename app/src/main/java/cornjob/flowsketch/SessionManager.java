@@ -17,11 +17,9 @@ import java.util.HashMap;
  * The data will still remain after the app restarts
  * The class is called in AppSingleton to make sure there is only one instance at a time
  * To call use:
- *            AppSingleton.getInstance(getApplicationContext()).getmSession().[some method];
+ * AppSingleton.getInstance(getApplicationContext()).getmSession().[some method];
  * In case it is called inside a fragment:
- *  *         AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().[some method];
-
-
+ * *         AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().[some method];
  */
 public class SessionManager {
     SharedPreferences pref;
@@ -32,16 +30,17 @@ public class SessionManager {
     int PRIVATE_MODE = 0;
 
     private static final String PREF_NAME = "CornJobPref";
-    public static final String EMAIL="email";
-    public static final String API_KEY="api";
-    private static final String IS_LOGIN="login";
-    public static final String USERNAME="user name";
-    public static int current_canvas_id=0;
+    public static final String EMAIL = "email";
+    public static final String API_KEY = "api";
+    private static final String IS_LOGIN = "login";
+    public static final String USERNAME = "user name";
+    public static int current_canvas_id = 0;
     private ArrayList<CanvasData> listwriter;
     public static final String MY_LIST = "my_list";
-    private static final Type LIST_TYPE = new TypeToken<CanvasData>() {}.getType();
+    private static final Type LIST_TYPE = new TypeToken<CanvasData>() {
+    }.getType();
 
-    public SessionManager(Context context){
+    public SessionManager(Context context) {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
@@ -49,8 +48,8 @@ public class SessionManager {
 
     /**
      * Create login session
-     * */
-    public void createLoginSession(String name, String email, String apiKey){
+     */
+    public void createLoginSession(String name, String email, String apiKey) {
 
         editor.putBoolean(IS_LOGIN, true);
 
@@ -68,32 +67,35 @@ public class SessionManager {
 
     /**
      * Set canvasData array as shared ref.
+     *
      * @param listwriter
      */
     public void setCanvasList(ArrayList<CanvasData> listwriter) {
         this.listwriter = new ArrayList<>(listwriter);
 
-        Gson gson= new Gson();
+        Gson gson = new Gson();
         editor.putString(MY_LIST, gson.toJson(listwriter));
         editor.commit();
     }
 
     /**
      * get the CanvasData array
+     *
      * @return
      */
     public ArrayList<CanvasData> getCanvasList() {
         if (listwriter == null) {
             listwriter = new Gson().fromJson(pref.getString(MY_LIST, null), LIST_TYPE);
-            if(listwriter == null){
+            if (listwriter == null) {
                 listwriter = new ArrayList<>();
-           }
+            }
         }
         return listwriter;
     }
 
     /**
      * remove 1 element in the array
+     *
      * @param data
      */
     public void removeCanvas(CanvasData data) {
@@ -102,14 +104,15 @@ public class SessionManager {
             setCanvasList(listwriter);
         }
     }
+
     /**
      * Check login method wil check user login status
      * If false it will redirect user to login page
      * Else won't do anything
-     * */
-    public void checkLogin(){
+     */
+    public void checkLogin() {
         // Check login status
-        if(!this.isLoggedIn()){
+        if (!this.isLoggedIn()) {
             // user is not logged in redirect him to Login Activity
             Intent i = new Intent(_context, LoginActivity.class);
             // Closing all the Activities
@@ -126,8 +129,8 @@ public class SessionManager {
 
     /**
      * Get stored session data
-     * */
-    public HashMap<String, String> getUserDetails(){
+     */
+    public HashMap<String, String> getUserDetails() {
         HashMap<String, String> user = new HashMap<String, String>();
         // user name
         user.put(USERNAME, pref.getString(USERNAME, null));
@@ -143,10 +146,10 @@ public class SessionManager {
 
     /**
      * Create logout session
-     * */
-    public void createLogout(){
+     */
+    public void createLogout() {
         // Clearing all data from Shared Preferences
-        listwriter=null;
+        listwriter = null;
         editor.clear();
         editor.commit();
 
@@ -164,28 +167,27 @@ public class SessionManager {
 
     /**
      * Quick check for login
-     * **/
+     **/
     // Get Login State
-    public boolean isLoggedIn(){
+    public boolean isLoggedIn() {
         return pref.getBoolean(IS_LOGIN, false);
     }
 
     /*
         Check if the data has already loaded
      */
-    public boolean isLoaded(){
-        return listwriter!=null;
+    public boolean isLoaded() {
+        return listwriter != null;
     }
 
 
-    public void setCurrentCanvasID(int id){
-        this.current_canvas_id=id;
+    public void setCurrentCanvasID(int id) {
+        current_canvas_id = id;
     }
 
-    public int getCurrentCanvasID(){
-        return this.current_canvas_id;
+    public int getCurrentCanvasID() {
+        return current_canvas_id;
     }
-
 
 
 }

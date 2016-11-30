@@ -41,6 +41,7 @@ public class SaveDialogFragment extends DialogFragment {
 
     public static final String LOG_TAG = SaveDialogFragment.class.getSimpleName();
     public static String URL_SAVE_CANVAS = "http://flowsketchpi.duckdns.org:8080/sketch_flow/v1/canvas";
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -48,8 +49,8 @@ public class SaveDialogFragment extends DialogFragment {
         //get inflater from activity
         final LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        HashMap<String,String> user=AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().getUserDetails();
-        final String apiKey=user.get(SessionManager.API_KEY);
+        HashMap<String, String> user = AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().getUserDetails();
+        final String apiKey = user.get(SessionManager.API_KEY);
         //inflate custom view to dialog
         builder.setView(inflater.inflate(R.layout.fragment_save_dialog, null))
                 .setTitle(R.string.save_canvas_dialog)
@@ -60,8 +61,8 @@ public class SaveDialogFragment extends DialogFragment {
                         //get text from EditText
                         EditText editText = (EditText) getDialog().findViewById(R.id.edit_canvas_name);
                         String canvasName = editText.getText().toString();
-                        postRequest(canvasName,apiKey);
-                        Toast.makeText(getActivity(),canvasName, Toast.LENGTH_SHORT).show();
+                        postRequest(canvasName, apiKey);
+                        Toast.makeText(getActivity(), canvasName, Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setNegativeButton(R.string.cancel_dialog, new DialogInterface.OnClickListener() {
@@ -88,7 +89,7 @@ public class SaveDialogFragment extends DialogFragment {
     }
 
 
-    public void postRequest(final String canvasName, final String apiKey){
+    public void postRequest(final String canvasName, final String apiKey) {
         Toast.makeText(getActivity(), "Save Canvas", Toast.LENGTH_SHORT).show();
 
 
@@ -117,14 +118,14 @@ public class SaveDialogFragment extends DialogFragment {
                     }
                 }
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<>();
 
                 //insert headers here
                 //headers.put("authorization","06014f0c3c064fbe020009519300df31");
-                headers.put("authorization",apiKey);
+                headers.put("authorization", apiKey);
                 headers.put("Content-Type", "application/x-www-form-urlencoded");
                 return headers;
             }
@@ -143,7 +144,7 @@ public class SaveDialogFragment extends DialogFragment {
             }
         };
 
-        AppSingleton.getInstance(getContext()).addToRequestQueue(stringRequest,"Save");
+        AppSingleton.getInstance(getContext()).addToRequestQueue(stringRequest, "Save");
         //RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         //requestQueue.add(stringRequest);
     }

@@ -8,7 +8,6 @@ package cornjob.flowsketch;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -16,7 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -43,20 +41,21 @@ public class DeleteDialogFragment extends DialogFragment {
     public static final String LOG_TAG = DeleteDialogFragment.class.getSimpleName();
     public static String URL = "http://flowsketchpi.duckdns.org:8080/sketch_flow/v1/canvas/";
     public static String URL_DELETE_CANVAS;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         Bundle mArgs = getArguments();
         String id = mArgs.getString("canvasId");
-        URL_DELETE_CANVAS=URL.concat(id);
+        URL_DELETE_CANVAS = URL.concat(id);
         //get inflater from activity
         final LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        HashMap<String,String> user=AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().getUserDetails();
-        final String apiKey=user.get(SessionManager.API_KEY);
+        HashMap<String, String> user = AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().getUserDetails();
+        final String apiKey = user.get(SessionManager.API_KEY);
         //inflate custom view to dialog
 
-        builder.setView(inflater.inflate(R.layout.fragment_delete ,null))
+        builder.setView(inflater.inflate(R.layout.fragment_delete, null))
                 .setTitle(R.string.delete_canvas)
                 .setPositiveButton(R.string.delete_canvas, new DialogInterface.OnClickListener() {
                     @Override
@@ -89,7 +88,7 @@ public class DeleteDialogFragment extends DialogFragment {
     }
 
 
-    public void deletetRequest(final String apiKey){
+    public void deletetRequest(final String apiKey) {
         //Toast.makeText(getActivity(), "Save Canvas", Toast.LENGTH_SHORT).show();
 
 
@@ -97,9 +96,9 @@ public class DeleteDialogFragment extends DialogFragment {
             @Override
             public void onResponse(String response) {
                 Log.i(LOG_TAG, response);
-               //  Toast.makeText(getActivity().getApplicationContext(),"Canvas Successfully deleted", Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(getActivity().getApplicationContext(),"Canvas Successfully deleted", Toast.LENGTH_SHORT).show();
                 //  Intent intent = new Intent(getActivity(), LoadActivity.class);
-               // startActivity(intent);
+                // startActivity(intent);
 
             }
         }, new Response.ErrorListener() {
@@ -122,20 +121,20 @@ public class DeleteDialogFragment extends DialogFragment {
                     }
                 }
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<>();
 
                 //insert headers here
                 //headers.put("authorization","06014f0c3c064fbe020009519300df31");
-                headers.put("authorization",apiKey);
+                headers.put("authorization", apiKey);
                 headers.put("Content-Type", "application/x-www-form-urlencoded");
                 return headers;
             }
         };
 
-        AppSingleton.getInstance(getContext()).addToRequestQueue(stringRequest,"Delete");
+        AppSingleton.getInstance(getContext()).addToRequestQueue(stringRequest, "Delete");
         //RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         //requestQueue.add(stringRequest);
     }

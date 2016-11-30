@@ -1,12 +1,8 @@
 package cornjob.flowsketch;
 
-
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Path;
 
-
-public class ShapeLine extends Object {
+class ShapeLine extends Object {
 
     public enum ltype {
         WHOLE, START, END
@@ -20,58 +16,6 @@ public class ShapeLine extends Object {
         endPoint = new Point(x2, y2);
 
         currentltype = ltype.WHOLE;
-
-        objPaintRegular = new Paint();
-        objPaintRegular.setAntiAlias(true);
-        objPaintRegular.setColor(Color.BLACK);
-        objPaintRegular.setStyle(Paint.Style.STROKE);
-        objPaintRegular.setStrokeWidth(3f);
-        objPaintRegular.setStyle(Paint.Style.FILL);
-
-        objPaintSelected = new Paint();
-        objPaintSelected.setAntiAlias(true);
-        objPaintSelected.setColor(Color.YELLOW);
-        objPaintSelected.setStyle(Paint.Style.STROKE);
-        objPaintSelected.setStrokeWidth(3f);
-        objPaintSelected.setStyle(Paint.Style.FILL);
-
-        objPaintCurrent = objPaintRegular;
-    }
-
-
-    @Override
-    public int getColor() {
-        return 0;
-    }
-
-    @Override
-    public float getXPos() {
-        return 0;
-    }
-
-    @Override
-    public float getYPos() {
-        return 0;
-    }
-
-    @Override
-    public float getLength() {
-        return 0;
-    }
-
-    @Override
-    public float getWidth() {
-        return 0;
-    }
-
-    @Override
-    public float getRadius() {
-        return 0;
-    }
-
-    @Override
-    public String getFilePath() {
-        return null;
     }
 
     @Override
@@ -99,21 +43,14 @@ public class ShapeLine extends Object {
         path.lineTo(point_x_1, point_y_1);
         path.close();
 
-        objCanvas.canvas.drawLine(objOrigin.getX(), objOrigin.getY(), endPoint.getX(), endPoint.getY(), objPaintCurrent);
-        objCanvas.canvas.drawPath(path, objPaintCurrent);
+        if (objSelect) {
+            updateSelectBorder();
+            objCanvas.canvas.drawLine(objOrigin.getX(), objOrigin.getY(), endPoint.getX(), endPoint.getY(), selectBorder);
+            objCanvas.canvas.drawPath(path, selectBorder);
+        }
 
-        //draw line select points
-        /*
-        switch (currentltype) {
-            case WHOLE:
-                break;
-            case START:
-
-                break;
-            case END:
-
-                break;
-        }*/
+        objCanvas.canvas.drawLine(objOrigin.getX(), objOrigin.getY(), endPoint.getX(), endPoint.getY(), objPaintCurrent_Stroke);
+        objCanvas.canvas.drawPath(path, objPaintCurrent_Fill);
 
         return true;
     }
@@ -132,18 +69,19 @@ public class ShapeLine extends Object {
     }
 
     @Override
-    public void rotate(float angle) {
-        //no time
-    }
-
-    @Override
     public void scale(float factor) {
         //no time
     }
 
-    @Override
-    public void setColor(int color, String action) {
 
+    @Override
+    public String encode() {
+        return ENCODE(objType, objOrigin.getX(), objOrigin.getY(), objPaintCurrent_Fill.getColor(), objPaintCurrent_Stroke.getColor(), -1, -1, endPoint.getX(), endPoint.getX(), -1, -1, "", "", -1, "");
+    }
+
+    @Override
+    public Object decode(String inString) {
+        return null;
     }
 
     static Point closestpointonline(float lx1, float ly1,

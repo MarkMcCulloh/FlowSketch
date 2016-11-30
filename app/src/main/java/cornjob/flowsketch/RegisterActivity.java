@@ -3,24 +3,27 @@ package cornjob.flowsketch;
 /**
  * Created by Khanh on 11/15/2016.
  */
-        import android.app.ProgressDialog;
-        import android.content.Intent;
-        import android.os.Bundle;
-        import android.support.v7.app.AppCompatActivity;
-        import android.util.Log;
-        import android.view.View;
-        import android.widget.Button;
-        import android.widget.EditText;
-        import android.widget.RadioGroup;
-        import android.widget.Toast;
-        import com.android.volley.Request;
-        import com.android.volley.Response;
-        import com.android.volley.VolleyError;
-        import com.android.volley.toolbox.StringRequest;
-        import org.json.JSONException;
-        import org.json.JSONObject;
-        import java.util.HashMap;
-        import java.util.Map;
+
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -58,7 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent i = new Intent(getApplicationContext(),LoginActivity.class);
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(i);
             }
         });
@@ -66,19 +69,14 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void submitForm() {
 
-        if(signupInputName.getText().toString().equals(signupInputRePassword.getText().toString())) {
-            registerUser(signupInputName.getText().toString(),
-                    signupInputEmail.getText().toString(),
-                    signupInputPassword.getText().toString()
-            );
-        }
-        else{
-            Toast.makeText(getApplicationContext(),"Passwords do not match", Toast.LENGTH_LONG).show();
-
-        }
+        registerUser(signupInputName.getText().toString(),
+                signupInputEmail.getText().toString(),
+                signupInputPassword.getText().toString()
+        );
     }
 
-    private void registerUser(final String name,  final String email, final String password) {
+
+    private void registerUser(final String name, final String email, final String password) {
         // Tag used to cancel the request
         String cancel_req_tag = "register";
 
@@ -99,7 +97,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     if (!error) {
                         Toast.makeText(getApplicationContext(), "Hi You are successfully Added!", Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(getApplicationContext(),LoginActivity.class);
+                        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(i);
 
                         // Launch login activity

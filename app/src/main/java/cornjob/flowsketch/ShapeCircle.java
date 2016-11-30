@@ -1,9 +1,6 @@
 package cornjob.flowsketch;
 
-import android.graphics.Paint;
-import android.graphics.Color;
-
-public class ShapeCircle extends Object {
+class ShapeCircle extends Object {
 
     private float circleRadius;
 
@@ -11,58 +8,17 @@ public class ShapeCircle extends Object {
         super(mainCanvas, x, y, OBJTYPE.CIRCLE);
         objOrigin = new Point(x, y);
         circleRadius = r;
-
-        objPaintRegular = new Paint();
-        objPaintRegular.setColor(Color.BLACK);
-        objPaintRegular.setStyle(Paint.Style.STROKE);
-        objPaintRegular.setStrokeWidth(10f);
-
-        objPaintSelected = new Paint();
-        objPaintSelected.setColor(Color.YELLOW);
-        objPaintSelected.setStyle(Paint.Style.STROKE);
-        objPaintSelected.setStrokeWidth(10f);
-
-        objPaintCurrent = objPaintRegular;
-    }
-
-    @Override
-    public int getColor() {
-        return objPaintRegular.getColor();
-    }
-
-    @Override
-    public float getXPos() {
-        return -1;
-    }
-
-    @Override
-    public float getYPos() {
-        return -1;
-    }
-
-    @Override
-    public float getLength() {
-        return -1;
-    }
-
-    @Override
-    public float getWidth() {
-        return -1;
-    }
-
-    @Override
-    public float getRadius() {
-        return circleRadius;
-    }
-
-    @Override
-    public String getFilePath() {
-        return null;
     }
 
     @Override
     public boolean drawThis() {
-        objCanvas.canvas.drawCircle(objOrigin.getX(), objOrigin.getY(), circleRadius, objPaintCurrent);
+        if (objSelect) {
+            updateSelectBorder();
+            objCanvas.canvas.drawCircle(objOrigin.getX(), objOrigin.getY(), circleRadius, selectBorder);
+            objCanvas.canvas.drawCircle(objOrigin.getX(), objOrigin.getY(), circleRadius, selectBorder);
+        }
+        objCanvas.canvas.drawCircle(objOrigin.getX(), objOrigin.getY(), circleRadius, objPaintCurrent_Fill);
+        objCanvas.canvas.drawCircle(objOrigin.getX(), objOrigin.getY(), circleRadius, objPaintCurrent_Stroke);
         return true;
     }
 
@@ -77,33 +33,19 @@ public class ShapeCircle extends Object {
     }
 
     @Override
-    public void rotate(float angle) {
-        //circle lol
-    }
-
-    @Override
     public void scale(float factor) {
         circleRadius *= factor;
     }
 
-
-    public float getCircleRadius() {
-        return circleRadius;
+    @Override
+    public String encode() {
+        return ENCODE(objType, objOrigin.getX(), objOrigin.getY(), objPaintCurrent_Fill.getColor(), objPaintCurrent_Stroke.getColor(), -1, -1, -1, -1, -1, circleRadius, "", "", -1, "");
     }
 
-    public void setCircleRadius(float circleRadius) {
-        this.circleRadius = circleRadius;
+    @Override
+    public Object decode(String inString) {
+        return null;
     }
-    public void setColor(int color,String action){
-        objPaintRegular.setColor(color);
-        if(action == "Fill") {
-            objPaintRegular.setStyle(Paint.Style.FILL);
 
-        }
-        else
-        {
-         objPaintRegular.setStyle(Paint.Style.STROKE);
-        }
-    }
 }
 

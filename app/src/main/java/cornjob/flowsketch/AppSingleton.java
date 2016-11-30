@@ -6,11 +6,10 @@ package cornjob.flowsketch;
  */
 
 import android.content.Context;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-
-import java.io.Serializable;
 
 public class AppSingleton {
     private static AppSingleton mAppSingletonInstance;
@@ -42,7 +41,7 @@ public class AppSingleton {
         return mRequestQueue;
     }
 
-    public <T> void addToRequestQueue(Request<T> req,String tag) {
+    public <T> void addToRequestQueue(Request<T> req, String tag) {
         req.setTag(tag);
         getRequestQueue().add(req);
     }

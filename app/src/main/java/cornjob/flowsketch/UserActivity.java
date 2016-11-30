@@ -6,7 +6,7 @@ package cornjob.flowsketch;
 public class UserActivity {
 
 
-    public void onCreate(){
+    public void onCreate() {
 
     }
 }

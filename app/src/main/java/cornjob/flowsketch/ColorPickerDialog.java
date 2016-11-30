@@ -35,19 +35,19 @@ public class ColorPickerDialog extends AlertDialog {
     private OnClickListener onClickListener = new OnClickListener() {
         public void onClick(DialogInterface dialog, int which) {
             switch (which) {
-            case BUTTON_POSITIVE:
-                int selectedColor = colorPickerView.getColor();
-                onColorSelectedListener.onColorSelected(selectedColor);
-                break;
-            case BUTTON_NEGATIVE:
-                dialog.dismiss();
-                break;
+                case BUTTON_POSITIVE:
+                    int selectedColor = colorPickerView.getColor();
+                    onColorSelectedListener.onColorSelected(selectedColor);
+                    break;
+                case BUTTON_NEGATIVE:
+                    dialog.dismiss();
+                    break;
             }
         }
     };
 
     public interface OnColorSelectedListener {
-        public void onColorSelected(int color);
+        void onColorSelected(int color);
     }
 
 }

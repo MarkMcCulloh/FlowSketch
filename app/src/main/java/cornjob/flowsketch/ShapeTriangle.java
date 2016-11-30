@@ -1,14 +1,8 @@
 package cornjob.flowsketch;
 
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Path;
 
-/**
- * Created by john on 11/16/2016.
- */
-
-public class ShapeTriangle extends Object {
+class ShapeTriangle extends Object {
     private Point p1, p2, p3;
 
     private float triWidth, triHeight;
@@ -19,53 +13,6 @@ public class ShapeTriangle extends Object {
 
         triWidth = w;
         triHeight = h;
-
-        objPaintRegular = new Paint();
-        objPaintRegular.setColor(Color.BLACK);
-        objPaintRegular.setStyle(Paint.Style.STROKE);
-        objPaintRegular.setStrokeWidth(10f);
-
-        objPaintSelected = new Paint();
-        objPaintSelected.setColor(Color.YELLOW);
-        objPaintSelected.setStyle(Paint.Style.STROKE);
-        objPaintSelected.setStrokeWidth(10f);
-
-        objPaintCurrent = objPaintRegular;
-    }
-
-    @Override
-    public int getColor() {
-        return objPaintRegular.getColor();
-    }
-
-    @Override
-    public float getXPos() {
-        return objOrigin.getX();
-    }
-
-    @Override
-    public float getYPos() {
-        return objOrigin.getY();
-    }
-
-    @Override
-    public float getLength() {
-        return triWidth;
-    }
-
-    @Override
-    public float getWidth() {
-        return triWidth;
-    }
-
-    @Override
-    public float getRadius() {
-        return -1;
-    }
-
-    @Override
-    public String getFilePath() {
-        return "";
     }
 
     @Override
@@ -85,7 +32,14 @@ public class ShapeTriangle extends Object {
         path.lineTo(p3.getX(), p3.getY());
         path.close();
 
-        objCanvas.canvas.drawPath(path, objPaintCurrent);
+        if (objSelect) {
+            updateSelectBorder();
+            objCanvas.canvas.drawPath(path, selectBorder);
+            objCanvas.canvas.drawPath(path, selectBorder);
+        }
+
+        objCanvas.canvas.drawPath(path, objPaintCurrent_Fill);
+        objCanvas.canvas.drawPath(path, objPaintCurrent_Stroke);
         return true;
     }
 
@@ -104,26 +58,19 @@ public class ShapeTriangle extends Object {
     }
 
     @Override
-    public void rotate(float angle) {
-
-    }
-
-    @Override
     public void scale(float factor) {
         triHeight *= factor;
         triWidth *= factor;
     }
 
-    @Override
-    public void setColor(int color,String action) {
-        objPaintRegular.setColor(color);
-        if(action == "Fill") {
-            objPaintRegular.setStyle(Paint.Style.FILL);
 
-        }
-        else
-        {
-            objPaintRegular.setStyle(Paint.Style.STROKE);
-        }
+    @Override
+    public String encode() {
+        return ENCODE(objType, objOrigin.getX(), objOrigin.getY(), objPaintCurrent_Fill.getColor(), objPaintCurrent_Stroke.getColor(), -1, triWidth, -1, -1, triHeight, -1, "", "", -1, "");
+    }
+
+    @Override
+    public Object decode(String inString) {
+        return null;
     }
 }

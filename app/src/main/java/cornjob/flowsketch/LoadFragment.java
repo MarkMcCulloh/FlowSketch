@@ -1,7 +1,6 @@
 package cornjob.flowsketch;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -15,9 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -30,28 +26,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static cornjob.flowsketch.DeleteDialogFragment.LOG_TAG;
-
 /**
  * A placeholder fragment containing a simple view.
  */
-public class LoadFragment extends Fragment{
+public class LoadFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private CanvasDataAdapter adapter;
     private ArrayList<CanvasData> canvaslist;
     private ProgressDialog progressDialog;
     private static final String TAG = "LoadingActivity";
-    private static final String URL= "http://flowsketchpi.duckdns.org:8080/sketch_flow/v1/canvas";
+    private static final String URL = "http://flowsketchpi.duckdns.org:8080/sketch_flow/v1/canvas";
     SessionManager session;
     private int current_id;
     private String current_data;
+
     public LoadFragment() {
     }
 
@@ -63,19 +57,19 @@ public class LoadFragment extends Fragment{
 
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCancelable(false);
-        recyclerView=  (RecyclerView) rootview.findViewById(R.id.recycler_view);
+        recyclerView = (RecyclerView) rootview.findViewById(R.id.recycler_view);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
-        session= new SessionManager(getActivity().getApplicationContext());
+        session = new SessionManager(getActivity().getApplicationContext());
 
         //if(!AppSingleton.getInstance(getApplicationContext()).getmSession().isLoaded()){
         HashMap<String, String> user = session.getUserDetails();
-        String api=user.get(SessionManager.API_KEY);
-        getCanvases(api,rootview);
+        String api = user.get(SessionManager.API_KEY);
+        getCanvases(api, rootview);
         //}
 
 
@@ -88,24 +82,20 @@ public class LoadFragment extends Fragment{
         progressDialog.setMessage("Loading...");
         showDialog();
         StringRequest strReq = new StringRequest(Request.Method.GET, URL,
-                new Response.Listener<String>()
-                {
+                new Response.Listener<String>() {
 
                     @Override
-                    public void onResponse(String response)
-                    {
+                    public void onResponse(String response) {
                         Log.d(TAG, "Load Response: " + response);
                         hideDialog();
-                        try
-                        {
+                        try {
                             JSONObject jObj = new JSONObject(response);
                             boolean error = jObj.getBoolean("error");
 
 
-                            if (!error)
-                            {
+                            if (!error) {
 
-                                ArrayList<CanvasData> canvaslist= new ArrayList<>();
+                                ArrayList<CanvasData> canvaslist = new ArrayList<>();
 
                                 JSONArray canvas = jObj.getJSONArray("canvas");
                                 CanvasData temp;
@@ -114,14 +104,13 @@ public class LoadFragment extends Fragment{
                                 String date;
                                 int cid;
                                 String data1;
-                                for (int i=0; i<canvas.length(); i++)
-                                {
-                                    JSONObject item=  canvas.getJSONObject(i);
-                                    cid=item.getInt("cid");
-                                    name=item.getString("name");
-                                    data1 =item.getString("data");
-                                    date=item.getString("createdAt");
-                                    temp= new CanvasData(cid,name, data1,date);
+                                for (int i = 0; i < canvas.length(); i++) {
+                                    JSONObject item = canvas.getJSONObject(i);
+                                    cid = item.getInt("cid");
+                                    name = item.getString("name");
+                                    data1 = item.getString("data");
+                                    date = item.getString("createdAt");
+                                    temp = new CanvasData(cid, name, data1, date);
                                     canvaslist.add(temp);
                                 }
 
@@ -129,20 +118,20 @@ public class LoadFragment extends Fragment{
                                 AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().setCanvasList(canvaslist);
 
                                 final ArrayList<CanvasData> canvaslis;
-                                canvaslis=AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().getCanvasList();
+                                canvaslis = AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().getCanvasList();
                                 Log.i("ArrayTest", Arrays.toString(canvaslis.toArray()));
 
-                                canvaslist=AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().getCanvasList();
-                                LoadFragment manager= (LoadFragment) getTargetFragment();
-                                adapter = new CanvasDataAdapter(getActivity(),canvaslist, new CanvasDataAdapter.OnItemClickListener() {
+                                canvaslist = AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().getCanvasList();
+                                LoadFragment manager = (LoadFragment) getTargetFragment();
+                                adapter = new CanvasDataAdapter(getActivity(), canvaslist, new CanvasDataAdapter.OnItemClickListener() {
 
                                     @Override
                                     public void onClick(View v, int position) {
-                                         CanvasData canvas= canvaslis.get(position);
-                                         int id= canvas.getCid();
-                                         current_data=canvas.getData_temp();
-                                         current_id=id;
-                                         showPopupMenu(v);
+                                        CanvasData canvas = canvaslis.get(position);
+                                        int id = canvas.getCid();
+                                        current_data = canvas.getData_temp();
+                                        current_id = id;
+                                        showPopupMenu(v);
 
                                     }
 
@@ -154,9 +143,7 @@ public class LoadFragment extends Fragment{
                                 recyclerView.invalidate();
 
 
-                            }
-                            else
-                            {
+                            } else {
 
                                 String errorMsg = jObj.getString("message");
                                 Toast.makeText(getActivity().getApplicationContext(),
@@ -168,28 +155,24 @@ public class LoadFragment extends Fragment{
 
                     }
                 },
-                new Response.ErrorListener()
-                {
+                new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error)
-                    {
+                    public void onErrorResponse(VolleyError error) {
                         Log.e(TAG, "Loading Error: " + error.getMessage());
                         Toast.makeText(getActivity().getApplicationContext(),
                                 error.getMessage(), Toast.LENGTH_LONG).show();
                         hideDialog();
                     }
-                })
-        {
+                }) {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError
-            {
+            public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("authorization",api_key);
+                headers.put("authorization", api_key);
                 return headers;
             }
         };
         // Adding request to request queue
-        AppSingleton.getInstance(getActivity().getApplicationContext()).addToRequestQueue(strReq,cancel_req_tag);
+        AppSingleton.getInstance(getActivity().getApplicationContext()).addToRequestQueue(strReq, cancel_req_tag);
     }
 
     private void showDialog() {
@@ -242,12 +225,12 @@ public class LoadFragment extends Fragment{
             return false;
         }
 
-        public void onEdit(){
-            Toast.makeText(getActivity(), "Canvas id : " + current_id + "\n Data: " + current_data , Toast.LENGTH_SHORT).show();
+        public void onEdit() {
+            Toast.makeText(getActivity(), "Canvas id : " + current_id + "\n Data: " + current_data, Toast.LENGTH_SHORT).show();
 
         }
 
-        public void onDeleteCanvas(){
+        public void onDeleteCanvas() {
             Bundle args = new Bundle();
             args.putString("canvasId", String.valueOf(current_id));
             DialogFragment newFragment = new DeleteDialogFragment();
@@ -256,7 +239,7 @@ public class LoadFragment extends Fragment{
         }
 
 
-        public void onEditName(){
+        public void onEditName() {
             Bundle args = new Bundle();
             args.putString("canvasId", String.valueOf(current_id));
             DialogFragment newFragment = new EditNameDialogFragment();
