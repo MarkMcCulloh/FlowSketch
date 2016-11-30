@@ -7,34 +7,29 @@ package cornjob.flowsketch;
 /**
  * Created by john on 11/5/2016.
  */
-public class Point{
-    private float x ;
-    private float y ;
+public class Point {
+    private float x;
+    private float y;
     private int i = 0;
 
-    Point(float x,float y)
-    {
+    Point(float x, float y) {
         this.x = x;
         this.y = y;
     }
 
-    float getX()
-    {
+    float getX() {
         return this.x;
     }
 
-    void setX(float x)
-    {
+    void setX(float x) {
         this.x = x;
     }
 
-    float getY()
-    {
+    float getY() {
         return this.y;
     }
 
-    void setY(float y)
-    {
+    void setY(float y) {
         this.y = y;
     }
 

@@ -1,61 +1,42 @@
 package cornjob.flowsketch;
 
-import android.graphics.Color;
+import android.graphics.BlurMaskFilter;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
-/**
- * Created by john on 11/15/2016.
- */
-public class objectText extends Object {
+class ObjectText extends Object {
     public String text = new String();
 
-    public objectText(MyCanvas mainCanvas, float x, float y, String text, int textsize)
-    {
+    public ObjectText(MyCanvas mainCanvas, float x, float y, String text, int textsize) {
         super(mainCanvas, x, y, OBJTYPE.TEXT);
 
-        objPaintRegular = new Paint();
-        objPaintRegular.setColor(Color.BLACK);
-        objPaintRegular.setStyle(Paint.Style.FILL);
-        objPaintRegular.setTypeface(canvasFragment.face);
-        objPaintRegular.setTextSize(textsize);
-
-        objPaintSelected = new Paint();
-        objPaintSelected.setColor(Color.YELLOW);
-        objPaintSelected.setStyle(Paint.Style.FILL);
-        objPaintSelected.setTypeface(canvasFragment.face);
-        objPaintSelected.setTextSize(textsize);
-
-        objPaintCurrent = objPaintRegular;
-
         this.text = text;
+        objPaintCurrent_Fill.setTextSize(textsize);
+        objPaintCurrent_Stroke.setTextSize(textsize);
     }
 
-    @Override
-    public float getRadius() {
-        return 0;
-    }
-
-    @Override
-    public String getFilePath() {
-        return "";
-    }
-
-    public  boolean drawThis(){
-        objCanvas.canvas.drawText(text, objOrigin.getX(), objOrigin.getY(), objPaintCurrent);
+    public boolean drawThis() {
+        if (objSelect) {
+            updateSelectBorder();
+            selectBorder.setStrokeWidth(objPaintCurrent_Fill.getStrokeWidth() / 6);
+            selectBorder.setMaskFilter(new BlurMaskFilter(objPaintCurrent_Stroke.getTextSize() / 10, BlurMaskFilter.Blur.NORMAL));
+            objCanvas.canvas.drawText(text, objOrigin.getX(), objOrigin.getY(), selectBorder);
+        }
+        objCanvas.canvas.drawText(text, objOrigin.getX(), objOrigin.getY(), objPaintCurrent_Fill);
         return true;
     }
 
-    public  boolean contains(Point test){
-
+    public boolean contains(Point test) {
         Rect bounds = new Rect();
 
-        objPaintCurrent.getTextBounds(text, 0, text.length(), bounds);
+        objPaintCurrent_Fill.getTextBounds(text, 0, text.length(), bounds);
 
-        RectF boundsf = new RectF(bounds);
+        float mTextWidth = objPaintCurrent_Fill.measureText(text);
+        float mTextHeight = bounds.height();
 
-        boundsf.offsetTo(objOrigin.getX(), objOrigin.getY());
+        RectF boundsf = new RectF(objOrigin.getX(), objOrigin.getY(), objOrigin.getX() + mTextWidth, objOrigin.getY() + mTextHeight);
 
         return (boundsf.contains(test.getX(), test.getY()));
     }
@@ -64,45 +45,19 @@ public class objectText extends Object {
         objOrigin.move(xdis, ydis);
     }
 
-    public void rotate(float angle){}
+    @Override
+    public String encode() {
+        return ENCODE(objType, objOrigin.getX(), objOrigin.getY(), objPaintCurrent_Fill.getColor(), objPaintCurrent_Stroke.getColor(), -1, -1, -1, -1, -1, -1, text, "", objPaintCurrent_Fill.getTextSize(), "");
+    }
 
+    @Override
+    public Object decode(String inString) {
+        return null;
+    }
+
+    @Override
     public void scale(float factor) {
-        objPaintRegular.setTextSize(objPaintRegular.getTextSize() * factor);
-        objPaintSelected.setTextSize(objPaintRegular.getTextSize());
-        objPaintCurrent.setTextSize(objPaintRegular.getTextSize());
-    }
-
-    public void setColor(int color, String action) {
-        objPaintRegular.setColor(color);
-        if (action == "Fill") {
-            objPaintRegular.setStyle(Paint.Style.FILL);
-        } else {
-            objPaintRegular.setStyle(Paint.Style.STROKE);
-        }
-    }
-
-    @Override
-    public int getColor() {
-        return objPaintCurrent.getColor();
-    }
-
-    @Override
-    public float getXPos() {
-        return objOrigin.getX();
-    }
-
-    @Override
-    public float getYPos() {
-        return objOrigin.getY();
-    }
-
-    @Override
-    public float getLength() {
-        return -1f;
-    }
-
-    @Override
-    public float getWidth() {
-        return -1f;
+        objPaintCurrent_Fill.setTextSize(objPaintCurrent_Fill.getTextSize() * factor);
+        objPaintCurrent_Stroke.setTextSize(objPaintCurrent_Stroke.getTextSize() * factor);
     }
 }

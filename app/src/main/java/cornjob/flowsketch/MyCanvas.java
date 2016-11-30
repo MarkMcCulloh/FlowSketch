@@ -15,21 +15,16 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
-import android.widget.EditText;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-
-/**
- * Created by john on 9/25/2016.
- */
 public class MyCanvas extends View {
     Context context;
     public static ArrayList<Object> Objects = new ArrayList<>();
     public static Bundle mMyAppsBundle = new Bundle();
 
-    public static boolean is_Marked, remove_Object, inputText, verify_Text = false;
+
     public Object selectedobj;
     private ScaleGestureDetector mScaleDetector;
     public static float mScaleFactor = 1.0f;
@@ -50,14 +45,13 @@ public class MyCanvas extends View {
     public String text = new String();
 
     public Canvas canvas;
-    private Bitmap bitmap,imageMap;
+    private Bitmap bitmap, imageMap;
     public static String filePath;
     private static final int MAX_CLICK_DURATION = 150;
     private long startClickTime;
 
-    public MyCanvas(Context c, AttributeSet attributeSet )
-    {
-        super(c,attributeSet);
+    public MyCanvas(Context c, AttributeSet attributeSet) {
+        super(c, attributeSet);
         context = c;
 
         mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
@@ -66,7 +60,7 @@ public class MyCanvas extends View {
 
         canvas = new Canvas();
 
-        MyCanvas.mMyAppsBundle.putString("is_marked","value");
+        MyCanvas.mMyAppsBundle.putString("is_marked", "value");
 
         basicPaint = new Paint();
         basicPaint.setColor(Color.BLACK);
@@ -79,37 +73,21 @@ public class MyCanvas extends View {
         mPosY = 600;
     }
 
-    public static void objectToString(){
-
-        for(Object obj: Objects)
-        {
-                CanvasData.data += "[" + obj.objType + ",";
-                CanvasData.data += obj.getXPos() + ",";
-                CanvasData.data += obj.getYPos() + ",";
-                CanvasData.data += obj.getLength() + ",";
-                CanvasData.data += obj.getWidth() + ",";
-                CanvasData.data += obj.getRadius() + ",";
-                CanvasData.data += obj.getColor() +",";
-
-                //made file path Global. i had to many issues
-                CanvasData.data += filePath + "]";
-
+    public static void objectToString() {
+        for (Object obj : Objects) {
+            CanvasData.data += obj.encode();
         }
-
     }
 
 
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-
         super.onSizeChanged(w, h, oldw, oldh);
         bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(bitmap);
-
     }
 
 
-    protected void onDraw(Canvas canvas)
-    {
+    protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
         this.canvas = canvas;
@@ -118,8 +96,12 @@ public class MyCanvas extends View {
         canvas.translate(mPosX, mPosY);
         canvas.scale(mScaleFactor, mScaleFactor);
 
+        canvas.drawColor(Color.GRAY);
+
         canvas.drawLine(0, -10000, 0, 10000, basicPaint);
         canvas.drawLine(-10000, 0, 10000, 0, basicPaint);
+
+        canvas.drawCircle(cX, cY, 40, basicPaint);
 
         for (Object obj : Objects) {
             obj.drawThis();
@@ -129,37 +111,26 @@ public class MyCanvas extends View {
         canvas.restore();
     }
 
-    public void reset()
-    {
+    public void reset() {
         Objects.clear();
         CanvasData.data = "";
         invalidate();
     }
 
-    public void setBitmap(Bitmap b)
-    {
+    public void setBitmap(Bitmap b) {
         this.imageMap = b;
     }
 
-    public void setText(String text, Point orgin)
-    {
-        this.text = text;
-    }
-
-    public void setColor(int color, String action)
-    {
-        for(Object obj: Objects)
-        {
-            if(obj.objSelect)
-            {
-                obj.setColor(color,action);
-            }
-
+    public void setColor(int color, String action) {
+        if (action.compareTo("Stroke") == 0) {
+            selectedobj.setStroke(color);
+        } else {
+            selectedobj.setFill(color);
         }
+
     }
 
-    public void delete()
-    {
+    public void delete() {
         Objects.remove(selectedobj);
         selectedobj = null;
         invalidate();
@@ -198,7 +169,7 @@ public class MyCanvas extends View {
                 Objects.add(new ShapeRect(this, middlex, middley, 100));
                 break;
             case TEXT:
-                objectText newText = new objectText(this, middlex, middley, text, this.getWidth() / 5);
+                ObjectText newText = new ObjectText(this, middlex, middley, text, this.getWidth() / 6);
                 select(newText);
                 Objects.add(newText);
                 break;
@@ -210,7 +181,7 @@ public class MyCanvas extends View {
                 addLine = 1;
                 break;
         }
-        text="";
+        text = "";
         invalidate();
     }
 
@@ -260,12 +231,13 @@ public class MyCanvas extends View {
 
         final float x = ev.getX();
         final float y = ev.getY();
+
         cX = mClickCoords[0];
         cY = mClickCoords[1];
 
         switch (action & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN: {
-                MainActivity.text ="";
+                MainActivity.text = "";
                 startClickTime = Calendar.getInstance().getTimeInMillis();
                 mLastTouchX = x;
                 mLastTouchY = y;
@@ -275,28 +247,30 @@ public class MyCanvas extends View {
             case MotionEvent.ACTION_MOVE: {
                 // Only move if the ScaleGestureDetector isn't processing a gesture.
                 if (!mScaleDetector.isInProgress()) {
-                    final float dx = x - mLastTouchX; // change in X
-                    final float dy = y - mLastTouchY; // change in Y
+                    final float dx = (x - mLastTouchX); // change in X
+                    final float dy = (y - mLastTouchY); // change in Y
 
                     if (selectedobj != null) {
-                        selectedobj.translate(dx, dy);
+                        selectedobj.translate(dx / mScaleFactor, dy / mScaleFactor);
                     } else {
                         mPosX += dx;
                         mPosY += dy;
                     }
-                    invalidate();
 
                 }
 
+                invalidate();
+
                 mLastTouchX = x;
                 mLastTouchY = y;
+
                 break;
 
             }
             case MotionEvent.ACTION_UP: {
 
                 long clickDuration = Calendar.getInstance().getTimeInMillis() - startClickTime;
-                if (clickDuration < MAX_CLICK_DURATION) {
+                if (clickDuration < MAX_CLICK_DURATION && !mScaleDetector.isInProgress()) {
                     //selects object if tapped
                     //deselected all objects if nothing was tapped
 

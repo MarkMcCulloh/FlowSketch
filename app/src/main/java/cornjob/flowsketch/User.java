@@ -5,24 +5,25 @@ package cornjob.flowsketch;
  */
 
 public class User {
-    private  static String name;
-    private  static String email;
-    private  static String api_key;
+    private static String name;
+    private static String email;
+    private static String api_key;
     private int uid;
 
-    public User(String name, String email, String api){
-        this.name=name;
-        this.email=email;
-        this.api_key=api;
+    public User(String name, String email, String api) {
+        User.name = name;
+        User.email = email;
+        api_key = api;
         //this.uid=uid;
 
     }
 
-    public User(){
+    public User() {
 
     }
+
     public void setName(String name) {
-        this.name = name;
+        User.name = name;
     }
 
     public String getApi_key() {
@@ -30,7 +31,7 @@ public class User {
     }
 
     public void setApi_key(String api_key) {
-        this.api_key = api_key;
+        User.api_key = api_key;
     }
 
     public String getName() {
@@ -42,7 +43,7 @@ public class User {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        User.email = email;
     }
 
     public int getUid() {

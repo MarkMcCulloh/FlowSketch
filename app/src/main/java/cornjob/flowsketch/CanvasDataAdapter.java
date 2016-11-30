@@ -1,18 +1,11 @@
 package cornjob.flowsketch;
 
-import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Response;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import static cornjob.flowsketch.DeleteDialogFragment.LOG_TAG;
 
 /**
  * Created by Nguyen on 11/20/2016.
@@ -46,9 +35,7 @@ public class CanvasDataAdapter extends RecyclerView.Adapter<CanvasDataAdapter.My
     LoadFragment loadFragment;
 
 
-
-
-    public class MyViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener{
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView title, date;
         public int thisid;
         public ImageView thumbnail, overflow;
@@ -57,20 +44,19 @@ public class CanvasDataAdapter extends RecyclerView.Adapter<CanvasDataAdapter.My
             super(view);
             title = (TextView) view.findViewById(R.id.title);
             date = (TextView) view.findViewById(R.id.date);
-           // thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
+            // thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
             overflow = (ImageView) view.findViewById(R.id.overflow);
             view.setOnClickListener(this);
         }
-
 
 
         @Override
         public void onClick(View v) {
             //itemListener.recyclerViewListClicked(v, this.getAdapterPosition());
 
-            int position=getAdapterPosition();
-            CanvasData canvas= canvasList.get(position);
-            int view_current_cid= canvas.getCid();
+            int position = getAdapterPosition();
+            CanvasData canvas = canvasList.get(position);
+            int view_current_cid = canvas.getCid();
             //Toast.makeText(mContext, "view Id canvas" +view_current_cid, Toast.LENGTH_SHORT).show();
 
 
@@ -81,10 +67,10 @@ public class CanvasDataAdapter extends RecyclerView.Adapter<CanvasDataAdapter.My
     public CanvasDataAdapter(Context mContext, ArrayList<CanvasData> canvasList, OnItemClickListener listener) {
         this.mContext = mContext;
         this.canvasList = canvasList;
-        this.listener= listener;
-       // this.itemListener = itemListener;
-        this.deleteFragment=deleteFragment;
-        this.loadFragment=loadFragment;
+        this.listener = listener;
+        // this.itemListener = itemListener;
+        this.deleteFragment = deleteFragment;
+        this.loadFragment = loadFragment;
     }
 
     @Override
@@ -101,13 +87,13 @@ public class CanvasDataAdapter extends RecyclerView.Adapter<CanvasDataAdapter.My
         holder.title.setText(canvas.getCanvasName());
         holder.date.setText(canvas.getDate());
         //current_cid= canvas.getCid();
-        holder.thisid=canvas.getCid();
+        holder.thisid = canvas.getCid();
 
         holder.overflow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // current_cid=holder.thisid;
-               // showPopupMenu(holder.overflow);
+                // current_cid=holder.thisid;
+                // showPopupMenu(holder.overflow);
                 listener.onClick(view, position);
 
             }
@@ -116,17 +102,17 @@ public class CanvasDataAdapter extends RecyclerView.Adapter<CanvasDataAdapter.My
 
     /**
      * Showing popup menu when tapping on 3 dots
-
-    private void showPopupMenu(View view) {
-        // inflate menu
-        PopupMenu popup = new PopupMenu(mContext, view);
-        MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.menu_on_load, popup.getMenu());
-        popup.setOnMenuItemClickListener(new MyMenuItemClickListener());
-        popup.show();
-    }
-
-    /**
+     * <p>
+     * private void showPopupMenu(View view) {
+     * // inflate menu
+     * PopupMenu popup = new PopupMenu(mContext, view);
+     * MenuInflater inflater = popup.getMenuInflater();
+     * inflater.inflate(R.menu.menu_on_load, popup.getMenu());
+     * popup.setOnMenuItemClickListener(new MyMenuItemClickListener());
+     * popup.show();
+     * }
+     * <p>
+     * /**
      * Click listener for popup menu items
      */
 
@@ -139,7 +125,7 @@ public class CanvasDataAdapter extends RecyclerView.Adapter<CanvasDataAdapter.My
         public boolean onMenuItemClick(MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.edit_canvas:
-                    Toast.makeText(mContext, "Edit of canvas" +current_cid , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Edit of canvas" + current_cid, Toast.LENGTH_SHORT).show();
                     return true;
                 case R.id.edit_name:
                     onEditName();
@@ -160,17 +146,15 @@ public class CanvasDataAdapter extends RecyclerView.Adapter<CanvasDataAdapter.My
         return canvasList.size();
     }
 
-    public void onEdit(){
+    public void onEdit() {
 
     }
 
-    public void onEditName(){
+    public void onEditName() {
         final String TAG = "Delete";
-        String URL= "http://flowsketchpi.duckdns.org:8080/sketch_flow/v1/delete/";
-        String id= String.valueOf(current_cid);
-        URL=URL.concat(id);
-
-
+        String URL = "http://flowsketchpi.duckdns.org:8080/sketch_flow/v1/delete/";
+        String id = String.valueOf(current_cid);
+        URL = URL.concat(id);
 
 
     }
@@ -182,7 +166,7 @@ public class CanvasDataAdapter extends RecyclerView.Adapter<CanvasDataAdapter.My
         Bundle args = new Bundle();
         args.putString("id", id);
         deleteFragment.setArguments(args);
-       // FragmentManager manager = ((Activity)mContext).getFragmemtManager();
+        // FragmentManager manager = ((Activity)mContext).getFragmemtManager();
 
         //FragmentTransaction transaction = manager.beginTransaction();
         //transaction.replace(R.id., deleteFragment);
@@ -193,9 +177,9 @@ public class CanvasDataAdapter extends RecyclerView.Adapter<CanvasDataAdapter.My
 
     }
 
-    public void setFragment(DeleteDialogFragment frag){
+    public void setFragment(DeleteDialogFragment frag) {
 
         //FragmentTransaction transaction = ((MainActivity) mContext).setFragment();
-       // transaction.replace(R.id.delete_fragment, frag);
+        // transaction.replace(R.id.delete_fragment, frag);
     }
 }
