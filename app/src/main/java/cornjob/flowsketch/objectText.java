@@ -1,36 +1,108 @@
 package cornjob.flowsketch;
 
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
+
 /**
  * Created by john on 11/15/2016.
  */
-public class ObjectText extends Object {
-    private String text = new String();
-    private float startx;
-    private float starty;
+public class objectText extends Object {
+    public String text = new String();
 
-    public ObjectText(MyCanvas maincanvas,float x, float y,OBJTYPE text)
+    public objectText(MyCanvas mainCanvas, float x, float y, String text, int textsize)
     {
-        super(maincanvas,x,y,text);
-        startx = x;
-        starty =y;
+        super(mainCanvas, x, y, OBJTYPE.TEXT);
 
-    }
-    public void setText(String text)
-    {
+        objPaintRegular = new Paint();
+        objPaintRegular.setColor(Color.BLACK);
+        objPaintRegular.setStyle(Paint.Style.FILL);
+        objPaintRegular.setTypeface(canvasFragment.face);
+        objPaintRegular.setTextSize(textsize);
+
+        objPaintSelected = new Paint();
+        objPaintSelected.setColor(Color.YELLOW);
+        objPaintSelected.setStyle(Paint.Style.FILL);
+        objPaintSelected.setTypeface(canvasFragment.face);
+        objPaintSelected.setTextSize(textsize);
+
+        objPaintCurrent = objPaintRegular;
+
         this.text = text;
-
     }
-    public String getText()
-    {
-        return this.text;
+
+    @Override
+    public float getRadius() {
+        return 0;
     }
-    public  boolean drawThis(){return true;}
 
-    public  boolean contains(Point test){return false;}
+    @Override
+    public String getFilePath() {
+        return "";
+    }
 
-    public  void translate(float xdis, float ydis){}
+    public  boolean drawThis(){
+        objCanvas.canvas.drawText(text, objOrigin.getX(), objOrigin.getY(), objPaintCurrent);
+        return true;
+    }
 
-    public  void rotate(float angle){}
+    public  boolean contains(Point test){
 
-    public  void scale(float factor){}
+        Rect bounds = new Rect();
+
+        objPaintCurrent.getTextBounds(text, 0, text.length(), bounds);
+
+        RectF boundsf = new RectF(bounds);
+
+        boundsf.offsetTo(objOrigin.getX(), objOrigin.getY());
+
+        return (boundsf.contains(test.getX(), test.getY()));
+    }
+
+    public void translate(float xdis, float ydis) {
+        objOrigin.move(xdis, ydis);
+    }
+
+    public void rotate(float angle){}
+
+    public void scale(float factor) {
+        objPaintRegular.setTextSize(objPaintRegular.getTextSize() * factor);
+        objPaintSelected.setTextSize(objPaintRegular.getTextSize());
+        objPaintCurrent.setTextSize(objPaintRegular.getTextSize());
+    }
+
+    public void setColor(int color, String action) {
+        objPaintRegular.setColor(color);
+        if (action == "Fill") {
+            objPaintRegular.setStyle(Paint.Style.FILL);
+        } else {
+            objPaintRegular.setStyle(Paint.Style.STROKE);
+        }
+    }
+
+    @Override
+    public int getColor() {
+        return objPaintCurrent.getColor();
+    }
+
+    @Override
+    public float getXPos() {
+        return objOrigin.getX();
+    }
+
+    @Override
+    public float getYPos() {
+        return objOrigin.getY();
+    }
+
+    @Override
+    public float getLength() {
+        return -1f;
+    }
+
+    @Override
+    public float getWidth() {
+        return -1f;
+    }
 }

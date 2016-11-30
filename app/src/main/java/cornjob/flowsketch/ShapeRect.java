@@ -1,8 +1,7 @@
 package cornjob.flowsketch;
 
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.RectF;
 
 public class ShapeRect extends Object {
@@ -46,6 +45,41 @@ public class ShapeRect extends Object {
     }
 
     @Override
+    public int getColor() {
+        return objPaintRegular.getColor();
+    }
+
+    @Override
+    public float getXPos() {
+        return fullRect.centerX();
+    }
+
+    @Override
+    public float getYPos() {
+        return fullRect.centerY();
+    }
+
+    @Override
+    public float getLength() {
+        return fullRect.height();
+    }
+
+    @Override
+    public float getWidth() {
+        return fullRect.width();
+    }
+
+    @Override
+    public float getRadius() {
+        return -1;
+    }
+
+    @Override
+    public String getFilePath() {
+        return "";
+    }
+
+    @Override
     public boolean drawThis() {
         objCanvas.canvas.drawRect(fullRect, objPaintCurrent);
         return true;
@@ -60,7 +94,8 @@ public class ShapeRect extends Object {
     @Override
     public void translate(float xdis, float ydis) {
         objOrigin.move(xdis, ydis);
-        fullRect.offset(xdis, ydis);
+        fullRect.set(objOrigin.getX(),objOrigin.getY(),fullRect.width()+objOrigin.getX(),fullRect.height()+objOrigin.getY());
+        //fullRect.offset(xdis, ydis);
     }
 
     @Override
@@ -70,7 +105,19 @@ public class ShapeRect extends Object {
 
     @Override
     public void scale(float factor) {
+        fullRect.set((fullRect.left - 1) * factor, (fullRect.top - 1) * factor, (fullRect.right + 1) * factor, (fullRect.bottom + 1) * factor);
 
+    }
+    public void setColor(int color,String action){
+        objPaintRegular.setColor(color);
+        if(action == "Fill") {
+            objPaintRegular.setStyle(Paint.Style.FILL);
+
+        }
+        else
+        {
+            objPaintRegular.setStyle(Paint.Style.STROKE);
+        }
     }
 }
 

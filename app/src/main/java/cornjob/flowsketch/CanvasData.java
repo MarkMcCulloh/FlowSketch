@@ -9,20 +9,21 @@ import java.io.Serializable;
 public class CanvasData implements Serializable{
     private int cid;
     private String canvasName;
-    private String data;
+    public static String data ;
+    private String data_temp;
     private String date;
 
     public CanvasData(int cid, String name, String data, String date){
         this.cid=cid;
         this.canvasName=name;
-        this.data=data;
+        this.data_temp=data;
         this.date=date;
     }
 
     public CanvasData(int cid, String name, String date){
         this.cid=cid;
         this.canvasName=name;
-        this.data=null;
+        this.data_temp=null;
         this.date=date;
     }
 
@@ -62,5 +63,13 @@ public class CanvasData implements Serializable{
 
     public String toString(){
         return  "Title: " + canvasName + "\nDate: " + date ;
+    }
+
+    public String getData_temp() {
+        return data_temp;
+    }
+
+    public void setData_temp(String data_temp) {
+        this.data_temp = data_temp;
     }
 }

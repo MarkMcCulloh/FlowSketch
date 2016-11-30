@@ -80,11 +80,36 @@
     <!--Text-->
     <item
         android:icon="@drawable/text_icon"
-        android:id="@+id/text_item"
+        android:id="@+id/font_item"
         app:showAsAction="always"
-        android:title="Text">
+        android:titleCondensed=""
+        android:title="Font">
+
+        <menu>
+            <item
+                android:id="@+id/font_calibri"
+                android:title="Calibri"
+                android:titleCondensed="" />
+            <item
+                android:id="@+id/font_magenta"
+                android:title="Magenta"
+                android:titleCondensed="" />
+            <item
+                android:id="@+id/font_times_new_roman"
+                android:title="Times New Roman"
+                android:titleCondensed="" />
+            <item
+                android:id="@+id/font_agency_fb"
+                android:title="Agency FB"
+                android:titleCondensed="" />
+            <item
+                android:id="@+id/font_comic_sans_ms"
+                android:title="Comic Sans MS"
+                android:titleCondensed="" />
+        </menu>
 
     </item>
+
 
 
     <!--Image-->
@@ -119,7 +144,7 @@
     <item
         android:id="@+id/save_canvas_action"
         app:showAsAction="never"
-        android:title="Save"/>
+        android:title="Save" />
 
 
     <!--Load-->

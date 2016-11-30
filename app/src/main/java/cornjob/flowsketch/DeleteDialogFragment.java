@@ -8,6 +8,7 @@ package cornjob.flowsketch;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -37,31 +38,31 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SaveDialogFragment extends DialogFragment {
+public class DeleteDialogFragment extends DialogFragment {
 
-    public static final String LOG_TAG = SaveDialogFragment.class.getSimpleName();
-    public static String URL_SAVE_CANVAS = "http://flowsketchpi.duckdns.org:8080/sketch_flow/v1/canvas";
+    public static final String LOG_TAG = DeleteDialogFragment.class.getSimpleName();
+    public static String URL = "http://flowsketchpi.duckdns.org:8080/sketch_flow/v1/canvas/";
+    public static String URL_DELETE_CANVAS;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
+        Bundle mArgs = getArguments();
+        String id = mArgs.getString("canvasId");
+        URL_DELETE_CANVAS=URL.concat(id);
         //get inflater from activity
         final LayoutInflater inflater = getActivity().getLayoutInflater();
 
         HashMap<String,String> user=AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().getUserDetails();
         final String apiKey=user.get(SessionManager.API_KEY);
         //inflate custom view to dialog
-        builder.setView(inflater.inflate(R.layout.fragment_save_dialog, null))
-                .setTitle(R.string.save_canvas_dialog)
-                .setPositiveButton(R.string.save_dialog, new DialogInterface.OnClickListener() {
+
+        builder.setView(inflater.inflate(R.layout.fragment_delete ,null))
+                .setTitle(R.string.delete_canvas)
+                .setPositiveButton(R.string.delete_canvas, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        //get text from EditText
-                        EditText editText = (EditText) getDialog().findViewById(R.id.edit_canvas_name);
-                        String canvasName = editText.getText().toString();
-                        postRequest(canvasName,apiKey);
-                        Toast.makeText(getActivity(),canvasName, Toast.LENGTH_SHORT).show();
+                        deletetRequest(apiKey);
                     }
                 })
                 .setNegativeButton(R.string.cancel_dialog, new DialogInterface.OnClickListener() {
@@ -75,7 +76,7 @@ public class SaveDialogFragment extends DialogFragment {
         return builder.create();
     }
 
-    public SaveDialogFragment() {
+    public DeleteDialogFragment() {
         // Required empty public constructor
     }
 
@@ -84,18 +85,22 @@ public class SaveDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_save_dialog, container, false);
+        return inflater.inflate(R.layout.fragment_delete, container, false);
     }
 
 
-    public void postRequest(final String canvasName, final String apiKey){
-        Toast.makeText(getActivity(), "Save Canvas", Toast.LENGTH_SHORT).show();
+    public void deletetRequest(final String apiKey){
+        //Toast.makeText(getActivity(), "Save Canvas", Toast.LENGTH_SHORT).show();
 
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_SAVE_CANVAS, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.DELETE, URL_DELETE_CANVAS, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.i(LOG_TAG, response);
+               //  Toast.makeText(getActivity().getApplicationContext(),"Canvas Successfully deleted", Toast.LENGTH_SHORT).show();
+                //  Intent intent = new Intent(getActivity(), LoadActivity.class);
+               // startActivity(intent);
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -128,22 +133,9 @@ public class SaveDialogFragment extends DialogFragment {
                 headers.put("Content-Type", "application/x-www-form-urlencoded");
                 return headers;
             }
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String, String> params = new HashMap<>();
-
-                MyCanvas.objectToString();
-                //insert canvas arguments here
-                params.put("name", canvasName);
-                params.put("background", "gridview");
-                params.put("data", CanvasData.data);
-                params.put("thumbnail", "thumbnaillll");
-                return params;
-            }
         };
 
-        AppSingleton.getInstance(getContext()).addToRequestQueue(stringRequest,"Save");
+        AppSingleton.getInstance(getContext()).addToRequestQueue(stringRequest,"Delete");
         //RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         //requestQueue.add(stringRequest);
     }

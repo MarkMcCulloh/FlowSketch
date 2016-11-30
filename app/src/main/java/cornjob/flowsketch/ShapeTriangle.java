@@ -10,8 +10,9 @@ import android.graphics.Path;
 
 public class ShapeTriangle extends Object {
     private Point p1, p2, p3;
-    private Path triPath;
+
     private float triWidth, triHeight;
+
 
     ShapeTriangle(MyCanvas mainCanvas, float x, float y, float w, float h) {
         super(mainCanvas, x, y, OBJTYPE.TRIANGLE);
@@ -30,6 +31,41 @@ public class ShapeTriangle extends Object {
         objPaintSelected.setStrokeWidth(10f);
 
         objPaintCurrent = objPaintRegular;
+    }
+
+    @Override
+    public int getColor() {
+        return objPaintRegular.getColor();
+    }
+
+    @Override
+    public float getXPos() {
+        return objOrigin.getX();
+    }
+
+    @Override
+    public float getYPos() {
+        return objOrigin.getY();
+    }
+
+    @Override
+    public float getLength() {
+        return triWidth;
+    }
+
+    @Override
+    public float getWidth() {
+        return triWidth;
+    }
+
+    @Override
+    public float getRadius() {
+        return -1;
+    }
+
+    @Override
+    public String getFilePath() {
+        return "";
     }
 
     @Override
@@ -76,5 +112,18 @@ public class ShapeTriangle extends Object {
     public void scale(float factor) {
         triHeight *= factor;
         triWidth *= factor;
+    }
+
+    @Override
+    public void setColor(int color,String action) {
+        objPaintRegular.setColor(color);
+        if(action == "Fill") {
+            objPaintRegular.setStyle(Paint.Style.FILL);
+
+        }
+        else
+        {
+            objPaintRegular.setStyle(Paint.Style.STROKE);
+        }
     }
 }

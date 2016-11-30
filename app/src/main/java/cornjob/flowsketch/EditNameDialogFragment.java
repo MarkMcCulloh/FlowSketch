@@ -37,14 +37,17 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SaveDialogFragment extends DialogFragment {
+public class EditNameDialogFragment extends DialogFragment {
 
-    public static final String LOG_TAG = SaveDialogFragment.class.getSimpleName();
-    public static String URL_SAVE_CANVAS = "http://flowsketchpi.duckdns.org:8080/sketch_flow/v1/canvas";
+    public static final String LOG_TAG = EditNameDialogFragment.class.getSimpleName();
+    public static String URL = "http://flowsketchpi.duckdns.org:8080/sketch_flow/v1/canvasTitle/";
+    public static String URL_UPDATE_CANVAS;;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
+        Bundle mArgs = getArguments();
+        String id = mArgs.getString("canvasId");
+        URL_UPDATE_CANVAS=URL.concat(id);
         //get inflater from activity
         final LayoutInflater inflater = getActivity().getLayoutInflater();
 
@@ -75,7 +78,7 @@ public class SaveDialogFragment extends DialogFragment {
         return builder.create();
     }
 
-    public SaveDialogFragment() {
+    public EditNameDialogFragment() {
         // Required empty public constructor
     }
 
@@ -89,10 +92,10 @@ public class SaveDialogFragment extends DialogFragment {
 
 
     public void postRequest(final String canvasName, final String apiKey){
-        Toast.makeText(getActivity(), "Save Canvas", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getActivity(), "Save Canvas", Toast.LENGTH_SHORT).show();
 
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_SAVE_CANVAS, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.PUT, URL_UPDATE_CANVAS, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.i(LOG_TAG, response);
@@ -100,22 +103,10 @@ public class SaveDialogFragment extends DialogFragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //06014f0c3c064fbe020009519300df31
-                NetworkResponse response = error.networkResponse;
-                if (error instanceof ServerError && response != null) {
-                    try {
-                        String res = new String(response.data,
-                                HttpHeaderParser.parseCharset(response.headers, "utf-8"));
-                        // Now you can use any deserializer to make sense of data
-                        JSONObject obj = new JSONObject(res);
-                    } catch (UnsupportedEncodingException e1) {
-                        // Couldn't properly decode data to string
-                        e1.printStackTrace();
-                    } catch (JSONException e2) {
-                        // returned data is not JSONObject?
-                        e2.printStackTrace();
-                    }
-                }
+                Log.e(LOG_TAG, "Edit Error: " + error.getMessage());
+//                Toast.makeText(getActivity(),
+  ///                      error.getMessage(), Toast.LENGTH_LONG).show();
+                //hideDialog();
             }
         }){
             @Override
@@ -136,9 +127,6 @@ public class SaveDialogFragment extends DialogFragment {
                 MyCanvas.objectToString();
                 //insert canvas arguments here
                 params.put("name", canvasName);
-                params.put("background", "gridview");
-                params.put("data", CanvasData.data);
-                params.put("thumbnail", "thumbnaillll");
                 return params;
             }
         };

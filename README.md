@@ -1,6 +1,40 @@
 # FlowSketch
 Diagram Sketching Android App
+
 COP 4331C Fall 2016
+
+##Current TODO
+
+Text:
+* Scaling
+* Moving
+* Change Font
+* Change Color
+Line:
+* ~~line types~~
+* ~~add line (tap point 1 then point 2)~~
+* move line (tap line, tap again to toggle points, then move)
+* change color
+
+All Shapes:
+* change fill
+
+Rectangle:
+* ~~movement bug~~
+
+Image:
+* scaling
+* ~~movement~~
+
+save/load:
+* finalize
+
+--------------------
+
+Object Props:
+[TYPE, X, Y, SCALE, STROKE_COLOR, FILL_COLOR, STROKE_SIZE, FONT, IMG_PATH]
+
+
 
 ### Workflow Description
 How to Start:

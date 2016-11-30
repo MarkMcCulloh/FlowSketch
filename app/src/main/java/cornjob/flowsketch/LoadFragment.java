@@ -3,12 +3,16 @@ package cornjob.flowsketch;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -32,10 +36,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import static cornjob.flowsketch.DeleteDialogFragment.LOG_TAG;
+
 /**
  * A placeholder fragment containing a simple view.
  */
-public class LoadFragment extends Fragment {
+public class LoadFragment extends Fragment{
 
     private RecyclerView recyclerView;
     private CanvasDataAdapter adapter;
@@ -44,6 +50,8 @@ public class LoadFragment extends Fragment {
     private static final String TAG = "LoadingActivity";
     private static final String URL= "http://flowsketchpi.duckdns.org:8080/sketch_flow/v1/canvas";
     SessionManager session;
+    private int current_id;
+    private String current_data;
     public LoadFragment() {
     }
 
@@ -101,16 +109,19 @@ public class LoadFragment extends Fragment {
 
                                 JSONArray canvas = jObj.getJSONArray("canvas");
                                 CanvasData temp;
-                                String name, data,date;
+                                String name;
+                                final String[] data = new String[1];
+                                String date;
                                 int cid;
+                                String data1;
                                 for (int i=0; i<canvas.length(); i++)
                                 {
                                     JSONObject item=  canvas.getJSONObject(i);
                                     cid=item.getInt("cid");
                                     name=item.getString("name");
-                                    data=item.getString("data");
+                                    data1 =item.getString("data");
                                     date=item.getString("createdAt");
-                                    temp= new CanvasData(cid,name,data,date);
+                                    temp= new CanvasData(cid,name, data1,date);
                                     canvaslist.add(temp);
                                 }
 
@@ -122,9 +133,26 @@ public class LoadFragment extends Fragment {
                                 Log.i("ArrayTest", Arrays.toString(canvaslis.toArray()));
 
                                 canvaslist=AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().getCanvasList();
-                                adapter = new CanvasDataAdapter(getActivity(), canvaslist);
+                                LoadFragment manager= (LoadFragment) getTargetFragment();
+                                adapter = new CanvasDataAdapter(getActivity(),canvaslist, new CanvasDataAdapter.OnItemClickListener() {
+
+                                    @Override
+                                    public void onClick(View v, int position) {
+                                         CanvasData canvas= canvaslis.get(position);
+                                         int id= canvas.getCid();
+                                         current_data=canvas.getData_temp();
+                                         current_id=id;
+                                         showPopupMenu(v);
+
+                                    }
+
+
+                                });
 
                                 recyclerView.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
+                                recyclerView.invalidate();
+
 
                             }
                             else
@@ -173,4 +201,70 @@ public class LoadFragment extends Fragment {
         if (progressDialog.isShowing())
             progressDialog.dismiss();
     }
+
+    private void showPopupMenu(View view) {
+        // inflate menu
+        PopupMenu popup = new PopupMenu(getActivity(), view);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.menu_on_load, popup.getMenu());
+        popup.setOnMenuItemClickListener(new LoadFragment.MyMenuItemClickListener());
+        popup.show();
+    }
+
+    /**
+     * Click listener for popup menu items
+     */
+    class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
+
+        public MyMenuItemClickListener() {
+        }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            switch (menuItem.getItemId()) {
+                case R.id.edit_canvas:
+                    onEdit();
+                    //Toast.makeText(getActivity(), "Edit of canvas" +current_id , Toast.LENGTH_SHORT).show();
+                    return true;
+                case R.id.edit_name:
+                    onEditName();
+
+                    //Toast.makeText(getActivity(), "Deleted", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(), "Edit Name", Toast.LENGTH_SHORT).show();
+                    return true;
+                case R.id.delete_canvas:
+                    onDeleteCanvas();
+
+                    //Toast.makeText(getActivity(), "Deleted", Toast.LENGTH_SHORT).show();
+                    return true;
+                default:
+            }
+            return false;
+        }
+
+        public void onEdit(){
+            Toast.makeText(getActivity(), "Canvas id : " + current_id + "\n Data: " + current_data , Toast.LENGTH_SHORT).show();
+
+        }
+
+        public void onDeleteCanvas(){
+            Bundle args = new Bundle();
+            args.putString("canvasId", String.valueOf(current_id));
+            DialogFragment newFragment = new DeleteDialogFragment();
+            newFragment.setArguments(args);
+            newFragment.show(getFragmentManager(), "TAG");
+        }
+
+
+        public void onEditName(){
+            Bundle args = new Bundle();
+            args.putString("canvasId", String.valueOf(current_id));
+            DialogFragment newFragment = new EditNameDialogFragment();
+            newFragment.setArguments(args);
+            newFragment.show(getFragmentManager(), "TAG");
+        }
+
+    }
+
+
 }

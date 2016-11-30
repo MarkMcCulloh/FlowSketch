@@ -10,7 +10,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -27,16 +26,17 @@ import java.util.Calendar;
  */
 public class MyCanvas extends View {
     Context context;
-    private static ArrayList<Object> Objects = new ArrayList<>();
+    public static ArrayList<Object> Objects = new ArrayList<>();
     public static Bundle mMyAppsBundle = new Bundle();
 
     public static boolean is_Marked, remove_Object, inputText, verify_Text = false;
-    private Object selectedobj;
+    public Object selectedobj;
     private ScaleGestureDetector mScaleDetector;
-    public static float mScaleFactor = 5.f;
+    public static float mScaleFactor = 1.0f;
     private int mActivePointerId;
-
-    private EditText editxt;
+    int addLine;
+    Point lp1, lp2;
+    Object.OBJTYPE currentLine;
 
     private float mLastTouchX, mLastTouchY;
     private float scalePointX, scalePointY;
@@ -46,12 +46,12 @@ public class MyCanvas extends View {
     private Paint basicPaint;
 
     private Object.OBJTYPE nextShape;
-    private boolean newObject = false;
 
-    public String text;
+    public String text = new String();
 
     public Canvas canvas;
-    private Bitmap bitmap;
+    private Bitmap bitmap,imageMap;
+    public static String filePath;
     private static final int MAX_CLICK_DURATION = 150;
     private long startClickTime;
 
@@ -71,9 +71,34 @@ public class MyCanvas extends View {
         basicPaint = new Paint();
         basicPaint.setColor(Color.BLACK);
         basicPaint.setStyle(Paint.Style.STROKE);
-        basicPaint.setStrokeWidth(10f);
+        basicPaint.setStrokeWidth(3f);
+
+        addLine = 0;
+
+        mPosX = 600;
+        mPosY = 600;
+    }
+
+    public static void objectToString(){
+
+        for(Object obj: Objects)
+        {
+                CanvasData.data += "[" + obj.objType + ",";
+                CanvasData.data += obj.getXPos() + ",";
+                CanvasData.data += obj.getYPos() + ",";
+                CanvasData.data += obj.getLength() + ",";
+                CanvasData.data += obj.getWidth() + ",";
+                CanvasData.data += obj.getRadius() + ",";
+                CanvasData.data += obj.getColor() +",";
+
+                //made file path Global. i had to many issues
+                CanvasData.data += filePath + "]";
+
+        }
 
     }
+
+
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 
         super.onSizeChanged(w, h, oldw, oldh);
@@ -93,10 +118,8 @@ public class MyCanvas extends View {
         canvas.translate(mPosX, mPosY);
         canvas.scale(mScaleFactor, mScaleFactor);
 
-        canvas.drawLine(0, -1000, 0, 1000, basicPaint);
-        canvas.drawLine(-1000, 0, 1000, 0, basicPaint);
-
-        canvas.drawCircle(cX, cY, 10, basicPaint);
+        canvas.drawLine(0, -10000, 0, 10000, basicPaint);
+        canvas.drawLine(-10000, 0, 10000, 0, basicPaint);
 
         for (Object obj : Objects) {
             obj.drawThis();
@@ -106,65 +129,99 @@ public class MyCanvas extends View {
         canvas.restore();
     }
 
-    /** Delete objects on canvas
-     * - This is called from "canvasFragment.onOptionsItemSelected()" **/
-    public static void DeleteObject()
-    {
-        remove_Object = true;
-    }
-
-
-    //add different Objects, text and remove
-    public void setText()
-    {
-        inputText = true;
-    }
     public void reset()
     {
         Objects.clear();
-        newObject = false;
+        CanvasData.data = "";
         invalidate();
     }
 
-    public void addObject(Object.OBJTYPE newobj) {
-        newObject = true;
-        nextShape = newobj;
-        switch (newobj) {
-            case CIRCLE:
-                Objects.add(new ShapeCircle(this, this.cX, this.cY, 100));
-                break;
-            case LINE:
-                //Objects.add(new ShapeLine(this.getWidth() / 2, this.getHeight() / 2, 240));
-                break;
-            case TRIANGLE:
-                Objects.add(new ShapeTriangle(this, this.cX, this.cY, this.cX + 100, this.cY + 100));
-                break;
-            case RECTANGLE:
-                Objects.add(new ShapeRect(this, this.cX, this.cY, this.cX + 100, this.cY + 100));
-                break;
-            case SQUARE:
-                Objects.add(new ShapeRect(this, this.cX, this.cY, 100));
-                break;
-            case TEXT:
-                //Objects.add(new ObjectText(this.getWidth() / 2, this.getHeight() / 2, 240));
-                break;
-            case IMAGE:
-                //Objects.add(new ObjectPic();
-                break;
-        }
-        invalidate();
-        newObject = false;
-    }
-
-    public void setAddText()
+    public void setBitmap(Bitmap b)
     {
-        verify_Text = true;
+        this.imageMap = b;
+    }
+
+    public void setText(String text, Point orgin)
+    {
+        this.text = text;
+    }
+
+    public void setColor(int color, String action)
+    {
+        for(Object obj: Objects)
+        {
+            if(obj.objSelect)
+            {
+                obj.setColor(color,action);
+            }
+
+        }
     }
 
     public void delete()
     {
-        remove_Object = true;
-        DeleteObject();
+        Objects.remove(selectedobj);
+        selectedobj = null;
+        invalidate();
+    }
+
+    public void addObject(Object.OBJTYPE newobj) {
+        nextShape = newobj;
+
+        float middlex = this.getWidth() / 2;
+        float middley = this.getHeight() / 2 - 80;
+        float[] mClickCoords = new float[2];
+
+        //translate screen event into canvas coords
+        mClickCoords[0] = middlex;
+        mClickCoords[1] = middley;
+        Matrix matrix = new Matrix();
+        matrix.set(getMatrix());
+        matrix.preTranslate(mPosX, mPosY);
+        matrix.preScale(mScaleFactor, mScaleFactor);
+        matrix.invert(matrix);
+        matrix.mapPoints(mClickCoords);
+        middlex = mClickCoords[0];
+        middley = mClickCoords[1];
+
+        switch (newobj) {
+            case CIRCLE:
+                Objects.add(new ShapeCircle(this, middlex, middley, 100));
+                break;
+            case TRIANGLE:
+                Objects.add(new ShapeTriangle(this, middlex, middley, this.getWidth() / 3, this.getHeight() / 3));
+                break;
+            case RECTANGLE:
+                Objects.add(new ShapeRect(this, middlex, middley, middlex + this.getWidth() / 3, this.getHeight() / 3));
+                break;
+            case SQUARE:
+                Objects.add(new ShapeRect(this, middlex, middley, 100));
+                break;
+            case TEXT:
+                objectText newText = new objectText(this, middlex, middley, text, this.getWidth() / 5);
+                select(newText);
+                Objects.add(newText);
+                break;
+            case IMAGE:
+                Objects.add(new ObjectPic(this, middlex, middley, imageMap));
+                break;
+            case LINER:
+                currentLine = Object.OBJTYPE.LINER;
+                addLine = 1;
+                break;
+        }
+        text="";
+        invalidate();
+    }
+
+
+    public void select(Object newselect) {
+        if (selectedobj != null) {
+            selectedobj.setSelect(false);
+            selectedobj = null;
+        }
+        selectedobj = newselect;
+        selectedobj.setSelect(true);
     }
 
     @Override
@@ -201,18 +258,18 @@ public class MyCanvas extends View {
         //mClickCoords[0] is the canvas x coordinate and
         //mClickCoords[1] is the y coordinate.
 
-        //final float x = (ev.getX() - scalePointX) / mScaleFactor;
-        //final float y = (ev.getY() - scalePointY) / mScaleFactor;
-        final float x = (ev.getX()) / mScaleFactor;
-        final float y = (ev.getY()) / mScaleFactor;
+        final float x = ev.getX();
+        final float y = ev.getY();
         cX = mClickCoords[0];
         cY = mClickCoords[1];
 
         switch (action & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN: {
+                MainActivity.text ="";
                 startClickTime = Calendar.getInstance().getTimeInMillis();
                 mLastTouchX = x;
                 mLastTouchY = y;
+
                 break;
             }
             case MotionEvent.ACTION_MOVE: {
@@ -228,6 +285,7 @@ public class MyCanvas extends View {
                         mPosY += dy;
                     }
                     invalidate();
+
                 }
 
                 mLastTouchX = x;
@@ -245,15 +303,22 @@ public class MyCanvas extends View {
                     boolean flag = false;
                     for (Object obj : Objects) {
                         if (obj.contains(new Point(cX, cY))) {
-                            if (selectedobj != null) selectedobj.setSelect(false);
-                            obj.setSelect(true);
-                            selectedobj = obj;
+                            select(obj);
                             flag = true;
                         }
                     }
                     if (!flag) {
                         if (selectedobj != null) selectedobj.setSelect(false);
                         selectedobj = null;
+                    }
+
+                    if (addLine == 2) {
+                        lp2 = new Point(cX, cY);
+                        Objects.add(new ShapeLine(this, currentLine, lp1.getX(), lp1.getY(), lp2.getX(), lp2.getY()));
+                        addLine = 0;
+                    } else if (addLine == 1) {
+                        lp1 = new Point(cX, cY);
+                        addLine++;
                     }
 
                 }
