@@ -19,7 +19,7 @@ class ObjectText extends Object {
         super(mainCanvas, inString);
         String[] stuff = DECODE(inString);
 
-        this.text = stuff[5];
+        this.text = stuff[11];
         objPaintCurrent_Fill.setTextSize(Float.parseFloat(stuff[13]));
         objPaintCurrent_Stroke.setTextSize(Float.parseFloat(stuff[13]));
     }
@@ -43,7 +43,7 @@ class ObjectText extends Object {
         float mTextWidth = objPaintCurrent_Fill.measureText(text);
         float mTextHeight = bounds.height();
 
-        RectF boundsf = new RectF(objOrigin.getX(), objOrigin.getY(), objOrigin.getX() + mTextWidth, objOrigin.getY() + mTextHeight);
+        RectF boundsf = new RectF(objOrigin.getX(), objOrigin.getY(), objOrigin.getX() + mTextWidth, objOrigin.getY() - mTextHeight);
 
         return (boundsf.contains(test.getX(), test.getY()));
     }

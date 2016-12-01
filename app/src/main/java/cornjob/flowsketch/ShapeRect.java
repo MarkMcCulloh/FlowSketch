@@ -1,6 +1,7 @@
 package cornjob.flowsketch;
 
 import android.graphics.RectF;
+import android.util.Log;
 
 class ShapeRect extends Object {
 
@@ -9,7 +10,7 @@ class ShapeRect extends Object {
     ShapeRect(MyCanvas mainCanvas, float x, float y, float l, float w) {
         super(mainCanvas, x, y, OBJTYPE.RECTANGLE);
 
-        fullRect = new RectF(x, y, l, w);
+        fullRect = new RectF(x, y, x + l, y + w);
     }
 
     ShapeRect(MyCanvas mainCanvas, float x, float y, float s) {
@@ -26,8 +27,8 @@ class ShapeRect extends Object {
         float y = Float.parseFloat(stuff[2]);
         float l = Float.parseFloat(stuff[5]);
         float w = Float.parseFloat(stuff[6]);
-
-        fullRect = new RectF(x, y, l, w);
+        Log.i("RECT", inString);
+        fullRect = new RectF(x, y, x + w, y + l);
     }
 
     @Override

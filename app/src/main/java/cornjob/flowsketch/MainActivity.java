@@ -122,7 +122,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadCanvas(String load)
     {
+        canvas.reset();
         canvas.getloadingdata(load);
+        canvas.invalidate();
     }
     public void insertText(MenuItem v) {
         ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);

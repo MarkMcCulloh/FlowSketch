@@ -3,6 +3,7 @@ package cornjob.flowsketch;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 
 public abstract class Object {
 
@@ -43,6 +44,7 @@ public abstract class Object {
 
     Object(MyCanvas mainCanvas, String inString) {
         String[] stuff = DECODE(inString);
+        Log.i("OBJECT", inString);
         objCanvas = mainCanvas;
         objOrigin = new Point(Float.parseFloat(stuff[1]), Float.parseFloat(stuff[2]));
         objType = OBJTYPE.valueOf(stuff[0]);
@@ -140,7 +142,7 @@ public abstract class Object {
         ret += text + ",";
         ret += fonttype + ",";
         ret += fontsize + ",";
-        ret += imgpath + ",";
+        ret += imgpath + "]";
 
         return ret;
     }
