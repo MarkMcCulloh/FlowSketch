@@ -50,13 +50,13 @@ public abstract class Object {
         selectBorder = new Paint();
 
         objPaintCurrent_Stroke = new Paint();
-        objPaintCurrent_Stroke.setColor(Color.BLACK);
+        objPaintCurrent_Stroke.setColor(Integer.parseInt(stuff[4]));
         objPaintCurrent_Stroke.setStyle(Paint.Style.STROKE);
         objPaintCurrent_Stroke.setStrokeWidth(10f);
         objPaintCurrent_Stroke.setAntiAlias(true);
 
         objPaintCurrent_Fill = new Paint();
-        objPaintCurrent_Fill.setColor(Color.BLACK);
+        objPaintCurrent_Fill.setColor(Integer.parseInt(stuff[3]));
         objPaintCurrent_Fill.setStyle(Paint.Style.FILL);
         objPaintCurrent_Fill.setStrokeWidth(10f);
         objPaintCurrent_Fill.setAntiAlias(true);
