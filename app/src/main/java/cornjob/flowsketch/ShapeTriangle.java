@@ -15,6 +15,14 @@ class ShapeTriangle extends Object {
         triHeight = h;
     }
 
+    ShapeTriangle(MyCanvas mainCanvas, String inString) {
+        super(mainCanvas, inString);
+        String[] stuff = DECODE(inString);
+
+        triWidth = Float.parseFloat(stuff[6]);
+        triHeight = Float.parseFloat(stuff[9]);
+    }
+
     @Override
     public boolean drawThis() {
 
@@ -67,10 +75,5 @@ class ShapeTriangle extends Object {
     @Override
     public String encode() {
         return ENCODE(objType, objOrigin.getX(), objOrigin.getY(), objPaintCurrent_Fill.getColor(), objPaintCurrent_Stroke.getColor(), -1, triWidth, -1, -1, triHeight, -1, "", "", -1, "");
-    }
-
-    @Override
-    public Object decode(String inString) {
-        return null;
     }
 }

@@ -41,10 +41,6 @@ class ObjectPic extends Object {
         return null;
     }
 
-    @Override
-    public Object decode(String inString) {
-        return null;
-    }
 
     @Override
     public void scale(float factor) {

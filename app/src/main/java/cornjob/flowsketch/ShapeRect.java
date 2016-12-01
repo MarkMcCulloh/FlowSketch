@@ -21,6 +21,18 @@ class ShapeRect extends Object {
         fullRect = new RectF(x, y, x + s, y + s);
     }
 
+    ShapeRect(MyCanvas mainCanvas, String inString) {
+        super(mainCanvas, inString);
+        String[] stuff = DECODE(inString);
+
+        float x = Float.parseFloat(stuff[1]);
+        float y = Float.parseFloat(stuff[2]);
+        float l = Float.parseFloat(stuff[6]);
+        float w = Float.parseFloat(stuff[5]);
+
+        fullRect = new RectF(x, y, l, w);
+    }
+
     @Override
     public boolean drawThis() {
         if (objSelect) {
@@ -50,12 +62,6 @@ class ShapeRect extends Object {
     public String encode() {
         return ENCODE(objType, objOrigin.getX(), objOrigin.getY(), objPaintCurrent_Fill.getColor(), objPaintCurrent_Stroke.getColor(), fullRect.height(), fullRect.width(), -1, -1, -1, -1, "", "", -1, "");
     }
-
-    @Override
-    public Object decode(String inString) {
-        return null;
-    }
-
 
     @Override
     public void scale(float factor) {
