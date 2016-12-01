@@ -7,6 +7,8 @@ package cornjob.flowsketch;
 
 import android.app.Dialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -41,12 +43,17 @@ public class DeleteDialogFragment extends DialogFragment {
     public static final String LOG_TAG = DeleteDialogFragment.class.getSimpleName();
     public static String URL = "http://flowsketchpi.duckdns.org:8080/sketch_flow/v1/canvas/";
     public static String URL_DELETE_CANVAS;
+    private ProgressDialog progressDialog;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         Bundle mArgs = getArguments();
         String id = mArgs.getString("canvasId");
+
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setCancelable(false);
+
         URL_DELETE_CANVAS = URL.concat(id);
         //get inflater from activity
         final LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -91,36 +98,51 @@ public class DeleteDialogFragment extends DialogFragment {
     public void deletetRequest(final String apiKey) {
         //Toast.makeText(getActivity(), "Save Canvas", Toast.LENGTH_SHORT).show();
 
+        progressDialog.setMessage("Saving...");
+        showDialog();
+
+        final Context context=getActivity();
 
         StringRequest stringRequest = new StringRequest(Request.Method.DELETE, URL_DELETE_CANVAS, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.i(LOG_TAG, response);
-                //  Toast.makeText(getActivity().getApplicationContext(),"Canvas Successfully deleted", Toast.LENGTH_SHORT).show();
-                //  Intent intent = new Intent(getActivity(), LoadActivity.class);
-                // startActivity(intent);
+                hideDialog();
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+                    String message;
 
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //06014f0c3c064fbe020009519300df31
-                NetworkResponse response = error.networkResponse;
-                if (error instanceof ServerError && response != null) {
-                    try {
-                        String res = new String(response.data,
-                                HttpHeaderParser.parseCharset(response.headers, "utf-8"));
-                        // Now you can use any deserializer to make sense of data
-                        JSONObject obj = new JSONObject(res);
-                    } catch (UnsupportedEncodingException e1) {
-                        // Couldn't properly decode data to string
-                        e1.printStackTrace();
-                    } catch (JSONException e2) {
-                        // returned data is not JSONObject?
-                        e2.printStackTrace();
+                    if (!error) {
+
+
+
+                        message = jObj.getString("message");
+                        Toast.makeText(context,message, Toast.LENGTH_LONG).show();
+
+
+                    } else {
+
+                        message = jObj.getString("message");
+                        Toast.makeText(context,message, Toast.LENGTH_LONG).show();
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
+        }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            Log.e(LOG_TAG, "Delete Error: " + error.getMessage());
+            String message= "Request timed out! Try again after a couple second!";
+            if (error.getMessage() == null)
+                Toast.makeText(context,message, Toast.LENGTH_LONG).show();
+            else
+                Toast.makeText(context,error.getMessage(), Toast.LENGTH_LONG).show();
+            hideDialog();
+
+        }
+
         }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
@@ -137,5 +159,15 @@ public class DeleteDialogFragment extends DialogFragment {
         AppSingleton.getInstance(getContext()).addToRequestQueue(stringRequest, "Delete");
         //RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         //requestQueue.add(stringRequest);
+    }
+
+    private void showDialog() {
+        if (!progressDialog.isShowing())
+            progressDialog.show();
+    }
+
+    private void hideDialog() {
+        if (progressDialog.isShowing())
+            progressDialog.dismiss();
     }
 }

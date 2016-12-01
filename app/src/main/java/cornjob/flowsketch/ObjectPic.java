@@ -38,7 +38,8 @@ class ObjectPic extends Object {
 
     @Override
     public String encode() {
-        return null;
+        return ENCODE(objType, objOrigin.getX(), objOrigin.getY(), -1, -1, -1, b.getWidth(), -1, -1,b.getHeight(), -1, "", "", -1, "");
+        // String text, String fonttype, float fontsize,
     }
 
 

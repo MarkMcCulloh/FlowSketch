@@ -27,7 +27,7 @@ public class MyCanvas extends View {
     public static ArrayList<Object> Objects = new ArrayList<>();
     public static Bundle mMyAppsBundle = new Bundle();
 
-
+    public static int current_canvas_id=0;
     public Object selectedobj;
     private ScaleGestureDetector mScaleDetector;
     public static float mScaleFactor = 1.0f;
@@ -82,7 +82,10 @@ public class MyCanvas extends View {
         }
     }
 
-
+    public ArrayList<Object> StringToObject(){
+        ArrayList<Object> obj= new ArrayList<>();
+        return obj;
+    }
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);

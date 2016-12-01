@@ -119,8 +119,13 @@ public class canvasFragment extends Fragment {
         else if (id == R.id.save_canvas_action) {
 
             //display popup dialog
-            new SaveDialogFragment().show(getFragmentManager(), LOG_TAG);
-        } else if (id == R.id.load_canvas_action) {
+            if(AppSingleton.getInstance(getActivity().getApplicationContext()).getmSession().getCurrentCanvasID()==0)
+                new SaveDialogFragment().show(getFragmentManager(), LOG_TAG);
+            else
+                new UpdateDialogFragment().show(getFragmentManager(),LOG_TAG);
+        }
+
+        else if (id == R.id.load_canvas_action) {
             Intent intent = new Intent(getActivity(), LoadActivity.class);
             startActivity(intent);
         }

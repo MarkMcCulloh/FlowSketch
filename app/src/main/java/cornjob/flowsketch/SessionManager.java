@@ -35,6 +35,7 @@ public class SessionManager {
     private static final String IS_LOGIN = "login";
     public static final String USERNAME = "user name";
     public static int current_canvas_id = 0;
+    private static String current_canvas_name="";
     private ArrayList<CanvasData> listwriter;
     public static final String MY_LIST = "my_list";
     private static final Type LIST_TYPE = new TypeToken<CanvasData>() {
@@ -44,6 +45,14 @@ public class SessionManager {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
+    }
+
+    public static String getCurrent_canvas_name() {
+        return current_canvas_name;
+    }
+
+    public static void setCurrent_canvas_name(String current_canvas_name) {
+        SessionManager.current_canvas_name = current_canvas_name;
     }
 
     /**
