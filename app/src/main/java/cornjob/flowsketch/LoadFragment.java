@@ -1,9 +1,11 @@
 package cornjob.flowsketch;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -159,8 +161,12 @@ public class LoadFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e(TAG, "Loading Error: " + error.getMessage());
+
+                        String message = error.getMessage();
+                        if(error.getMessage().equals(null))
+                            message= "Request timed out! Try again after a couple second!";
                         Toast.makeText(getActivity().getApplicationContext(),
-                                error.getMessage(), Toast.LENGTH_LONG).show();
+                                message, Toast.LENGTH_LONG).show();
                         hideDialog();
                     }
                 }) {
@@ -193,6 +199,9 @@ public class LoadFragment extends Fragment {
         popup.setOnMenuItemClickListener(new LoadFragment.MyMenuItemClickListener());
         popup.show();
     }
+
+
+
 
     /**
      * Click listener for popup menu items
@@ -234,6 +243,8 @@ public class LoadFragment extends Fragment {
             Bundle args = new Bundle();
             args.putString("canvasId", String.valueOf(current_id));
             DialogFragment newFragment = new DeleteDialogFragment();
+
+            newFragment.setTargetFragment(getParentFragment(), 0);
             newFragment.setArguments(args);
             newFragment.show(getFragmentManager(), "TAG");
         }
@@ -245,6 +256,7 @@ public class LoadFragment extends Fragment {
             DialogFragment newFragment = new EditNameDialogFragment();
             newFragment.setArguments(args);
             newFragment.show(getFragmentManager(), "TAG");
+
         }
 
     }

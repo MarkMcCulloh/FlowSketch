@@ -7,6 +7,7 @@ package cornjob.flowsketch;
 
 import android.app.Dialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -30,11 +31,12 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EditNameDialogFragment extends DialogFragment {
+public class EditNameDialogFragment extends DialogFragment{
 
     public static final String LOG_TAG = EditNameDialogFragment.class.getSimpleName();
     public static String URL = "http://flowsketchpi.duckdns.org:8080/sketch_flow/v1/canvasTitle/";
     public static String URL_UPDATE_CANVAS;
+    private ProgressDialog progressDialog;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -42,6 +44,8 @@ public class EditNameDialogFragment extends DialogFragment {
         Bundle mArgs = getArguments();
         String id = mArgs.getString("canvasId");
         URL_UPDATE_CANVAS = URL.concat(id);
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setCancelable(false);
         //get inflater from activity
         final LayoutInflater inflater = getActivity().getLayoutInflater();
 
@@ -57,8 +61,9 @@ public class EditNameDialogFragment extends DialogFragment {
                         //get text from EditText
                         EditText editText = (EditText) getDialog().findViewById(R.id.edit_canvas_name);
                         String canvasName = editText.getText().toString();
-                        postRequest(canvasName, apiKey);
-                        Toast.makeText(getActivity(), canvasName, Toast.LENGTH_SHORT).show();
+                        postRequest(canvasName, apiKey, URL_UPDATE_CANVAS);
+                        //Toast.makeText(getActivity(), canvasName + URL_UPDATE_CANVAS, Toast.LENGTH_SHORT).show();
+                        Log.i(LOG_TAG, URL_UPDATE_CANVAS );
                     }
                 })
                 .setNegativeButton(R.string.cancel_dialog, new DialogInterface.OnClickListener() {
@@ -85,22 +90,24 @@ public class EditNameDialogFragment extends DialogFragment {
     }
 
 
-    public void postRequest(final String canvasName, final String apiKey) {
+    public void postRequest(final String name, final String apiKey, final String URL_UPDATE_CANVAS) {
         // Toast.makeText(getActivity(), "Save Canvas", Toast.LENGTH_SHORT).show();
 
-
+        progressDialog.setMessage("Saving...");
+        showDialog();
         StringRequest stringRequest = new StringRequest(Request.Method.PUT, URL_UPDATE_CANVAS, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.i(LOG_TAG, response);
+                hideDialog();
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(LOG_TAG, "Edit Error: " + error.getMessage());
-//                Toast.makeText(getActivity(),
-                ///                      error.getMessage(), Toast.LENGTH_LONG).show();
-                //hideDialog();
+               //Toast.makeText(,error.getMessage(), Toast.LENGTH_LONG).show();
+                hideDialog();
             }
         }) {
             @Override
@@ -118,9 +125,8 @@ public class EditNameDialogFragment extends DialogFragment {
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> params = new HashMap<>();
 
-                MyCanvas.objectToString();
                 //insert canvas arguments here
-                params.put("name", canvasName);
+                params.put("name", name);
                 return params;
             }
         };
@@ -128,5 +134,31 @@ public class EditNameDialogFragment extends DialogFragment {
         AppSingleton.getInstance(getContext()).addToRequestQueue(stringRequest, "Save");
         //RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         //requestQueue.add(stringRequest);
+    }
+    private void showDialog() {
+        if (!progressDialog.isShowing())
+            progressDialog.show();
+    }
+
+    private void hideDialog() {
+        if (progressDialog.isShowing())
+            progressDialog.dismiss();
+    }
+
+
+    public static class DismissDialog extends DialogFragment {
+        private DialogInterface.OnDismissListener onDismissListener;
+
+        public void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener) {
+            this.onDismissListener = onDismissListener;
+        }
+
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+            super.onDismiss(dialog);
+            if (onDismissListener != null) {
+                onDismissListener.onDismiss(dialog);
+            }
+        }
     }
 }

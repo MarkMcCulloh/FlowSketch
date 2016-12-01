@@ -7,6 +7,7 @@ package cornjob.flowsketch;
 
 import android.app.Dialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -27,10 +28,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,11 +45,15 @@ public class SaveDialogFragment extends DialogFragment {
 
     public static final String LOG_TAG = SaveDialogFragment.class.getSimpleName();
     public static String URL_SAVE_CANVAS = "http://flowsketchpi.duckdns.org:8080/sketch_flow/v1/canvas";
-
+    private ProgressDialog progressDialog;
+    private String message;
+    private LoadFragment loadFragment;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setCancelable(false);
+        loadFragment=(LoadFragment)this.getParentFragment();
         //get inflater from activity
         final LayoutInflater inflater = getActivity().getLayoutInflater();
 
@@ -62,7 +70,7 @@ public class SaveDialogFragment extends DialogFragment {
                         EditText editText = (EditText) getDialog().findViewById(R.id.edit_canvas_name);
                         String canvasName = editText.getText().toString();
                         postRequest(canvasName, apiKey);
-                        Toast.makeText(getActivity(), canvasName, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setNegativeButton(R.string.cancel_dialog, new DialogInterface.OnClickListener() {
@@ -90,33 +98,46 @@ public class SaveDialogFragment extends DialogFragment {
 
 
     public void postRequest(final String canvasName, final String apiKey) {
-        Toast.makeText(getActivity(), "Save Canvas", Toast.LENGTH_SHORT).show();
 
-
+        progressDialog.setMessage("Saving...");
+        showDialog();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_SAVE_CANVAS, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                //message=response.toString();
                 Log.i(LOG_TAG, response);
+                hideDialog();
+                //Toast.makeText(), "ss", Toast.LENGTH_SHORT).show();
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+
+
+                    if (!error) {
+
+
+
+                        message = jObj.getString("message");
+
+
+
+                    } else {
+
+                        message = jObj.getString("message");
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
             }
-        }, new Response.ErrorListener() {
+        },  new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //06014f0c3c064fbe020009519300df31
-                NetworkResponse response = error.networkResponse;
-                if (error instanceof ServerError && response != null) {
-                    try {
-                        String res = new String(response.data,
-                                HttpHeaderParser.parseCharset(response.headers, "utf-8"));
-                        // Now you can use any deserializer to make sense of data
-                        JSONObject obj = new JSONObject(res);
-                    } catch (UnsupportedEncodingException e1) {
-                        // Couldn't properly decode data to string
-                        e1.printStackTrace();
-                    } catch (JSONException e2) {
-                        // returned data is not JSONObject?
-                        e2.printStackTrace();
-                    }
-                }
+                Log.e(LOG_TAG, "Saving Error: " + error.getMessage());
+               // Toast.makeText(getParentFragment().getActivity(),error.getMessage(), Toast.LENGTH_LONG).show();
+                hideDialog();
             }
         }) {
             @Override
@@ -143,9 +164,22 @@ public class SaveDialogFragment extends DialogFragment {
                 return params;
             }
         };
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
 
         AppSingleton.getInstance(getContext()).addToRequestQueue(stringRequest, "Save");
         //RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         //requestQueue.add(stringRequest);
+
+    }
+
+
+    private void showDialog() {
+        if (!progressDialog.isShowing())
+            progressDialog.show();
+    }
+
+    private void hideDialog() {
+        if (progressDialog.isShowing())
+            progressDialog.dismiss();
     }
 }

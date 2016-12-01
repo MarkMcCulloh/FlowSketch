@@ -24,7 +24,7 @@ public class MyCanvas extends View {
     public static ArrayList<Object> Objects = new ArrayList<>();
     public static Bundle mMyAppsBundle = new Bundle();
 
-
+    public static int current_canvas_id=0;
     public Object selectedobj;
     private ScaleGestureDetector mScaleDetector;
     public static float mScaleFactor = 1.0f;
