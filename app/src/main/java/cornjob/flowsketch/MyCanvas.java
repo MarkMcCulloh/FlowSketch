@@ -79,7 +79,10 @@ public class MyCanvas extends View {
         }
     }
 
-
+    public ArrayList<Object> StringToObject(){
+        ArrayList<Object> obj= new ArrayList<>();
+        return obj;
+    }
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
