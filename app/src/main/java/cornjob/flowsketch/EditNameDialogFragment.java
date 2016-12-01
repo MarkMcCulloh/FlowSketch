@@ -8,6 +8,7 @@ package cornjob.flowsketch;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -24,6 +25,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -95,19 +99,47 @@ public class EditNameDialogFragment extends DialogFragment{
 
         progressDialog.setMessage("Saving...");
         showDialog();
+
+        final Context context=getActivity();
         StringRequest stringRequest = new StringRequest(Request.Method.PUT, URL_UPDATE_CANVAS, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.i(LOG_TAG, response);
                 hideDialog();
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+                    String message;
+
+                    if (!error) {
+
+
+
+                        message = jObj.getString("message");
+                        Toast.makeText(context,message, Toast.LENGTH_LONG).show();
+
+
+                    } else {
+
+                        message = jObj.getString("message");
+                        Toast.makeText(context,message, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(LOG_TAG, "Edit Error: " + error.getMessage());
-               //Toast.makeText(,error.getMessage(), Toast.LENGTH_LONG).show();
+                String message= "Request timed out! Try again after a couple second!";
+                if (error.getMessage() == null)
+                     Toast.makeText(context,message, Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(context,error.getMessage(), Toast.LENGTH_LONG).show();
                 hideDialog();
+                //hideDialog();
             }
         }) {
             @Override

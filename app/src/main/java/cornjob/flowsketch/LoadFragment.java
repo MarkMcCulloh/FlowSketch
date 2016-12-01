@@ -162,11 +162,11 @@ public class LoadFragment extends Fragment {
                     public void onErrorResponse(VolleyError error) {
                         Log.e(TAG, "Loading Error: " + error.getMessage());
 
-                        String message = error.getMessage();
-                        if(error.getMessage().equals(null))
-                            message= "Request timed out! Try again after a couple second!";
-                        Toast.makeText(getActivity().getApplicationContext(),
-                                message, Toast.LENGTH_LONG).show();
+                        String message= "Request timed out! Try again after a couple second!";
+                        if (error.getMessage() == null)
+                            Toast.makeText(getActivity().getApplicationContext(),message, Toast.LENGTH_LONG).show();
+                        else
+                            Toast.makeText(getActivity().getApplicationContext(),error.getMessage(), Toast.LENGTH_LONG).show();
                         hideDialog();
                     }
                 }) {

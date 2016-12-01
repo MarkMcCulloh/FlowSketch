@@ -8,6 +8,7 @@ package cornjob.flowsketch;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -100,38 +101,48 @@ public class DeleteDialogFragment extends DialogFragment {
         progressDialog.setMessage("Saving...");
         showDialog();
 
+        final Context context=getActivity();
+
         StringRequest stringRequest = new StringRequest(Request.Method.DELETE, URL_DELETE_CANVAS, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.i(LOG_TAG, response);
-                //  Toast.makeText(getActivity().getApplicationContext(),"Canvas Successfully deleted", Toast.LENGTH_SHORT).show();
-                //  Intent intent = new Intent(getActivity(), LoadActivity.class);
-                // startActivity(intent);
                 hideDialog();
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+                    String message;
 
+                    if (!error) {
+
+
+
+                        message = jObj.getString("message");
+                        Toast.makeText(context,message, Toast.LENGTH_LONG).show();
+
+
+                    } else {
+
+                        message = jObj.getString("message");
+                        Toast.makeText(context,message, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //06014f0c3c064fbe020009519300df31
-                NetworkResponse response = error.networkResponse;
-                if (error instanceof ServerError && response != null) {
-                    try {
-                        String res = new String(response.data,
-                                HttpHeaderParser.parseCharset(response.headers, "utf-8"));
-                        // Now you can use any deserializer to make sense of data
-                        JSONObject obj = new JSONObject(res);
-                    } catch (UnsupportedEncodingException e1) {
-                        // Couldn't properly decode data to string
-                        e1.printStackTrace();
-                    } catch (JSONException e2) {
-                        // returned data is not JSONObject?
-                        e2.printStackTrace();
-                    }
-                }
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            Log.e(LOG_TAG, "Delete Error: " + error.getMessage());
+            String message= "Request timed out! Try again after a couple second!";
+            if (error.getMessage() == null)
+                Toast.makeText(context,message, Toast.LENGTH_LONG).show();
+            else
+                Toast.makeText(context,error.getMessage(), Toast.LENGTH_LONG).show();
+            hideDialog();
 
-                hideDialog();
-            }
+        }
+
         }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {

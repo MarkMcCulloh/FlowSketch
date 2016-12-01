@@ -8,6 +8,7 @@ package cornjob.flowsketch;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -71,6 +72,8 @@ public class SaveDialogFragment extends DialogFragment {
                         String canvasName = editText.getText().toString();
                         postRequest(canvasName, apiKey);
                         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+
+                        dismiss();
                     }
                 })
                 .setNegativeButton(R.string.cancel_dialog, new DialogInterface.OnClickListener() {
@@ -101,13 +104,16 @@ public class SaveDialogFragment extends DialogFragment {
 
         progressDialog.setMessage("Saving...");
         showDialog();
+
+        final Context context=getActivity().getBaseContext();
+
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_SAVE_CANVAS, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 //message=response.toString();
                 Log.i(LOG_TAG, response);
                 hideDialog();
-                //Toast.makeText(), "ss", Toast.LENGTH_SHORT).show();
+
                 try {
                     JSONObject jObj = new JSONObject(response);
                     boolean error = jObj.getBoolean("error");
@@ -118,13 +124,13 @@ public class SaveDialogFragment extends DialogFragment {
 
 
                         message = jObj.getString("message");
-
+                        Toast.makeText(context,message, Toast.LENGTH_LONG).show();
 
 
                     } else {
 
                         message = jObj.getString("message");
-
+                        Toast.makeText(context,message, Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -136,7 +142,7 @@ public class SaveDialogFragment extends DialogFragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(LOG_TAG, "Saving Error: " + error.getMessage());
-               // Toast.makeText(getParentFragment().getActivity(),error.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(SaveDialogFragment.this.getActivity(),error.getMessage(), Toast.LENGTH_LONG).show();
                 hideDialog();
             }
         }) {
@@ -164,7 +170,7 @@ public class SaveDialogFragment extends DialogFragment {
                 return params;
             }
         };
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+       //Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
 
         AppSingleton.getInstance(getContext()).addToRequestQueue(stringRequest, "Save");
         //RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
