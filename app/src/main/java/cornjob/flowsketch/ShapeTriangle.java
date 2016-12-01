@@ -74,6 +74,6 @@ class ShapeTriangle extends Object {
 
     @Override
     public String encode() {
-        return ENCODE(objType, objOrigin.getX(), objOrigin.getY(), objPaintCurrent_Fill.getColor(), objPaintCurrent_Stroke.getColor(), -1, triWidth, -1, -1, triHeight, -1, "", "", -1, "");
+        return ENCODE(objType, objOrigin.getX(), objOrigin.getY(), objPaintCurrent_Fill.getColor(), objPaintCurrent_Stroke.getColor(), -1, triWidth, -1, -1, triHeight, -1, "-1", "-1", -1, "-1");
     }
 }

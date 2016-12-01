@@ -1,8 +1,6 @@
 package cornjob.flowsketch;
 
 import android.graphics.BlurMaskFilter;
-import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
@@ -56,7 +54,7 @@ class ObjectText extends Object {
 
     @Override
     public String encode() {
-        return ENCODE(objType, objOrigin.getX(), objOrigin.getY(), objPaintCurrent_Fill.getColor(), objPaintCurrent_Stroke.getColor(), -1, -1, -1, -1, -1, -1, text, "", objPaintCurrent_Fill.getTextSize(), "");
+        return ENCODE(objType, objOrigin.getX(), objOrigin.getY(), objPaintCurrent_Fill.getColor(), objPaintCurrent_Stroke.getColor(), -1, -1, -1, -1, -1, -1, text, "-1", objPaintCurrent_Fill.getTextSize(), "-1");
     }
 
 

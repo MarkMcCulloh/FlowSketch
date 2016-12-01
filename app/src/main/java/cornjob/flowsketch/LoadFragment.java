@@ -1,6 +1,7 @@
 package cornjob.flowsketch;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -228,6 +229,10 @@ public class LoadFragment extends Fragment {
         public void onEdit() {
             Toast.makeText(getActivity(), "Canvas id : " + current_id + "\n Data: " + current_data, Toast.LENGTH_SHORT).show();
 
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            intent.putExtra("CANVAS_DATA",current_data);
+            startActivity(intent);
+            Log.i("cheese", current_data);
         }
 
         public void onDeleteCanvas() {
