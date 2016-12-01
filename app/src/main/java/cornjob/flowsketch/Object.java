@@ -41,6 +41,28 @@ public abstract class Object {
 
     }
 
+    Object(MyCanvas mainCanvas, String inString) {
+        String[] stuff = DECODE(inString);
+        objCanvas = mainCanvas;
+        objOrigin = new Point(Float.parseFloat(stuff[1]), Float.parseFloat(stuff[2]));
+        objType = OBJTYPE.valueOf(stuff[0]);
+
+        selectBorder = new Paint();
+
+        objPaintCurrent_Stroke = new Paint();
+        objPaintCurrent_Stroke.setColor(Integer.parseInt(stuff[4]));
+        objPaintCurrent_Stroke.setStyle(Paint.Style.STROKE);
+        objPaintCurrent_Stroke.setStrokeWidth(10f);
+        objPaintCurrent_Stroke.setAntiAlias(true);
+
+        objPaintCurrent_Fill = new Paint();
+        objPaintCurrent_Fill.setColor(Integer.parseInt(stuff[3]));
+        objPaintCurrent_Fill.setStyle(Paint.Style.FILL);
+        objPaintCurrent_Fill.setStrokeWidth(10f);
+        objPaintCurrent_Fill.setAntiAlias(true);
+
+    }
+
 
     public boolean setSelect(boolean flag) {
         boolean last = objSelect;
@@ -79,31 +101,30 @@ public abstract class Object {
     public abstract void translate(float xdis, float ydis);
 
     /*
+
     OBJECT DATA STRING
     ________________
-    Object Type *ALL
-    x pos       *ALL
-    y pos       *ALL
-    fill        *ALL
-    stroke      *ALL
-    height      *RECT
-    width       *RECT&TRI
-    p2 x pos    *LINE
-    p2 y pos    *LINE
-    height      *TRI
-    radius      *CIRCLE
-    text        *TEXT
-    fonttype    *TEXT
-    fontsize    *TEXT
-    imgpath     *PIC
+    Object Type *ALL        0
+    x pos       *ALL        1
+    y pos       *ALL        2
+    fill        *ALL        3
+    stroke      *ALL        4
+    height      *RECT       5
+    width       *RECT&TRI   6
+    p2 x pos    *LINE       7
+    p2 y pos    *LINE       8
+    height      *TRI        9
+    radius      *CIRCLE     10
+    text        *TEXT       11
+    fonttype    *TEXT       12
+    fontsize    *TEXT       13
+    imgpath     *PIC        14
 
      */
     public abstract String encode();
 
-    public abstract Object decode(String inString);
-
     static String ENCODE(OBJTYPE otype, float xpos, float ypos, int fillc, int strokec, float length, float width, float p2x, float p2y, float height, float radius, String text, String fonttype, float fontsize, String imgpath) {
-        String ret = "[";
+        String ret = "";
 
         ret += otype + ",";
         ret += xpos + ",";
@@ -116,13 +137,18 @@ public abstract class Object {
         ret += p2y + ",";
         ret += height + ",";
         ret += radius + ",";
+        ret += text + ",";
         ret += fonttype + ",";
         ret += fontsize + ",";
         ret += imgpath + ",";
 
-        ret += "]";
-
         return ret;
+    }
+
+    static String[] DECODE(String inString) {
+        String[] stuff = inString.split(",");
+
+        return stuff;
     }
 
 }

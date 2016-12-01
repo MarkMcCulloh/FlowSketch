@@ -1,8 +1,5 @@
 package cornjob.flowsketch;
 
-import android.graphics.BlurMaskFilter;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.RectF;
 
 class ShapeRect extends Object {
@@ -19,6 +16,18 @@ class ShapeRect extends Object {
         super(mainCanvas, x, y, OBJTYPE.SQUARE);
 
         fullRect = new RectF(x, y, x + s, y + s);
+    }
+
+    ShapeRect(MyCanvas mainCanvas, String inString) {
+        super(mainCanvas, inString);
+        String[] stuff = DECODE(inString);
+
+        float x = Float.parseFloat(stuff[1]);
+        float y = Float.parseFloat(stuff[2]);
+        float l = Float.parseFloat(stuff[5]);
+        float w = Float.parseFloat(stuff[6]);
+
+        fullRect = new RectF(x, y, l, w);
     }
 
     @Override
@@ -48,14 +57,8 @@ class ShapeRect extends Object {
 
     @Override
     public String encode() {
-        return ENCODE(objType, objOrigin.getX(), objOrigin.getY(), objPaintCurrent_Fill.getColor(), objPaintCurrent_Stroke.getColor(), fullRect.height(), fullRect.width(), -1, -1, -1, -1, "", "", -1, "");
+        return ENCODE(objType, objOrigin.getX(), objOrigin.getY(), objPaintCurrent_Fill.getColor(), objPaintCurrent_Stroke.getColor(), fullRect.height(), fullRect.width(), -1, -1, -1, -1, "-1", "-1", -1, "-1");
     }
-
-    @Override
-    public Object decode(String inString) {
-        return null;
-    }
-
 
     @Override
     public void scale(float factor) {

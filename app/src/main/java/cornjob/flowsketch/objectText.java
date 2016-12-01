@@ -1,20 +1,27 @@
 package cornjob.flowsketch;
 
 import android.graphics.BlurMaskFilter;
-import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
 class ObjectText extends Object {
     public String text = new String();
 
-    public ObjectText(MyCanvas mainCanvas, float x, float y, String text, int textsize) {
+    ObjectText(MyCanvas mainCanvas, float x, float y, String text, int textsize) {
         super(mainCanvas, x, y, OBJTYPE.TEXT);
 
         this.text = text;
         objPaintCurrent_Fill.setTextSize(textsize);
         objPaintCurrent_Stroke.setTextSize(textsize);
+    }
+
+    ObjectText(MyCanvas mainCanvas, String inString) {
+        super(mainCanvas, inString);
+        String[] stuff = DECODE(inString);
+
+        this.text = stuff[5];
+        objPaintCurrent_Fill.setTextSize(Float.parseFloat(stuff[13]));
+        objPaintCurrent_Stroke.setTextSize(Float.parseFloat(stuff[13]));
     }
 
     public boolean drawThis() {
@@ -47,13 +54,9 @@ class ObjectText extends Object {
 
     @Override
     public String encode() {
-        return ENCODE(objType, objOrigin.getX(), objOrigin.getY(), objPaintCurrent_Fill.getColor(), objPaintCurrent_Stroke.getColor(), -1, -1, -1, -1, -1, -1, text, "", objPaintCurrent_Fill.getTextSize(), "");
+        return ENCODE(objType, objOrigin.getX(), objOrigin.getY(), objPaintCurrent_Fill.getColor(), objPaintCurrent_Stroke.getColor(), -1, -1, -1, -1, -1, -1, text, "-1", objPaintCurrent_Fill.getTextSize(), "-1");
     }
 
-    @Override
-    public Object decode(String inString) {
-        return null;
-    }
 
     @Override
     public void scale(float factor) {

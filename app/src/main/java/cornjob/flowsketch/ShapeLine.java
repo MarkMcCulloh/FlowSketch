@@ -18,6 +18,15 @@ class ShapeLine extends Object {
         currentltype = ltype.WHOLE;
     }
 
+    ShapeLine(MyCanvas mainCanvas, String inString) {
+        super(mainCanvas, inString);
+        String[] stuff = DECODE(inString);
+
+        endPoint = new Point(Float.parseFloat(stuff[7]), Float.parseFloat(stuff[8]));
+
+        currentltype = ltype.WHOLE;
+    }
+
     @Override
     public boolean drawThis() {
         float deltaX = endPoint.getX() - objOrigin.getX();
@@ -77,11 +86,6 @@ class ShapeLine extends Object {
     @Override
     public String encode() {
         return ENCODE(objType, objOrigin.getX(), objOrigin.getY(), objPaintCurrent_Fill.getColor(), objPaintCurrent_Stroke.getColor(), -1, -1, endPoint.getX(), endPoint.getX(), -1, -1, "", "", -1, "");
-    }
-
-    @Override
-    public Object decode(String inString) {
-        return null;
     }
 
     static Point closestpointonline(float lx1, float ly1,

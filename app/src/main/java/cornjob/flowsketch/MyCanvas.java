@@ -12,12 +12,15 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import static cornjob.flowsketch.Object.OBJTYPE.LINER;
 
 public class MyCanvas extends View {
     Context context;
@@ -180,14 +183,54 @@ public class MyCanvas extends View {
                 Objects.add(new ObjectPic(this, middlex, middley, imageMap));
                 break;
             case LINER:
-                currentLine = Object.OBJTYPE.LINER;
+                currentLine = LINER;
                 addLine = 1;
                 break;
         }
         text = "";
         invalidate();
     }
+    public void getloadingdata(String load)
+    {
+        String [] strings = load.split(",");
+        //CIRCLE,-54.479492,982.02924,-16777216,-16777216,-1.0,-1.0,-1.0,-1.0,-1.0,100.0,-1,-1,-1.0,-1,CIRCLE,-54.479492,982.02924,-16777216,-16777216,-1.0,-1.0,-1.0,-1.0,-1.0,100.0,-1,-1,-1.0,-1,
 
+        for(int i = 0; i < strings.length; i += 15){
+
+            String dataShape = strings[i] +","+ strings[i+1] +","+ strings[i+2] +","+ strings[i+3] +","+ strings[i+4] +","+ strings[i + 5] +","+ strings[i+6] +","+ strings[i+7] +","+ strings[i+8] +","+ strings[i+9] +","+ strings[i+10] +","+ strings[i+11] +","+ strings[i+12] +","+ strings[i+13] +","+ strings[i+14] +",";
+            switch (strings[i]) {
+                case "CIRCLE":
+                    Objects.add(new ShapeCircle(this,dataShape));
+                    break;
+                case "TRIANGLE":
+                    Objects.add(new ShapeTriangle(this, dataShape));
+                    break;
+                case "RECTANGLE":
+                    Objects.add(new ShapeRect(this, dataShape));
+                    break;
+                case "SQUARE":
+                    Objects.add(new ShapeRect(this, dataShape));
+                    break;
+                case "TEXT":
+                    ObjectText newText = new ObjectText(this,dataShape);
+                    select(newText);
+                    Objects.add(newText);
+                    break;
+                case "IMAGE":
+                    // Objects.add(new ObjectPic());
+                    break;
+                case "LINER":
+                    currentLine = LINER;
+                    addLine = 1;
+                    break;
+            }
+            String length = String.valueOf(Objects.size());
+            Log.i("MyCanvas", length);
+        }
+
+    invalidate();
+
+    }
 
     public void select(Object newselect) {
         if (selectedobj != null) {

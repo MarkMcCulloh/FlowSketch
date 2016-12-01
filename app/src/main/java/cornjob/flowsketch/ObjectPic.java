@@ -42,10 +42,6 @@ class ObjectPic extends Object {
         // String text, String fonttype, float fontsize,
     }
 
-    @Override
-    public Object decode(String inString) {
-        return null;
-    }
 
     @Override
     public void scale(float factor) {

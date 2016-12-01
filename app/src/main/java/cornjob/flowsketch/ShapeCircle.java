@@ -6,8 +6,13 @@ class ShapeCircle extends Object {
 
     ShapeCircle(MyCanvas mainCanvas, float x, float y, float r) {
         super(mainCanvas, x, y, OBJTYPE.CIRCLE);
-        objOrigin = new Point(x, y);
         circleRadius = r;
+    }
+
+    ShapeCircle(MyCanvas mainCanvas, String inString) {
+        super(mainCanvas, inString);
+        String[] stuff = DECODE(inString);
+        circleRadius = Float.parseFloat(stuff[10]);
     }
 
     @Override
@@ -39,12 +44,7 @@ class ShapeCircle extends Object {
 
     @Override
     public String encode() {
-        return ENCODE(objType, objOrigin.getX(), objOrigin.getY(), objPaintCurrent_Fill.getColor(), objPaintCurrent_Stroke.getColor(), -1, -1, -1, -1, -1, circleRadius, "", "", -1, "");
-    }
-
-    @Override
-    public Object decode(String inString) {
-        return null;
+        return ENCODE(objType, objOrigin.getX(), objOrigin.getY(), objPaintCurrent_Fill.getColor(), objPaintCurrent_Stroke.getColor(), -1, -1, -1, -1, -1, circleRadius, "-1", "-1", -1, "-1");
     }
 
 }

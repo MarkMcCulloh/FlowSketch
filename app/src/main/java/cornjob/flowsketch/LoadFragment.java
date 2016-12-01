@@ -1,11 +1,10 @@
 package cornjob.flowsketch;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -161,12 +160,8 @@ public class LoadFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e(TAG, "Loading Error: " + error.getMessage());
-
-                        String message= "Request timed out! Try again after a couple second!";
-                        if (error.getMessage() == null)
-                            Toast.makeText(getActivity().getApplicationContext(),message, Toast.LENGTH_LONG).show();
-                        else
-                            Toast.makeText(getActivity().getApplicationContext(),error.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity().getApplicationContext(),
+                                error.getMessage(), Toast.LENGTH_LONG).show();
                         hideDialog();
                     }
                 }) {
@@ -199,9 +194,6 @@ public class LoadFragment extends Fragment {
         popup.setOnMenuItemClickListener(new LoadFragment.MyMenuItemClickListener());
         popup.show();
     }
-
-
-
 
     /**
      * Click listener for popup menu items
@@ -237,14 +229,16 @@ public class LoadFragment extends Fragment {
         public void onEdit() {
             Toast.makeText(getActivity(), "Canvas id : " + current_id + "\n Data: " + current_data, Toast.LENGTH_SHORT).show();
 
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            intent.putExtra("CANVAS_DATA",current_data);
+            startActivity(intent);
+            Log.i("cheese", current_data);
         }
 
         public void onDeleteCanvas() {
             Bundle args = new Bundle();
             args.putString("canvasId", String.valueOf(current_id));
             DialogFragment newFragment = new DeleteDialogFragment();
-
-            newFragment.setTargetFragment(getParentFragment(), 0);
             newFragment.setArguments(args);
             newFragment.show(getFragmentManager(), "TAG");
         }
@@ -256,7 +250,6 @@ public class LoadFragment extends Fragment {
             DialogFragment newFragment = new EditNameDialogFragment();
             newFragment.setArguments(args);
             newFragment.show(getFragmentManager(), "TAG");
-
         }
 
     }
