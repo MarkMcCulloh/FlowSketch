@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class CanvasData implements Serializable {
     private int cid;
     private String canvasName;
-    public static String data;
+    public static String data = "";
     private String data_temp;
     private String date;
 

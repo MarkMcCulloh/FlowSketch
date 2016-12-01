@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
-
+    public String canvasDataFromEdit = "";
 
     /* For "fill" and "stroke" */
     public static void setInstance(MainActivity instance) {
@@ -54,6 +54,13 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         canvas = (MyCanvas) findViewById(R.id.drawablecanvas);
+
+        //if intent returns a result then process this data
+        canvasDataFromEdit = getIntent().getStringExtra("CANVAS_DATA");
+        if(canvasDataFromEdit != null){
+           // canvas.invalidate();
+            loadCanvas(canvasDataFromEdit);
+        }
     }
 
 
@@ -113,7 +120,10 @@ public class MainActivity extends AppCompatActivity {
          }**/
     }
 
-
+    public void loadCanvas(String load)
+    {
+        canvas.getloadingdata(load);
+    }
     public void insertText(MenuItem v) {
         ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
         canvas.addObject(Object.OBJTYPE.TEXT);
