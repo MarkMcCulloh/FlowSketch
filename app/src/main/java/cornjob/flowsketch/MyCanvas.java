@@ -169,7 +169,7 @@ public class MyCanvas extends View {
                 Objects.add(new ShapeTriangle(this, middlex, middley, this.getWidth() / 3, this.getHeight() / 3));
                 break;
             case RECTANGLE:
-                Objects.add(new ShapeRect(this, middlex, middley, middlex + this.getWidth() / 3, this.getHeight() / 3));
+                Objects.add(new ShapeRect(this, middlex, middley, this.getWidth() / 3, this.getHeight() / 3));
                 break;
             case SQUARE:
                 Objects.add(new ShapeRect(this, middlex, middley, 100));
@@ -192,27 +192,29 @@ public class MyCanvas extends View {
     }
     public void getloadingdata(String load)
     {
-        String [] strings = load.split(",");
-        //CIRCLE,-54.479492,982.02924,-16777216,-16777216,-1.0,-1.0,-1.0,-1.0,-1.0,100.0,-1,-1,-1.0,-1,CIRCLE,-54.479492,982.02924,-16777216,-16777216,-1.0,-1.0,-1.0,-1.0,-1.0,100.0,-1,-1,-1.0,-1,
+        Log.i("goods", load);
+        String[] objects = load.split("]");
 
-        for(int i = 0; i < strings.length; i += 15){
+        for (String stuff : objects) {
 
-            String dataShape = strings[i] +","+ strings[i+1] +","+ strings[i+2] +","+ strings[i+3] +","+ strings[i+4] +","+ strings[i + 5] +","+ strings[i+6] +","+ strings[i+7] +","+ strings[i+8] +","+ strings[i+9] +","+ strings[i+10] +","+ strings[i+11] +","+ strings[i+12] +","+ strings[i+13] +","+ strings[i+14] +",";
-            switch (strings[i]) {
+            if (stuff.length() == 0) break;
+            String[] goods = stuff.split(",");
+
+            switch (goods[0]) {
                 case "CIRCLE":
-                    Objects.add(new ShapeCircle(this,dataShape));
+                    Objects.add(new ShapeCircle(this, stuff));
                     break;
                 case "TRIANGLE":
-                    Objects.add(new ShapeTriangle(this, dataShape));
+                    Objects.add(new ShapeTriangle(this, stuff));
                     break;
                 case "RECTANGLE":
-                    Objects.add(new ShapeRect(this, dataShape));
+                    Objects.add(new ShapeRect(this, stuff));
                     break;
                 case "SQUARE":
-                    Objects.add(new ShapeRect(this, dataShape));
+                    Objects.add(new ShapeRect(this, stuff));
                     break;
                 case "TEXT":
-                    ObjectText newText = new ObjectText(this,dataShape);
+                    ObjectText newText = new ObjectText(this, stuff);
                     select(newText);
                     Objects.add(newText);
                     break;
