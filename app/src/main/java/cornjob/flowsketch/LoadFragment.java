@@ -45,6 +45,7 @@ public class LoadFragment extends Fragment {
     private static final String URL = "http://flowsketchpi.duckdns.org:8080/sketch_flow/v1/canvas";
     SessionManager session;
     private int current_id;
+    private String current_name;
     private String current_data;
 
     public LoadFragment() {
@@ -131,6 +132,7 @@ public class LoadFragment extends Fragment {
                                         CanvasData canvas = canvaslis.get(position);
                                         int id = canvas.getCid();
                                         current_data = canvas.getData_temp();
+                                        current_name=canvas.getCanvasName();
                                         current_id = id;
                                         showPopupMenu(v);
 
@@ -227,10 +229,14 @@ public class LoadFragment extends Fragment {
         }
 
         public void onEdit() {
-            Toast.makeText(getActivity(), "Canvas id : " + current_id + "\n Data: " + current_data, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getActivity(), "Canvas id : " + current_id + "\n Data: " + current_data, Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(getActivity(), MainActivity.class);
             intent.putExtra("CANVAS_DATA",current_data);
+            //intent.putExtra("CANVAS_ID",current_id);
+            AppSingleton.getInstance(getActivity()).getmSession().setCurrentCanvasID(current_id);
+            AppSingleton.getInstance(getActivity()).getmSession().setCurrent_canvas_name(current_name);
+
             startActivity(intent);
             Log.i("cheese", current_data);
         }

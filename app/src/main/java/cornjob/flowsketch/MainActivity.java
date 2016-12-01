@@ -18,7 +18,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setInstance(this); // for "fill" and "stroke"
-
         //setting toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         canvasDataFromEdit = getIntent().getStringExtra("CANVAS_DATA");
         if(canvasDataFromEdit != null){
            // canvas.invalidate();
+            Toast.makeText(getApplicationContext(), "Canvas id : "  + AppSingleton.getInstance(getApplicationContext()).getmSession().getCurrentCanvasID(), Toast.LENGTH_SHORT).show();
             loadCanvas(canvasDataFromEdit);
         }
     }
@@ -165,6 +167,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clearCanvas(MenuItem v) {
+        AppSingleton.getInstance(getApplicationContext()).getmSession().setCurrentCanvasID(0);
+        Toast.makeText(getApplicationContext(), "Canvas id : "  + AppSingleton.getInstance(getApplicationContext()).getmSession().getCurrentCanvasID(), Toast.LENGTH_SHORT).show();
+
         canvas.reset();
     }
 

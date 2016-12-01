@@ -135,7 +135,7 @@ public class EditNameDialogFragment extends DialogFragment{
                 Log.e(LOG_TAG, "Edit Error: " + error.getMessage());
                 String message= "Request timed out! Try again after a couple second!";
                 if (error.getMessage() == null)
-                     Toast.makeText(context,message, Toast.LENGTH_LONG).show();
+                    Toast.makeText(context,message, Toast.LENGTH_LONG).show();
                 else
                     Toast.makeText(context,error.getMessage(), Toast.LENGTH_LONG).show();
                 hideDialog();
