@@ -63,7 +63,7 @@ class ShapeRect extends Object {
 
     @Override
     public void scale(float factor) {
-        fullRect.set((fullRect.left - 1) * factor, (fullRect.top - 1) * factor, (fullRect.right + 1) * factor, (fullRect.bottom + 1) * factor);
+        fullRect.set(fullRect.left, fullRect.top, fullRect.left + (fullRect.width() * factor), fullRect.top + (fullRect.height() * factor));
 
     }
 

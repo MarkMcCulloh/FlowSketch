@@ -28,7 +28,7 @@ class ShapeTriangle extends Object {
 
         p1 = objOrigin;
         float pointX = objOrigin.getX() + triWidth / 2;
-        float pointY = objOrigin.getY() + triHeight;
+        float pointY = objOrigin.getY() - triHeight;
 
         p2 = new Point(pointX, pointY);
         p3 = new Point(objOrigin.getX() + triWidth, objOrigin.getY());

@@ -71,9 +71,13 @@
         android:icon="@drawable/line_icon"
         android:id="@+id/lines_item"
         app:showAsAction="always"
-        android:title="Lines"
-        android:onClick="insertLine">
+        android:title="Lines">
 
+        <menu>
+            <item
+                android:title="Arrow"
+                android:onClick="insertLineR" />
+        </menu>
     </item>
 
 

@@ -12,13 +12,13 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 
 import static cornjob.flowsketch.Object.OBJTYPE.LINER;
 
@@ -27,11 +27,9 @@ public class MyCanvas extends View {
     public static ArrayList<Object> Objects = new ArrayList<>();
     public static Bundle mMyAppsBundle = new Bundle();
 
-    public static int current_canvas_id=0;
     public Object selectedobj;
     private ScaleGestureDetector mScaleDetector;
     public static float mScaleFactor = 1.0f;
-    private int mActivePointerId;
     int addLine;
     Point lp1, lp2;
     Object.OBJTYPE currentLine;
@@ -41,7 +39,7 @@ public class MyCanvas extends View {
     private float mPosX, mPosY;
     private float cX, cY;
 
-    private Paint basicPaint;
+    private Paint basicPaint, centercross;
 
     private Object.OBJTYPE nextShape;
 
@@ -68,16 +66,25 @@ public class MyCanvas extends View {
         basicPaint = new Paint();
         basicPaint.setColor(Color.BLACK);
         basicPaint.setStyle(Paint.Style.STROKE);
-        basicPaint.setStrokeWidth(3f);
+        basicPaint.setStrokeWidth(12f);
+
+        centercross = new Paint();
+        centercross.setColor(Color.RED);
+        centercross.setStyle(Paint.Style.STROKE);
+        centercross.setStrokeWidth(16f);
+
+        mScaleFactor = 0.237f;
 
         addLine = 0;
 
-        mPosX = 600;
-        mPosY = 600;
+        mPosX = 0;
+        mPosY = 0;
     }
 
     public static void objectToString() {
-        for (Object obj : Objects) {
+        ArrayList<Object> rObjects = new ArrayList<>(Objects);
+        Collections.reverse(rObjects);
+        for (Object obj : rObjects) {
             CanvasData.data += obj.encode();
         }
     }
@@ -102,12 +109,20 @@ public class MyCanvas extends View {
         canvas.translate(mPosX, mPosY);
         canvas.scale(mScaleFactor, mScaleFactor);
 
-        canvas.drawColor(Color.GRAY);
+        canvas.drawColor(Color.rgb(240, 240, 240));
 
-        canvas.drawLine(0, -10000, 0, 10000, basicPaint);
-        canvas.drawLine(-10000, 0, 10000, 0, basicPaint);
+        for (int a = -10; a < 10; a++) {
+            for (int b = -10; b < 10; b++) {
+                canvas.drawLine(1000 * a, -10000, 1000 * a, 10000, basicPaint);
+                canvas.drawLine(-10000, 1000 * b, 10000, 1000 * b, basicPaint);
+            }
+        }
 
-        canvas.drawCircle(cX, cY, 40, basicPaint);
+        canvas.drawLine(0, -10000, 0, 10000, centercross);
+        canvas.drawLine(-10000, 0, 10000, 0, centercross);
+
+        //finger ball
+        //canvas.drawCircle(cX, cY, 40, basicPaint);
 
         for (Object obj : Objects) {
             obj.drawThis();
@@ -145,6 +160,8 @@ public class MyCanvas extends View {
     public void addObject(Object.OBJTYPE newobj) {
         nextShape = newobj;
 
+        float usefulscale = mScaleFactor * 3.5f;
+
         float middlex = this.getWidth() / 2;
         float middley = this.getHeight() / 2 - 80;
         float[] mClickCoords = new float[2];
@@ -163,19 +180,19 @@ public class MyCanvas extends View {
 
         switch (newobj) {
             case CIRCLE:
-                Objects.add(new ShapeCircle(this, middlex, middley, 100));
+                Objects.add(new ShapeCircle(this, middlex, middley, this.getWidth() / usefulscale));
                 break;
             case TRIANGLE:
-                Objects.add(new ShapeTriangle(this, middlex, middley, this.getWidth() / 3, this.getHeight() / 3));
+                Objects.add(new ShapeTriangle(this, middlex, middley, this.getWidth() / usefulscale, this.getHeight() / (usefulscale * 1.5f)));
                 break;
             case RECTANGLE:
-                Objects.add(new ShapeRect(this, middlex, middley, this.getWidth() / 3, this.getHeight() / 3));
+                Objects.add(new ShapeRect(this, middlex, middley, this.getHeight() / usefulscale, this.getWidth() / usefulscale));
                 break;
             case SQUARE:
-                Objects.add(new ShapeRect(this, middlex, middley, 100));
+                Objects.add(new ShapeRect(this, middlex, middley, this.getWidth() / usefulscale));
                 break;
             case TEXT:
-                ObjectText newText = new ObjectText(this, middlex, middley, text, this.getWidth() / 6);
+                ObjectText newText = new ObjectText(this, middlex, middley, text, this.getWidth() / (int) (usefulscale * 5));
                 select(newText);
                 Objects.add(newText);
                 break;
@@ -192,11 +209,9 @@ public class MyCanvas extends View {
     }
     public void getloadingdata(String load)
     {
-        Log.i("goods", load);
         String[] objects = load.split("]");
 
         for (String stuff : objects) {
-
             if (stuff.length() == 0) break;
             String[] goods = stuff.split(",");
 
@@ -214,20 +229,15 @@ public class MyCanvas extends View {
                     Objects.add(new ShapeRect(this, stuff));
                     break;
                 case "TEXT":
-                    ObjectText newText = new ObjectText(this, stuff);
-                    select(newText);
-                    Objects.add(newText);
+                    Objects.add(new ObjectText(this, stuff));
                     break;
                 case "IMAGE":
                     // Objects.add(new ObjectPic());
                     break;
                 case "LINER":
-                    currentLine = LINER;
-                    addLine = 1;
+                    Objects.add(new ShapeLine(this, stuff));
                     break;
             }
-            String length = String.valueOf(Objects.size());
-            Log.i("MyCanvas", length);
         }
 
     invalidate();
@@ -307,10 +317,10 @@ public class MyCanvas extends View {
 
                 }
 
-                invalidate();
-
                 mLastTouchX = x;
                 mLastTouchY = y;
+
+                invalidate();
 
                 break;
 

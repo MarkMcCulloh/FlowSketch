@@ -40,11 +40,10 @@ class ObjectText extends Object {
 
         objPaintCurrent_Fill.getTextBounds(text, 0, text.length(), bounds);
 
-        float mTextWidth = objPaintCurrent_Fill.measureText(text);
         float mTextHeight = bounds.height();
 
-        RectF boundsf = new RectF(objOrigin.getX(), objOrigin.getY(), objOrigin.getX() + mTextWidth, objOrigin.getY() - mTextHeight);
-
+        RectF boundsf = new RectF(bounds);
+        boundsf.offsetTo(objOrigin.getX(), objOrigin.getY() - mTextHeight / 2);
         return (boundsf.contains(test.getX(), test.getY()));
     }
 
